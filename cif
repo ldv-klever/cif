@@ -1,0 +1,645 @@
+#! /usr/bin/perl -w
+
+use English;
+use Env qw(LDV_ASPECTATOR);
+use File::Basename qw(basename dirname);
+use FindBin;
+use Getopt::Long qw(GetOptions);
+Getopt::Long::Configure qw(posix_default no_ignore_case);
+use strict;
+
+
+################################################################################
+# Subroutine prototypes.
+################################################################################
+
+# Check execution status of child process.
+# args: no.
+# retn: nothing.
+sub check_system_call();
+
+# Remove intermediate files if --keep option wasn't set.
+# args: options hash, files to be removed.
+# retn: nothing.
+sub clean($$);
+
+# Process command-line options. To see detailed description of these options run
+# script with --help option.
+# args: no.
+# retn: options hash.
+sub get_opt();
+
+# Print help message and exit.
+# args: no.
+# retn: nothing.
+sub help();
+
+# Perform stages required by options specified.
+# args: options hash.
+# retn: nothing.
+sub perform_stages($);
+
+# Print debug message in depend on debug level specified.
+# args: specified debug level, message debug level, message to be printed.
+# retn: nothing.
+sub print_debug($$$);
+
+
+################################################################################
+# Main section.
+################################################################################
+
+# Process command-line options.
+my $opts = get_opt();
+
+# Perform all required stages.
+perform_stages($opts);
+
+print_debug($opts->{'debug'}, 'NORMAL', "Make all successfully");
+
+
+################################################################################
+# Subroutines.
+################################################################################
+
+sub check_system_call()
+{
+  # This is got almost directly from the Perl manual:
+  # http://perldoc.perl.org/functions/system.html
+  if ($CHILD_ERROR == -1)
+  {
+    print("Failed to execute: $ERRNO\n");
+    return -1;
+  }
+  elsif ($CHILD_ERROR & 127)
+  {
+    printf("Child died with signal %d, %s coredump\n"
+      , ($CHILD_ERROR & 127), ($CHILD_ERROR & 128) ? 'with' : 'without');
+
+    die("Process was interrupted with CTRL+C")
+      if (($CHILD_ERROR & 127) == 2);
+
+    return ($CHILD_ERROR & 127);
+  }
+  elsif ($CHILD_ERROR >> 8)
+  {
+    printf("Child exited with value %d\n", ($CHILD_ERROR >> 8));
+    return ($CHILD_ERROR >> 8);
+  }
+
+  return 0;
+}
+
+sub clean($$)
+{
+  my $opts = shift;
+  my $aux_files = shift;
+
+  # Do not remove intermediate files this case.
+  return if ($opts->{'keep'});
+
+  foreach my $aux_file_kind (keys(%{$aux_files}))
+  {
+    my $aux_file = ${$aux_files}{$aux_file_kind};
+
+    # Keep prepared files since error traces can reference them.
+    next if ($opts->{'keep prepared file'}
+      and $aux_file_kind eq 'file prepared');
+
+    if (-e $aux_file)
+    {
+      print_debug($opts->{'debug'}, 'DEBUG', "Remove '$aux_file_kind'"
+        . " intermediate file '$aux_file'");
+      unlink($aux_file)
+        or die("Couldn't remove file '$aux_file': $ERRNO");
+    }
+  }
+}
+
+sub get_opt()
+{
+  my ($aspect, $aspect_preprocessing_opts, $back_end, $aspectator
+    , $compilation_opts, $debug, $file_preparation_opts
+    , $general_opts, $help, $in, $instrumentation_opts, $keep
+    , $keep_prepared_file, $macro_instrumentation_opts, $opts, $out, $stage);
+  my @argv = @ARGV;
+
+  if (scalar(@argv) == 0)
+  {
+    warn("No options were specified through command-line. Please see help to"
+      . " understand how to use this script");
+    help();
+  }
+
+  unless (GetOptions(
+      'aspect=s' => \$aspect
+    , 'aspect-preprocessing-opts=s' => \$aspect_preprocessing_opts
+    , 'back-end=s' => \$back_end
+    , 'aspectator=s' => \$aspectator
+    , 'compilation-opts=s' => \$compilation_opts
+    , 'debug=s' => \$debug
+    , 'file-preparation-opts=s' => \$file_preparation_opts
+    , 'general-opts=s' => \$general_opts
+    , 'help|h' => \$help
+    , 'in|c=s' => \$in
+    , 'instrumentation-opts=s' => \$instrumentation_opts
+    , 'keep' => \$keep
+    , 'keep-prepared-file' => \$keep_prepared_file
+    , 'macro-instrumentation-opts=s' => \$macro_instrumentation_opts
+    , 'out|o=s' => \$out
+    , 'stage=s' => \$stage
+  ))
+  {
+    warn("Incorrect options may completely change the meaning!");
+    help();
+  }
+
+  $debug = 'QUIET' unless ($debug);
+
+  print_debug($debug, 'NORMAL', "Debug level is set to '$debug'");
+
+  print_debug($debug, 'DEBUG', "Options '@argv' were passed to script through"
+   . " command-line");
+
+  help() if ($help);
+
+  # Get the rest of command-line options (options after '--').
+  $opts = join(' ', @ARGV);
+  if ($opts)
+  {
+    print_debug($debug, 'DEBUG', "Options '$opts' will be passed to aspectator"
+      . " as is (note that these options are processed by your interpreter"
+      . " before passing to CIF, so don't forget about proper escaping)");
+  }
+  else
+  {
+    $opts = '';
+  }
+
+  unless ($in)
+  {
+    warn("You should specify C file to be instrumented by means of command-line"
+      . " option --in (-c)");
+    help();
+  }
+  if (!-f $in)
+  {
+    warn("Specified C file '$in' doesn't exist");
+    help();
+  }
+  print_debug($debug, 'DEBUG', "File '$in' will be instrumented");
+
+  unless ($aspect)
+  {
+    warn("You should specify aspect file to be used for instrumentation"
+      . " by means of command-line option --aspect");
+    help();
+  }
+  if (!-f $aspect)
+  {
+    warn("Specified aspect '$aspect' doesn't exist");
+    help();
+  }
+  print_debug($debug, 'DEBUG', "Aspect file '$aspect' will be used for"
+   . " instrumentation");
+
+  unless ($out)
+  {
+    warn("You should specify output file by means of command-line option"
+      . " --out (-o)");
+    help();
+  }
+  print_debug($debug, 'DEBUG', "Output will be put to file '$out' at"
+    . " 'compilation' stage");
+
+  if ($ENV{'LDV_ASPECTATOR'})
+  {
+    $aspectator = $ENV{'LDV_ASPECTATOR'};
+    print_debug($debug, 'DEBUG', "Aspectator '$aspectator' was specified by"
+      . " means or environment variable 'LDV_ASPECTATOR'");
+  }
+  elsif ($aspectator)
+  {
+    print_debug($debug, 'DEBUG', "Aspectator '$aspectator' was specified by"
+      . " means or command-line option --aspectator");
+  }
+  else
+  {
+    $aspectator = "$FindBin::RealBin/aspectator";
+    print_debug($debug, 'DEBUG', "Default aspectator '$aspectator' will be"
+      . " used");
+  }
+
+  $stage = 'compilation' unless ($stage);
+
+  if ($stage ne 'aspect preprocessing' and $stage ne 'file preparation'
+   and $stage ne 'macro instrumentation' and $stage ne 'instrumentation'
+   and $stage ne 'compilation')
+  {
+    warn("Incorrect stage '$stage' was specified");
+    help();
+  }
+
+  print_debug($debug, 'DEBUG', "CIF will perform all stages up to '$stage'"
+   . " stage");
+
+  # Check that back-end is specified and aspectator works correctly for
+  # 'compilation' stage.
+  if ($stage eq 'compilation')
+  {
+    unless ($back_end)
+    {
+      warn("Back-end for 'compilation' stage wasn't specified");
+      help();
+    }
+
+    if ($back_end ne 'bin' and $back_end ne 'asm' and $back_end ne 'obj'
+      and $back_end ne 'src')
+    {
+      warn("Incorrect back-end '$back_end' was specified");
+      help();
+    }
+
+    print_debug($debug, 'DEBUG', "Back-end '$back_end' will be used at"
+      . " 'compilation' stage");
+
+    my @args = ($aspectator, '-fsyntax-only', '-x', 'c', '/dev/null');
+    print_debug($debug, 'INFO', "Execute '@args'");
+    system(@args);
+    die("Aspectator '$aspectator' doesn't work") if (check_system_call());
+    print_debug($debug, 'TRACE', "Specified aspectator '$aspectator' works");
+  }
+
+  if ($general_opts)
+  {
+    print_debug($debug, 'DEBUG', "Options '$general_opts' will be"
+      . " specified at all stages");
+  }
+  else
+  {
+    $general_opts = '';
+  }
+
+  if ($aspect_preprocessing_opts)
+  {
+    print_debug($debug, 'DEBUG', "Options '$aspect_preprocessing_opts' will be"
+      . " specified at 'aspect preprocessing' stage");
+  }
+  else
+  {
+    $aspect_preprocessing_opts = '';
+  }
+
+  if ($file_preparation_opts)
+  {
+    print_debug($debug, 'DEBUG', "Options '$file_preparation_opts' will be"
+      . " specified at 'file preparation' stage");
+  }
+  else
+  {
+    $file_preparation_opts = '';
+  }
+
+  if ($macro_instrumentation_opts)
+  {
+    print_debug($debug, 'DEBUG', "Options '$macro_instrumentation_opts' will be"
+      . " specified at 'macro instrumentation' stage");
+  }
+  else
+  {
+    $macro_instrumentation_opts = '';
+  }
+
+  if ($instrumentation_opts)
+  {
+    print_debug($debug, 'DEBUG', "Options '$instrumentation_opts' will be"
+      . " specified at 'instrumentation' stage");
+  }
+  else
+  {
+    $instrumentation_opts = '';
+  }
+
+  if ($compilation_opts)
+  {
+    print_debug($debug, 'DEBUG', "Options '$compilation_opts' will be"
+      . " specified at 'compilation' stage");
+  }
+  else
+  {
+    $compilation_opts = '';
+  }
+
+  return {
+      'aspect' => $aspect
+    , 'aspect preprocessing opts' => $aspect_preprocessing_opts
+    , 'back-end' => $back_end
+    , 'aspectator' => $aspectator
+    , 'compilation opts' => $compilation_opts
+    , 'debug' => $debug
+    , 'file preparation opts' => $file_preparation_opts
+    , 'general opts' => $general_opts
+    , 'in' => $in
+    , 'instrumentation opts' => $instrumentation_opts
+    , 'keep' => $keep
+    , 'keep prepared file' => $keep_prepared_file
+    , 'macro instrumentation opts' => $macro_instrumentation_opts
+    , 'opts' => $opts
+    , 'out' => $out
+    , 'stage' => $stage
+  };
+}
+
+sub help()
+{
+    print(STDOUT << "EOM");
+
+NAME
+  $PROGRAM_NAME: instruments a file using an aspect and options
+    specified.
+
+SYNOPSIS
+  $PROGRAM_NAME [option...] [-- options_for_aspectator]
+
+OPTIONS
+
+  --aspect <file>
+    Aspect <file> to be used for instrumentation.
+
+  --aspect-preprocessing-opts <string>
+    Options specified by means of <string> will be passed as is at
+    'aspect preprocessing' stage.
+
+  --back-end <back-end>
+    Use specified back-end to produce output at 'compilation' stage. Following
+    back-ends available: 'bin', 'asm', 'obj' and 'src'.
+
+  --aspectator <bin>
+    <bin> is executable to be used as aspectator during instrumentation.
+
+  --compilation-opts <string>
+    Options specified by means of <string> will be passed as is at 'compilation'
+    stage.
+
+  --debug <level>
+    Debug <level> may be 'QUIET', 'WARNING', 'NORMAL', 'INFO', 'DEBUG', 'TRACE'
+    or 'ALL'. Each following level includes all messages of levels before it.
+
+  --file-preparation-opts <string>
+    Options specified by means of <string> will be passed as is at
+    'file preparation' stage.
+
+  --general-opts <string>
+    Options specified by means of <string> will be passed as is at all stages.
+
+  -h, --help
+    Print this help and exit with a syntax error.
+
+  -c, --in <file>
+    Input <file> to be instrumented.
+
+  --instrumentation-opts <string>
+    Options specified by means of <string> will be passed as is at
+    'instrumentation' stage.
+
+  --keep
+    Keep intermediate files.
+
+  --keep-prepared-file
+    Keep just prepared intermediate file. This may be required because of
+    preprocessed file refers to the given file instead of the original one.
+
+  --macro-instrumentation-opts <string>
+    Options specified by means of <string> will be passed as is at
+    'macro instrumentation' stage.
+
+  -o, --out <file>
+    Specified back-end will place output to <file> if 'compilation' stage will
+    be performed. Intermediate files are placed near output file.
+
+  --stage <stage>
+    <stage> may be one of 'aspect preprocessing', 'file preparation', 'macro
+    instrumentation', 'instrumentation', 'compilation'. Each following stage
+    includes all previous stages. 'Compilation' stage is used by default.
+
+  options_for_aspectator
+    This is list of options that will be passed to aspectator as is. Note that
+    these options are processed by your interpreter before passing to CIF, so
+    don't forget about proper escaping.
+
+ENVIRONMENT VARIABLES
+
+  LDV_ASPECTATOR
+    Optional environment variable that specifies aspectator to be used during
+    instrumentation. This option has more priority then using default and
+    specified by means of --aspectator aspectator.
+
+EOM
+
+  exit(1);
+}
+
+sub perform_stages($)
+{
+  my $opts = shift;
+  my $stage_id = 0;
+  my %aux_files;
+
+  for my $stage (('aspect preprocessing', 'file preparation'
+    , 'macro instrumentation', 'instrumentation', 'compilation'))
+  {
+    my $in = $opts->{'in'};
+    my $aspect = $opts->{'aspect'};
+    my $options = $opts->{'opts'};
+    my $out = $opts->{'out'};
+
+    # Place preprocessed aspect file near output file.
+    my $aspect_preprocessed = dirname($out) . '/' . basename($aspect) . '.i';
+    # Place all intermediate files near output file using input file name.
+    my $aux_base = dirname($out) . '/' . basename($in);
+
+    # Stage specific environment variables and options.
+    my $stage_envs = '';
+    my $stage_opts = '';
+
+    print_debug($opts->{'debug'}, 'TRACE', "********* $stage *********");
+
+    # At aspect preprocessing stage aspect file is preprocessed as well as
+    # common C file (thus option '-E' is specified). But aspect preprocessor
+    # directives begin with '@' instead of '#'.
+    if ($stage eq 'aspect preprocessing')
+    {
+      $in = $aspect;
+
+      # Do not use standard options set because of they may influence aspect
+      # preprocessing (#865).
+      $options = '';
+
+      # Aspect preprocessing can affect file paths that use word 'linux', since
+      # there is the standard built-in macro '#define linux 1'. So undefine the
+      # most of built-in macros by means of '-undef' (#865).
+      # Keeps comments by means of option -C (#865).
+      # Specify that aspect files "are" in C.
+      $stage_opts = "-E -undef -C -x c $opts->{'aspect preprocessing opts'}";
+
+      $aux_files{'aspect preprocessed'} = $out = $aspect_preprocessed;
+    }
+    else
+    {
+      # Use preprocessed aspect at other stages.
+      $aspect = $aspect_preprocessed;
+
+      # At file preparation stage recommendations with 'file' pointucts are
+      # applied.
+      if ($stage eq 'file preparation')
+      {
+        # Even though standard preprocessing won't be done but nevertheless
+        # specify that output should be a preprocessed file.
+        $stage_opts = "-E -x c $opts->{'file preparation opts'}";
+
+        # Use '.prepared' suffix for such kind of files.
+        $aux_files{'file prepared'} = $out = "$aux_base.prepared";
+      }
+      # At macro instrumentation stage standard preprocessing will be done.
+      elsif ($stage eq 'macro instrumentation')
+      {
+        # Input file is prepared file.
+        $in = "$aux_base.prepared";
+
+        $stage_opts = "-E -x c $opts->{'macro instrumentation opts'}";
+
+        # Use '.macroinstrumented' suffix for macro instrumented files.
+        $aux_files{'macro instrumented'} = $out
+          = "$aux_base.macroinstrumented";
+      }
+      # At instrumentation stage auxiliary functions implementing recommendation
+      # bodies and type declaration extensions required are performed.
+      elsif ($stage eq 'instrumentation')
+      {
+        # Input file is macro instrumented file.
+        $in = "$aux_base.macroinstrumented";
+
+        # Stop after preprocessed file is parsed.
+        $stage_opts = "-fsyntax-only -x cpp-output"
+          . " $opts->{'instrumentation opts'}";
+
+        # Use '.instrumented' suffix for instrumented files.
+        $aux_files{'instrumented'} = $out = "$aux_base.instrumented";
+        # Print output using such the way instead of the standard one.
+        $stage_envs = "LDV_OUT=$out";
+      }
+      # At compilation stage auxiliary functions are related with original code
+      # and some back-end is involved.
+      elsif ($stage eq 'compilation')
+      {
+        # Input file is instrumented file.
+        $in = "$aux_base.instrumented";
+
+        # Use specific options for corresponding back-ends.
+        $stage_opts = '-x cpp-output';
+        if ($opts->{'back-end'} eq 'asm')
+        {
+          $stage_opts .= ' -S';
+        }
+        elsif ($opts->{'back-end'} eq 'obj')
+        {
+          $stage_opts .= ' -c';
+        }
+        elsif ($opts->{'back-end'} eq 'src')
+        {
+          # Stop asfter preprocessed file is parsed.
+          $stage_opts .= ' -fsyntax-only';
+          # Print output using such the way instead of the standard one.
+          $stage_envs = "LDV_C_BACKEND_OUT=$out";
+        }
+        $stage_opts .= " $opts->{'compilation opts'}";
+      }
+    }
+
+    my $cmd =
+        # Specify what stage should be performed.
+        "LDV_STAGE=$stage_id"
+        # Aspect file should be always specified to enable specific features of
+        # aspectator.
+      . " LDV_ASPECT_FILE=$aspect"
+        # Stage specific environment variables.
+      . " $stage_envs"
+        # CIF cofe executable.
+      . " $opts->{'aspectator'}"
+        # Standard compilation (preprocesing) options.
+      . " $options"
+        # We wouldn't like to change original function calls with the gcc ones.
+        # So use -fno-builtin option for that purpose.
+      . ' -fno-builtin'
+        # Place all specific options at the end of other options to make them
+        # more of a priority.
+      . " $opts->{'general opts'}"
+      . " $stage_opts"
+        # File to be instrumented.
+      . " $in"
+        # Output file.
+      . " -o $out";
+    print_debug($opts->{'debug'}, 'INFO', "Execute '$cmd'");
+    system($cmd);
+    if (check_system_call())
+    {
+      # Remove intermediate files obtained thus far if required.
+      clean($opts, \%aux_files);
+      die("Aspectator failed at '$stage' stage") ;
+    }
+
+    # Make some magic for aspect preprocessing stage.
+    if ($stage eq 'aspect preprocessing')
+    {
+      # Replace '@' with '#' to return back standard preprocessing directives.
+      $cmd = "sed -i 's/@/#/g' $out";
+      print_debug($opts->{'debug'}, 'INFO', "Execute '$cmd'");
+      system($cmd);
+      if (check_system_call())
+      {
+        # Remove intermediate files obtained thus far if required.
+        clean($opts, \%aux_files);
+        die("Aspectator failed at '$stage' stage") ;
+      }
+    }
+
+    last if ($stage eq $opts->{'stage'});
+    $stage_id++;
+  }
+
+  # Remove intermediate files if required.
+  clean($opts, \%aux_files);
+}
+
+sub print_debug($$$)
+{
+  my $debug = shift;
+  my $message_debug = shift;
+  my $message = shift;
+
+  # "English" debug levels got from LDV utils.
+  my %levels = (
+    'QUIET'    => 0,
+    'WARNING'  => 4,
+    'NORMAL'   => 10,
+    'INFO'     => 20,
+    'DEBUG'    => 30,
+    'TRACE'    => 40,
+    'ALL'      => 100
+  );
+
+  unless (defined($levels{$message_debug}))
+  {
+    warn("Incorrect debug level '$message_debug' was used");
+    help();
+  }
+
+  unless (defined($levels{$debug}))
+  {
+    warn("Incorrect debug level '$debug' was used");
+    help();
+  }
+
+  print("CIF: $message_debug: $message.\n")
+    if ($levels{$message_debug} <= $levels{$debug});
+}
