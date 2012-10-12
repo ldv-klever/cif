@@ -1,0 +1,24 @@
+diff -ur gmp-4.3.2-original/Makefile.am gmp-4.3.2-patched/Makefile.am
+--- gmp-4.3.2-original/Makefile.am	2010-01-07 23:09:02.000000000 +0300
++++ gmp-4.3.2-patched/Makefile.am	2011-04-28 16:35:48.000000000 +0400
+@@ -90,7 +90,7 @@
+ LIBMP_LT_AGE =      1
+ 
+ 
+-SUBDIRS = tests mpn mpz mpq mpf printf scanf cxx mpbsd demos tune doc
++SUBDIRS = tests mpn mpz mpq mpf printf scanf cxx mpbsd demos tune
+ 
+ EXTRA_DIST = macos configfsf.guess configfsf.sub .gdbinit INSTALL.autoconf
+ 
+diff -ur gmp-4.3.2-original/Makefile.in gmp-4.3.2-patched/Makefile.in
+--- gmp-4.3.2-original/Makefile.in	2010-01-07 23:09:42.000000000 +0300
++++ gmp-4.3.2-patched/Makefile.in	2011-04-28 17:03:38.000000000 +0400
+@@ -450,7 +450,7 @@
+ LIBMP_LT_CURRENT = 4
+ LIBMP_LT_REVISION = 16
+ LIBMP_LT_AGE = 1
+-SUBDIRS = tests mpn mpz mpq mpf printf scanf cxx mpbsd demos tune doc
++SUBDIRS = tests mpn mpz mpq mpf printf scanf cxx mpbsd demos tune
+ 
+ # The ansi2knr setups for the build programs are the same as the normal
+ # automake ansi2knr rules, but using $(CC_FOR_BUILD) instead of $(CC).
