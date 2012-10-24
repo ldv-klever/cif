@@ -4,10 +4,8 @@ ASPECTATOR_SRC_DIR = aspectator
 ASPECTATOR_BUILD_DIR = aspectator-build
 ASPECTATOR_BIN_DIR = aspectator-bin
 
-# Standard directories for installation of executables and manuals.
-exec_prefix = $(shell readlink -f $(prefix))
-bindir = $(exec_prefix)/bin
-mandir = $(prefix)/man
+# Standard directory for installation of executables.
+bindir = $(prefix)/bin
 
 .PHONY: all install test clean
 
@@ -48,7 +46,6 @@ $(ASPECTATOR_SRC_DIR)/mpfr: $(ASPECTATOR_PREREQUISITES)/mpfr.tar.bz2
 # Before installation check prefix and perform build.
 install: check_prefix all
 	mkdir -p $(bindir)
-	mkdir -p $(mandir)
 	@echo "Install CIF to '$(bindir)'"
 	cp -u cif $(bindir)
 	@echo "Install Aspectator to '$(bindir)'"
@@ -59,8 +56,8 @@ install: check_prefix all
 
 check_prefix:
 	@echo "Check that prefix where tools to be installed is specified"
-	if [ -z "$(prefix)" ]; then \
-	  echo "For installation you should specify prefix: 'prefix=install_dir make install'!"; \
+	@if [ -z "$(prefix)" ] || [[ "$(prefix)" != /* ]]; then \
+	  echo "For installation you should specify prefix: 'prefix=install_dir_abs make install'!"; \
 	  exit 1; \
 	else echo "C Instrumentation Framework and Aspectator will be installed to '$(prefix)'"; \
 	fi
