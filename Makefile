@@ -56,7 +56,11 @@ install: check_prefix all
 
 check_prefix:
 	@echo "Check that prefix where tools to be installed is specified"
-	@if [ -z "$(prefix)" ] || [[ "$(prefix)" != /* ]]; then \
+	@case "$(prefix)" in \
+	  /*) prefix_abs=1 ;; \
+	  *) prefix_abs=0 ;; \
+	esac; \
+	if [ -z "$(prefix)" -o $$prefix_abs -eq 0 ]; then \
 	  echo "For installation you should specify prefix: 'prefix=install_dir_abs make install'!"; \
 	  exit 1; \
 	else echo "C Instrumentation Framework and Aspectator will be installed to '$(prefix)'"; \
