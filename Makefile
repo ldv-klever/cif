@@ -44,7 +44,7 @@ $(ASPECTATOR_SRC_DIR)/mpfr: $(ASPECTATOR_PREREQUISITES)/mpfr.tar.bz2
 	tar -xamf $(ASPECTATOR_PREREQUISITES)/mpfr.tar.bz2 -C $(ASPECTATOR_SRC_DIR)
 
 # Before installation check prefix and perform build.
-install: check_prefix all
+install: check_prefix
 	mkdir -p $(bindir)
 	@echo "Install CIF to '$(bindir)'"
 	cp -u cif $(bindir)
