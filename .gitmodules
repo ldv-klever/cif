@@ -1,3 +1,3 @@
 [submodule "aspectator"]
 	path = aspectator
-	url = git://forge.ispras.ru/aspectator.git
+	url = ../aspectator.git
