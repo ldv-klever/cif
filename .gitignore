@@ -1,3 +1,4 @@
-# Aspectator directories for building and binaries.
+# Aspectator directories for builds and binaries.
 aspectator-bin/
 aspectator-build/
+aspectator-build-debug/
