@@ -1,0 +1,13 @@
+To build a debug version of Aspectator one needs create a separate directory
+for it, say:
+  $ mkdir aspectator-build-debug
+  $ cd aspectator-build-debug
+Then configure Aspectator as usual:
+  $ ../aspectator/configure --enable-languages=c --disable-nls
+and make the debug version of Aspectator:
+  $ make STAGE1_CFLAGS="-g3 -O0" all-stage1
+After making some changes it is strongly recommended to rebuild the debug
+version of Aspecatator with -Werror flag to treat all warnings as errors:
+  $ make STAGE1_CFLAGS="-g3 -O0 -Werror" all-stage1
+
+These instructions were adapted from http://gcc.gnu.org/wiki/DebuggingGCC.
