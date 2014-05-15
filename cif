@@ -473,10 +473,11 @@ sub perform_stages($)
     my $options = $opts->{'opts'};
     my $out = $opts->{'out'};
 
-    # Place preprocessed aspect file near output file.
-    my $aspect_preprocessed = dirname($out) . '/' . basename($aspect) . '.i';
-    # Place all intermediate files near output file using input file name.
-    my $aux_base = dirname($out) . '/' . basename($in);
+    # Place preprocessed aspect file and all intermediate files near output
+    # file. When several CIF operates in parallel they can overwrite 
+    # preprocessed aspect files otherwise.
+    my $aux_base = dirname($out) . '/' . basename($out, '.o');
+    my $aspect_preprocessed = "$aux_base." . basename($aspect) . '.i';
 
     # Stage specific environment variables and options.
     my $stage_envs = '';
