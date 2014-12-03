@@ -196,6 +196,19 @@ sub get_opt()
     $opts = '';
   }
 
+  $stage = 'compilation' unless ($stage);
+
+  if ($stage ne 'aspect preprocessing' and $stage ne 'file preparation'
+   and $stage ne 'macro instrumentation' and $stage ne 'instrumentation'
+   and $stage ne 'compilation' and $stage ne 'C-backend')
+  {
+    warn("Incorrect stage '$stage' was specified");
+    help();
+  }
+
+  print_debug($debug, 'DEBUG', "CIF will perform all stages up to '$stage'"
+   . " stage");
+
   unless ($in)
   {
     warn("You should specify C file to be instrumented by means of command-line"
@@ -207,21 +220,30 @@ sub get_opt()
     warn("Specified C file '$in' doesn't exist");
     help();
   }
-  print_debug($debug, 'DEBUG', "File '$in' will be instrumented");
+  print_debug($debug, 'DEBUG', "File '$in' will be instrumented or passed"
+    . " through C-backend");
 
-  unless ($aspect)
+  if ($aspect and $stage ne 'C-backend')
+  {
+    if (!-f $aspect)
+    {
+      warn("Specified aspect '$aspect' doesn't exist");
+      help();
+    }
+    print_debug($debug, 'DEBUG', "Aspect file '$aspect' will be used for"
+      . " instrumentation");
+  }
+  elsif (!$aspect and $stage eq 'C-backend')
+  {
+    print_debug($debug, 'DEBUG', "Input file will be passed through C-backend");
+  }
+  else
   {
     warn("You should specify aspect file to be used for instrumentation"
-      . " by means of command-line option --aspect");
+      . " by means of command-line option --aspect or use 'C-backend' as"
+      . " value of command-line option --stage");
     help();
   }
-  if (!-f $aspect)
-  {
-    warn("Specified aspect '$aspect' doesn't exist");
-    help();
-  }
-  print_debug($debug, 'DEBUG', "Aspect file '$aspect' will be used for"
-   . " instrumentation");
 
   unless ($out)
   {
@@ -249,19 +271,6 @@ sub get_opt()
     print_debug($debug, 'DEBUG', "Default aspectator '$aspectator' will be"
       . " used");
   }
-
-  $stage = 'compilation' unless ($stage);
-
-  if ($stage ne 'aspect preprocessing' and $stage ne 'file preparation'
-   and $stage ne 'macro instrumentation' and $stage ne 'instrumentation'
-   and $stage ne 'compilation')
-  {
-    warn("Incorrect stage '$stage' was specified");
-    help();
-  }
-
-  print_debug($debug, 'DEBUG', "CIF will perform all stages up to '$stage'"
-   . " stage");
 
   # Check that back-end is specified and aspectator works correctly for
   # 'compilation' stage.
@@ -384,7 +393,8 @@ SYNOPSIS
 OPTIONS
 
   --aspect <file>
-    Aspect <file> to be used for instrumentation.
+    Aspect <file> to be used for instrumentation. It is mandatory except for
+    stage 'C-backend'.
 
   --aspect-preprocessing-opts <string>
     Options specified by means of <string> will be passed as is at
@@ -441,6 +451,8 @@ OPTIONS
     <stage> may be one of 'aspect preprocessing', 'file preparation', 'macro
     instrumentation', 'instrumentation', 'compilation'. Each following stage
     includes all previous stages. 'Compilation' stage is used by default.
+    Special stage 'C-backend' means that instrumentation will not be performed
+    at all, just C-backend will be invoked for the input file.
 
   options_for_aspectator
     This is list of options that will be passed to aspectator as is. Note that
@@ -466,18 +478,26 @@ sub perform_stages($)
   my %aux_files;
 
   for my $stage (('aspect preprocessing', 'file preparation'
-    , 'macro instrumentation', 'instrumentation', 'compilation'))
+    , 'macro instrumentation', 'instrumentation', 'compilation', 'C-backend'))
   {
+    # Skip all instrumentation stages if C-backend should be invoked.
+    if ($opts->{'stage'} eq 'C-backend' and $stage ne 'C-backend')
+    {
+        next;
+    }
+
     my $in = $opts->{'in'};
     my $aspect = $opts->{'aspect'};
     my $options = $opts->{'opts'};
     my $out = $opts->{'out'};
 
     # Place preprocessed aspect file and all intermediate files near output
-    # file. When several CIF operates in parallel they can overwrite 
+    # file. When several CIF operates in parallel they can overwrite
     # preprocessed aspect files otherwise.
     my $aux_base = dirname($out) . '/' . basename($out, '.o');
-    my $aspect_preprocessed = "$aux_base." . basename($aspect) . '.i';
+    my $aspect_preprocessed = $aspect
+      ? "$aux_base." . basename($aspect) . '.i'
+      : '';
 
     # Stage specific environment variables and options.
     my $stage_envs = '';
@@ -575,14 +595,23 @@ sub perform_stages($)
         }
         $stage_opts .= " $opts->{'compilation opts'}";
       }
+      # At this stage input file is passed to C-backend. This likes back-end
+      # 'src' for compilation stage.
+      elsif ($stage eq 'C-backend')
+      {
+        # Stop asfter preprocessed file is parsed.
+        $stage_opts .= ' -fsyntax-only';
+        # Print output using such the way instead of the standard one.
+        $stage_envs = "LDV_C_BACKEND_OUT=$out";
+      }
     }
 
     my $cmd =
         # Specify what stage should be performed.
-        "LDV_STAGE=$stage_id"
+        ($stage eq 'C-backend' ? '' : "LDV_STAGE=$stage_id")
         # Aspect file should be always specified to enable specific features of
         # aspectator.
-      . " LDV_ASPECT_FILE=$aspect"
+      . ($stage eq 'C-backend' ? '' : " LDV_ASPECT_FILE=$aspect")
         # Stage specific environment variables.
       . " $stage_envs"
         # CIF cofe executable.
