@@ -11,6 +11,8 @@ bindir = $(prefix)/bin
 
 # Before build install prerequisites.
 all: $(ASPECTATOR_SRC_DIR)/gmp $(ASPECTATOR_SRC_DIR)/mpc $(ASPECTATOR_SRC_DIR)/mpfr
+	@echo "Patch GCC source code to avoid build error"
+	patch -p1 -d $(ASPECTATOR_SRC_DIR) < siginfo.patch
 	mkdir -p $(ASPECTATOR_BUILD_DIR)
 	if [ ! -f $(ASPECTATOR_BUILD_DIR)/Makefile ]; then \
 	  echo "Configure Aspectator for the first time"; \

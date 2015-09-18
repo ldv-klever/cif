@@ -1,0 +1,16 @@
+diff --git a/gcc/config/i386/linux-unwind.h b/gcc/config/i386/linux-unwind.h
+index c5f7ea0..4378def 100644
+--- a/gcc/config/i386/linux-unwind.h
++++ b/gcc/config/i386/linux-unwind.h
+@@ -133,9 +133,9 @@ x86_fallback_frame_state (struct _Unwind_Context *context,
+     {
+       struct rt_sigframe {
+ 	int sig;
+-	struct siginfo *pinfo;
++	siginfo_t *pinfo;
+ 	void *puc;
+-	struct siginfo info;
++	siginfo_t info;
+ 	struct ucontext uc;
+       } *rt_ = context->cfa;
+       /* The void * cast is necessary to avoid an aliasing warning.
