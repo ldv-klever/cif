@@ -17,6 +17,8 @@ COPY siginfo.patch cif.c Makefile /src/
 RUN make -C /src all
 RUN make -C /src prefix=/ install
 
+# TODO: remove sources containing build directories.
+
 # Create and move to working directory.
 VOLUME /work
 WORKDIR /work
