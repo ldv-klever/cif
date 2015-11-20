@@ -426,7 +426,6 @@ static void perform_stages(void) {
         out     = malloc(strlen(opts.out) + 1);
         if (opts.aspect)
             aspect = malloc(strlen(opts.aspect) + 1);
-
         strcpy(in, opts.in);
         strcpy(out, opts.out);
         if (opts.aspect)
@@ -440,12 +439,9 @@ static void perform_stages(void) {
          * file. When several CIF operates in parallel they can overwrite
          * preprocessed aspect files otherwise.
          */
-
-        /* TODO: Fix './out.o' */
-        aux_base_len = strlen(dirname(out)) + strlen(basename(out)) + strlen("/");
+        aux_base_len = strlen(dirname(strdup(out))) + strlen(basename(out)) + strlen("/");
         aux_base = malloc(aux_base_len + 1);
-        sprintf(aux_base, "%s/%s", dirname(out), basename(out));
-
+        sprintf(aux_base, "%s/%s", dirname(strdup(out)), basename(out));
         if (aspect) {
             aspect_preprocessed_len
                 = strlen(aux_base) + strlen(".") + strlen(basename(aspect)) + strlen(".i");
