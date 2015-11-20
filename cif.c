@@ -313,8 +313,10 @@ static void parse_opts(int argc, char **argv) {
         print_debug(DEBUG, "Aspectator '%s' was specified by means or command-line option"\
             " --aspectator.\n", opts.aspectator);
     } else {
+        int len;
         aspectator_path = malloc(PATH_MAX);
-        readlink("/proc/self/exe", aspectator_path, PATH_MAX);
+        len = readlink("/proc/self/exe", aspectator_path, PATH_MAX);
+        aspectator_path[len] = '\0';
         aspectator_path = dirname(aspectator_path);
         strcat(aspectator_path, "/aspectator");
 
