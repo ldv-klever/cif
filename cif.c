@@ -233,12 +233,15 @@ static void parse_opts(int argc, char **argv) {
     /* Get the rest of command-line options (options after '--'). */
 
     if (optind < argc) {
-        rest_opts = malloc(opts_len + 1);
+        /* 2 "* argc" is for double quotes around options. */
+        rest_opts = malloc(opts_len + 2 * argc + 1);
         rest_opts[0] = 0;
     }
 
     while (optind < argc) {
+        strcat(rest_opts, "\"");
         strcat(rest_opts, argv[optind++]);
+        strcat(rest_opts, "\"");
         if (optind != argc)
             strcat(rest_opts, " ");
     }
