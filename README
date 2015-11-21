@@ -1,13 +1,67 @@
-To build a debug version of Aspectator one needs create a separate directory
-for it, say:
-  $ mkdir aspectator-build-debug
-  $ cd aspectator-build-debug
-Then configure Aspectator as usual:
-  $ ../aspectator/configure --enable-languages=c --disable-nls
-and make the debug version of Aspectator (one can use -jN):
-  $ make STAGE1_CFLAGS="-g3 -O0" all-stage1
-After making some changes it is strongly recommended to rebuild the debug
-version of Aspecatator with -Werror flag to treat all warnings as errors:
-  $ make STAGE1_CFLAGS="-g3 -O0 -Werror" all-stage1
+C Instrumentation Framework Developer Guide
+===========================================
 
-These instructions were adapted from http://gcc.gnu.org/wiki/DebuggingGCC.
+Building Debug Version of Aspectator
+------------------------------------
+
+To build a debug version of Aspectator one needs create a separate directory for
+it, say:
+----------------------------
+mkdir aspectator-build-debug
+cd aspectator-build-debug
+----------------------------
+
+Then configure Aspectator as usual:
+----------------------------------------------------------
+../aspectator/configure --enable-languages=c --disable-nls
+----------------------------------------------------------
+and make the debug version of Aspectator (one can use option +-jN+ for +make+ to
+essentially speed up building):
+---------------------------------------
+make STAGE1_CFLAGS="-g3 -O0" all-stage1
+---------------------------------------
+
+After making some changes to files starting with _ldv-_ prefix it is strongly
+recommended to rebuild the debug version of Aspectator with +-Werror+ flag to
+treat all warnings as errors:
+-----------------------------------------------
+make STAGE1_CFLAGS="-g3 -O0 -Werror" all-stage1
+-----------------------------------------------
+
+NOTE: These instructions were adapted from http://gcc.gnu.org/wiki/DebuggingGCC.
+
+Profiling Aspectator
+--------------------
+
+Sometimes developers need to track whether some memory issues (e.g. memory
+leaks, use after free, etc.) were introduced and to measure algorithms
+complexity.
+
+Tracking memory issues of Aspectator
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+First of all you need to build a debug version of Aspectator.
+
+Then you need to run Aspectator under valgrind:
+-----------------------------------------
+LDV_ASPECT_FILE=$PATH_TO_ASPECT_FILE \
+LDV_STAGE=$STAGE \
+LDV_OUT=$PATH_TO_OUT \
+LDV_COMMON_MODEL=$PATH_TO_COMMON_MODEL \
+valgrind \
+--tool=memcheck \
+--leak-check=yes \
+--suppressions=gcc.supp \
+--gen-suppressions=all \
+--num-callers=500 \
+--xml=yes \
+--xml-file=output.xml \
+$PATH_TO_ASPECTATOR_BUILD_DEBUG/gcc/cc1 \
+$PATH_TO_INPUT_FILE
+-----------------------------------------
+
+After that you can either inspect output.xml manually or use valkyrie:
+----------------------
+valkyrie -l output.xml
+----------------------
+
