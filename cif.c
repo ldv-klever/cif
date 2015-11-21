@@ -643,9 +643,11 @@ static void perform_stages(void) {
             + strlen("-o")
             + strlen(out)
             /* Spaces. */
-            + 10;
+            + 10
+            /* Double quotes. */
+            + 4;
         cmd = malloc(cmd_len + 1);
-        sprintf(cmd, "%s %s %s -fno-builtin %s %s %s -o %s", stage_envs_full, opts.aspectator,
+        sprintf(cmd, "%s %s %s -fno-builtin %s %s \"%s\" -o \"%s\"", stage_envs_full, opts.aspectator,
             options, opts.general_opts, stage_opts, in, out);
 
         print_debug(DEBUG, "Execute '%s'.\n", cmd);
