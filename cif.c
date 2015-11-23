@@ -614,9 +614,9 @@ static void perform_stages(void) {
             /* Specify what stage should be performed. */
             /* Aspect file should be always specified to enable specific features of aspectator. */
             stage_envs_full_len = strlen("LDV_STAGE=") + sizeof(stage_id) + strlen(" ")
-                + strlen("LDV_ASPECT_FILE=") + strlen(aspect) + strlen(" ") + strlen(stage_envs);
+                + strlen("LDV_ASPECT_FILE=\"") + strlen(aspect) + strlen("\" ") + strlen(stage_envs);
             stage_envs_full = malloc(stage_envs_full_len + 1);
-            sprintf(stage_envs_full, "LDV_STAGE=%d LDV_ASPECT_FILE=%s %s",
+            sprintf(stage_envs_full, "LDV_STAGE=%d LDV_ASPECT_FILE=\"%s\" %s",
                 stage_id, aspect, stage_envs);
         } else {
             stage_envs_full = stage_envs;
