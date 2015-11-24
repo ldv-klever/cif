@@ -665,9 +665,9 @@ static void perform_stages(void) {
         /* Make some magic for aspect preprocessing stage. */
         if (!strcmp(stages[i], "aspect preprocessing")) {
             /* Replace '@' with '#' to return back standard preprocessing directives. */
-            cmd_len = strlen("sed -i 's/@/#/g' ") + strlen(out);
+            cmd_len = strlen("sed -i 's/@/#/g' \"") + strlen(out) + strlen("\"");
             cmd = malloc(cmd_len + 1);
-            sprintf(cmd, "sed -i 's/@/#/g' %s", out);
+            sprintf(cmd, "sed -i 's/@/#/g' \"%s\"", out);
 
             print_debug(DEBUG, "Execute '%s'.\n", cmd);
 
