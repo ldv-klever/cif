@@ -406,7 +406,7 @@ static void perform_stages(void) {
     int stages_len, aux_base_len, aspect_preprocessed_len, stage_opts_len, stage_envs_len,
         stage_envs_full_len, cmd_len, ret;
     int i, stage_id = 0;
-    char *in, *aspect, *options, *out, *aux_base, *aspect_preprocessed, *cmd;
+    char *in, *aspect, *options, *out, *aux_search_dir, *aux_base, *aspect_preprocessed, *cmd;
     char *stages[] = {"aspect preprocessing", "file preparation", "macro instrumentation",
         "instrumentation", "compilation", "C-backend"};
 
@@ -442,6 +442,8 @@ static void perform_stages(void) {
          * file. When several CIF operates in parallel they can overwrite
          * preprocessed aspect files otherwise.
          */
+        /* TODO: remove this auxiliary search directory when will get rid of *.prepared files. */
+        aux_search_dir = dirname(strdup(in));
         aux_base_len = strlen(dirname(strdup(out))) + strlen(basename(out)) + strlen("/");
         aux_base = malloc(aux_base_len + 1);
         sprintf(aux_base, "%s/%s", dirname(strdup(out)), basename(out));
@@ -519,9 +521,9 @@ static void perform_stages(void) {
                 in = malloc(strlen(aux_base) + strlen(".prepared") + 1);
                 sprintf(in, "%s.prepared", aux_base);
 
-                stage_opts_len = strlen(opts.macro_instrumentation_opts) + strlen("-E -x c ");
+                stage_opts_len = strlen(opts.macro_instrumentation_opts) + strlen("-E -I \"\" -x c ") + strlen(aux_search_dir);
                 stage_opts = malloc(stage_opts_len + 1);
-                sprintf(stage_opts, "-E -x c %s", opts.macro_instrumentation_opts);
+                sprintf(stage_opts, "-E -I \"%s\" -x c %s", aux_search_dir, opts.macro_instrumentation_opts);
 
                 /* Use '.macroinstrumented' suffix for macro instrumented files. */
                 free(out);
@@ -555,9 +557,9 @@ static void perform_stages(void) {
                 strcpy(aux_files.instrumented, out);
 
                 /* Print output using such the way instead of the standard one. */
-                stage_envs_len = strlen("LDV_OUT=") + strlen(out);
+                stage_envs_len = strlen("LDV_OUT=\"") + strlen(out) + strlen("\"");
                 stage_envs = malloc(stage_envs_len + 1);
-                sprintf(stage_envs, "LDV_OUT=%s", out);
+                sprintf(stage_envs, "LDV_OUT=\"%s\"", out);
             }
             /* At compilation stage auxiliary functions are related with original code
              * and some back-end is involved.
@@ -579,9 +581,9 @@ static void perform_stages(void) {
                     /* Stop asfter preprocessed file is parsed. */
                     stage_opts_specific = "-fsyntax-only";
                     /* Print output using such the way instead of the standard one. */
-                    stage_envs_len = strlen("LDV_C_BACKEND_OUT=") + strlen(out);
+                    stage_envs_len = strlen("LDV_C_BACKEND_OUT=\"") + strlen(out) + strlen("\"");
                     stage_envs = malloc(stage_envs_len + 1);
-                    sprintf(stage_envs, "LDV_C_BACKEND_OUT=%s", out);
+                    sprintf(stage_envs, "LDV_C_BACKEND_OUT=\"%s\"", out);
                 }
                 stage_opts_len = strlen("-x cpp-output ") + strlen(stage_opts_specific)
                     + strlen(" ") + strlen(opts.compilation_opts);
