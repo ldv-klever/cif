@@ -353,7 +353,7 @@ static void parse_opts(int argc, char **argv) {
         ret = system(aspectator_compilation);
         if (ret) {
             fprintf(stderr, "Aspectator '%s' doesn't work.\n", opts.aspectator);
-            exit(ret);
+            exit(WEXITSTATUS(ret));
         }
 
         print_debug(DEBUG, "Specified aspectator '%s' has worked well.\n", opts.aspectator);
@@ -659,7 +659,7 @@ static void perform_stages(void) {
             fprintf(stderr, "Aspectator failed at '%d' stage.\n", stage_id);
             /* Remove intermediate files obtained thus far if required. */
             clean();
-            exit(ret);
+            exit(WEXITSTATUS(ret));
         }
 
         /* Make some magic for aspect preprocessing stage. */
@@ -678,7 +678,7 @@ static void perform_stages(void) {
                 fprintf(stderr, "Aspectator failed at '%d' stage.\n", stage_id);
                 /* Remove intermediate files obtained thus far if required. */
                 clean();
-                exit(ret);
+                exit(WEXITSTATUS(ret));
             }
         }
 
