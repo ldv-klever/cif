@@ -585,11 +585,11 @@ static void perform_stages(void) {
                     stage_envs = malloc(stage_envs_len + 1);
                     sprintf(stage_envs, "LDV_C_BACKEND_OUT=\"%s\"", out);
                 }
-                stage_opts_len = strlen("-x cpp-output ") + strlen(stage_opts_specific)
+                stage_opts_len = strlen("-x c ") + strlen(stage_opts_specific)
                     + strlen(" ") + strlen(opts.compilation_opts);
                 stage_opts = malloc(stage_opts_len + 1);
                 sprintf(stage_opts,
-                    "-x cpp-output %s %s", stage_opts_specific, opts.compilation_opts);
+                    "-x c %s %s", stage_opts_specific, opts.compilation_opts);
             }
             /* At this stage input file is passed to C-backend. This likes back-end
              * 'src' for compilation stage.
