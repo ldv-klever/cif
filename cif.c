@@ -404,7 +404,7 @@ static void parse_opts(int argc, char **argv) {
 }
 
 static void perform_stages(void) {
-    int stages_len, aux_base_len, aspect_preprocessed_len, stage_opts_len, stage_envs_len,
+    int stages_len, aux_base_len, aspect_preprocessed_len, stage_pre_opts_len, stage_post_opts_len, stage_envs_len,
         stage_envs_full_len, cmd_len, ret;
     int i, stage_id = 0;
     char *in, *aspect, *options, *out, *aux_search_dir, *aux_base, *aspect_preprocessed, *cmd;
@@ -412,7 +412,7 @@ static void perform_stages(void) {
         "instrumentation", "compilation", "C-backend"};
 
     /* Stage specific environment variables and options. */
-    char *stage_envs, *stage_envs_full, *stage_opts, *stage_opts_specific;
+    char *stage_envs, *stage_envs_full, *stage_pre_opts, *stage_post_opts, *stage_opts_specific;
 
     stages_len = sizeof(stages)/sizeof(stages[0]);
 
@@ -424,7 +424,8 @@ static void perform_stages(void) {
         options = NULL;
         aspect = NULL;
         stage_envs = NULL;
-        stage_opts = NULL;
+        stage_pre_opts = "";
+        stage_post_opts = NULL;
 
         in      = malloc(strlen(opts.in) + 1);
         out     = malloc(strlen(opts.out) + 1);
@@ -484,9 +485,9 @@ static void perform_stages(void) {
              * Specify that aspect files "are" in C.
              */
 
-            stage_opts_len = strlen(opts.aspect_preprocessing_opts) + strlen("-E -undef -C -x c ");
-            stage_opts = malloc(stage_opts_len + 1);
-            sprintf(stage_opts, "-E -undef -C -x c %s", opts.aspect_preprocessing_opts);
+            stage_post_opts_len = strlen(opts.aspect_preprocessing_opts) + strlen("-E -undef -C -x c ");
+            stage_post_opts = malloc(stage_post_opts_len + 1);
+            sprintf(stage_post_opts, "-E -undef -C -x c %s", opts.aspect_preprocessing_opts);
 
             free(out);
             out = aspect_preprocessed;
@@ -503,9 +504,9 @@ static void perform_stages(void) {
                 /* Even though standard preprocessing won't be done but nevertheless
                  * specify that output should be a preprocessed file.
                  */
-                stage_opts_len = strlen(opts.file_preparation_opts) + strlen("-E -x c ");
-                stage_opts = malloc(stage_opts_len + 1);
-                sprintf(stage_opts, "-E -x c %s", opts.file_preparation_opts);
+                stage_post_opts_len = strlen(opts.file_preparation_opts) + strlen("-E -x c ");
+                stage_post_opts = malloc(stage_post_opts_len + 1);
+                sprintf(stage_post_opts, "-E -x c %s", opts.file_preparation_opts);
 
                 /* Use '.prepared' suffix for such kind of files. */
                 free(out);
@@ -522,9 +523,13 @@ static void perform_stages(void) {
                 in = malloc(strlen(aux_base) + strlen(".prepared") + 1);
                 sprintf(in, "%s.prepared", aux_base);
 
-                stage_opts_len = strlen(opts.macro_instrumentation_opts) + strlen("-E -I \"\" -x c ") + strlen(aux_search_dir);
-                stage_opts = malloc(stage_opts_len + 1);
-                sprintf(stage_opts, "-E -I \"%s\" -x c %s", aux_search_dir, opts.macro_instrumentation_opts);
+                stage_pre_opts_len = strlen("-I \"\"") + strlen(aux_search_dir) ;
+                stage_pre_opts = malloc(stage_pre_opts_len + 1);
+                sprintf(stage_pre_opts, "-I \"%s\"", aux_search_dir);
+
+                stage_post_opts_len = strlen(opts.macro_instrumentation_opts) + strlen("-E -x c ");
+                stage_post_opts = malloc(stage_post_opts_len + 1);
+                sprintf(stage_post_opts, "-E -x c %s", opts.macro_instrumentation_opts);
 
                 /* Use '.macroinstrumented' suffix for macro instrumented files. */
                 free(out);
@@ -544,10 +549,10 @@ static void perform_stages(void) {
                 sprintf(in, "%s.macroinstrumented", aux_base);
 
                 /* Stop after preprocessed file is parsed. */
-                stage_opts_len =
+                stage_post_opts_len =
                     strlen(opts.instrumentation_opts) + strlen("-fsyntax-only -x cpp-output ");
-                stage_opts = malloc(stage_opts_len + 1);
-                sprintf(stage_opts, "-fsyntax-only -x cpp-output %s", opts.instrumentation_opts);
+                stage_post_opts = malloc(stage_post_opts_len + 1);
+                sprintf(stage_post_opts, "-fsyntax-only -x cpp-output %s", opts.instrumentation_opts);
 
                 /* Use '.instrumented' suffix for instrumented files. */
                 free(out);
@@ -586,10 +591,10 @@ static void perform_stages(void) {
                     stage_envs = malloc(stage_envs_len + 1);
                     sprintf(stage_envs, "LDV_C_BACKEND_OUT=\"%s\"", out);
                 }
-                stage_opts_len = strlen("-x c ") + strlen(stage_opts_specific)
+                stage_post_opts_len = strlen("-x c ") + strlen(stage_opts_specific)
                     + strlen(" ") + strlen(opts.compilation_opts);
-                stage_opts = malloc(stage_opts_len + 1);
-                sprintf(stage_opts,
+                stage_post_opts = malloc(stage_post_opts_len + 1);
+                sprintf(stage_post_opts,
                     "-x c %s %s", stage_opts_specific, opts.compilation_opts);
             }
             /* At this stage input file is passed to C-backend. This likes back-end
@@ -597,11 +602,11 @@ static void perform_stages(void) {
              */
             else if (!strcmp(stages[i], "C-backend")) {
                 /* Stop asfter preprocessed file is parsed. */
-                stage_opts = " -fsyntax-only";
+                stage_post_opts = " -fsyntax-only";
                 /* Print output using such the way instead of the standard one. */
                 stage_envs_len = strlen("LDV_C_BACKEND_OUT=") + strlen(out);
                 stage_envs = malloc(stage_envs_len + 1);
-                sprintf(stage_opts, "LDV_C_BACKEND_OUT=%s", out);
+                sprintf(stage_post_opts, "LDV_C_BACKEND_OUT=%s", out);
             }
 
         }
@@ -631,6 +636,8 @@ static void perform_stages(void) {
             strlen(stage_envs_full)
             /* CIF core executable. */
             + strlen(opts.aspectator)
+            /* Some options like "-I" should be placed ahead to have more priority. */
+            + strlen(stage_pre_opts)
             /* Standard compilation (preprocesing) options. */
             + strlen(options)
             /* We wouldn't like to change original function calls
@@ -639,19 +646,19 @@ static void perform_stages(void) {
             /* Place all specific options at the end of other options to make them
                 more of a priority. */
             + strlen(opts.general_opts)
-            + strlen(stage_opts)
+            + strlen(stage_post_opts)
             /* File to be instrumented. */
             + strlen(in)
             /* Output file. */
             + strlen("-o")
             + strlen(out)
             /* Spaces. */
-            + 10
+            + 11
             /* Double quotes. */
             + 4;
         cmd = malloc(cmd_len + 1);
-        sprintf(cmd, "%s %s %s -fno-builtin %s %s \"%s\" -o \"%s\"", stage_envs_full, opts.aspectator,
-            options, opts.general_opts, stage_opts, in, out);
+        sprintf(cmd, "%s %s %s %s -fno-builtin %s %s \"%s\" -o \"%s\"", stage_envs_full, opts.aspectator,
+            stage_pre_opts, options, opts.general_opts, stage_post_opts, in, out);
 
         print_debug(DEBUG, "Execute '%s'.\n", cmd);
 
@@ -707,9 +714,11 @@ static void perform_stages(void) {
         if (opts.aspect && !strcmp(stages[i], "aspect preprocessing"))
             free(aspect);
 
+        if (strcmp(stage_pre_opts, ""))
+            free(stage_pre_opts);
         if (strcmp(options, ""))
             free(options);
-        free(stage_opts);
+        free(stage_post_opts);
         free(aux_base);
         free(aspect_preprocessed);
 
