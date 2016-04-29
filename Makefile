@@ -26,7 +26,7 @@ all: $(CIF_BUILD_DIR)/cif $(ASPECTATOR_SRC_DIR)/gmp $(ASPECTATOR_SRC_DIR)/mpc $(
 
 $(CIF_BUILD_DIR)/cif: cif.c
 	mkdir -p $(CIF_BUILD_DIR)
-	gcc cif.c -o $@
+	gcc -Wall -Werror cif.c -o $@
 
 $(ASPECTATOR_SRC_DIR)/gmp: $(ASPECTATOR_PREREQUISITES)/gmp.tar.bz2 $(ASPECTATOR_PREREQUISITES)/gmp-nodoc.patch
 	@echo "Remove GMP source code from '$(ASPECTATOR_SRC_DIR)'"
