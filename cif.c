@@ -6,6 +6,7 @@
 #include <sys/stat.h>
 #include <limits.h>
 #include <libgen.h>
+#include <unistd.h>
 
 #define QUIET   0
 #define NORMAL  10
