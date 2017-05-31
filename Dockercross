@@ -37,17 +37,13 @@ ENV PATH=$PATH:$PREFIX/bin
 
 # Prebuild CIF
 WORKDIR $MY_DIR/cif
-RUN mv Makefile Makefile_old
-RUN mv Makefile1_cross Makefile
-RUN prefix=$MY_DIR/cross/ make install; exit 0
+RUN ASPECTATOR_CONFIGURE_OPTS="--target=$TARGET --without-headers --disable-threads"  prefix=$MY_DIR/cross/ make all; exit 0
 WORKDIR $MY_DIR/cif/aspectator-build
 RUN make all-gcc
 RUN make install all-gcc; exit 0
 RUN make -k all-target-libgcc; exit 0
 RUN make -i install-target-libgcc
 RUN make install-gcc
-RUN ../aspectator-bin/bin/arm-unknown-linux-gnueabi-gcc -xc /dev/null; exit 0
-RUN ../aspectator-bin/bin/arm-unknown-linux-gnueabi-gcc -x c /dev/null; exit 0
 RUN cp -r $MY_DIR/cif/aspectator-bin/* $MY_DIR/cross/
 WORKDIR $MY_DIR
 
@@ -73,16 +69,26 @@ RUN $MY_DIR/glibc-2.17/configure \
 RUN make
 RUN make install
 
+# Add headers to glibc headers
+WORKDIR $MY_DIR/linux-3.7.3
+RUN make ARCH=arm INSTALL_HDR_PATH=$MY_DIR/cross/ headers_install
+
 # Finish CIF build
 WORKDIR $MY_DIR/cif
-RUN mv Makefile Makefile1_cross
-RUN mv Makefile2_cross Makefile
 RUN make clean
+RUN ASPECTATOR_CONFIGURE_OPTS="--target=$TARGET --with-headers=$MY_DIR/cross/include --disable-threads --with-libs=$MY_DIR/cross/lib" prefix=$MY_DIR/cross/ make all
 RUN prefix=$PREFIX make install
-RUN mv Makefile Makefile2_cross
-RUN mv Makefile_old Makefile
-WORKDIR $MY_DIR
-RUN rm -rf $PREFIX/bin/aspectator
+RUN rm $PREFIX/bin/aspectator
 RUN ln -s $PREFIX/bin/aspectator-bin/bin/arm-unknown-linux-gnueabi-gcc \
-		  $PREFIX/bin/aspectator
+		  $PREFIX/bin/aspectator-bin/bin/aspectator
+		  
+# Install binutils into aspectator bin
+WORKDIR $MY_DIR/build-binutils
+RUN ../binutils-2.26.1/configure --target=$TARGET --prefix=$PREFIX/bin/aspectator-bin/ --disable-nls
+RUN make all
+RUN make install
 
+# Add link to CIF
+WORKDIR $MY_DIR
+RUN ln -s $PREFIX/bin/cif \
+		  $PREFIX/bin/aspectator-bin/bin/cif

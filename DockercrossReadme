@@ -41,7 +41,9 @@ instance, I have tested in Ubuntu 16.04. Worked with CIF
 
     docker run -v /abs/path/to/shared/host/dir/:/cross -ti --rm crosscif /bin/bash
     
-    After that copy to your shared dir directory /work/cross
+    Just copy the crosscompiler from /work/cross to your mounted directory at /cross.
+    Actually you will may need to recreate symlinks at bin/aspectator-bin/bin directory
+    for cif and aspectator.
     
  
    
