@@ -77,7 +77,7 @@ check_prefix:
 	fi
 
 test:
-	python3 tests/all_tests.py
+	cd tests && python3 all_tests.py
 
 # Remove all directories created during Aspectator build.
 clean:

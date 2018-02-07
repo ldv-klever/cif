@@ -3,13 +3,13 @@ import subprocess
 import shutil
 import unittest
 
-WORK_DIR = 'tests/work'
+WORK_DIR = 'work'
 
 
 class CIFTestCase(unittest.TestCase):
     class CIF():
         def run(self, cif_input, aspect, cif_output=WORK_DIR + '/a.out', stage='compilation', back_end='src'):
-            self.cmd = ['bin/cif',
+            self.cmd = ['../bin/cif',
                         '--in', cif_input,
                         '--aspect', aspect,
                         '--back-end', back_end,
@@ -62,7 +62,7 @@ class CIFTestCase(unittest.TestCase):
         output_str = self._read_file_to_str(output)
         expected_str = self._read_file_to_str(expected)
 
-        self.assertEqual(output_str, expected_str)
+        self.assertEqual(expected_str, output_str)
 
     def _check_cif_status(self):
         if self.cif and self.cif.status is not 0:
@@ -78,7 +78,7 @@ class CIFTestCase(unittest.TestCase):
             return ''.join(file_fh.readlines())
 
     def _backup_work_dir(self):
-        self.backup = 'tests/backup/' + self._testMethodName
+        self.backup = 'backup/' + self._testMethodName
 
         if os.path.exists(self.backup):
             shutil.rmtree(self.backup)

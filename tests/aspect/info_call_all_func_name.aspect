@@ -1,3 +1,3 @@
 info: call($ $(..)) {
-    $fprintf<"tests/work/info.txt","%s\n",$func_name>
+    $fprintf<"work/info.txt","%s\n",$func_name>
 }
