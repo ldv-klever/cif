@@ -6,7 +6,7 @@ ASPECTATOR_SRC_DIR = aspectator
 ASPECTATOR_BIN_DIR = $(BIN_DIR)/aspectator-bin
 
 # Standard directory for installation of executables.
-INSTALL_BIN_DIR = $(prefix_abs)/bin
+INSTALL_BIN_DIR = $(prefix)/bin
 
 .PHONY: all install test clean
 
