@@ -1,0 +1,3 @@
+info: execution($ $(..)) {
+  $fprintf<"work/info.txt","%s\n",$path>
+}
