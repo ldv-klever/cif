@@ -1,0 +1,95 @@
+/* Functions without parameters. */
+before: execution (int a011(..))
+{
+}
+before: execution (int a012(.., ..))
+{
+}
+before: execution (int a013(.., .., ..))
+{
+}
+
+/* Functions with one parameter. */
+before: execution (int a021(..))
+{
+}
+before: execution (int a022(..))
+{
+}
+before: execution (int a023(..))
+{
+}
+
+/* Functions with two parameters. */
+before: execution (int a031(..))
+{
+}
+before: execution (int a032(int, ..))
+{
+}
+before: execution (int a033(.., int))
+{
+}
+before: execution (int a034(int, ..))
+{
+}
+before: execution (int a035(.., int))
+{
+}
+
+/* Functions with more then two parameters. */
+before: execution (int a041(..))
+{
+}
+before: execution (int a042(.., int *, int, double))
+{
+}
+before: execution (int a043(int *, .., int, double))
+{
+}
+before: execution (int a044(int *, int, .., double))
+{
+}
+before: execution (int a045(int *, int, double, ..))
+{
+}
+before: execution (int a046(.., int, double))
+{
+}
+before: execution (int a047(int *, .., double))
+{
+}
+before: execution (int a048(int *, int, ..))
+{
+}
+before: execution (int a049(.., double))
+{
+}
+before: execution (int a0410(int *, ..))
+{
+}
+
+/* Some random complex functions with a random number of parameters. */
+before: execution (int a051(.., int *, ..))
+{
+}
+before: execution (int a052(int *, ..))
+{
+}
+before: execution (int a053(.., .., .., int *, .., .., .., .., int *, ..,  int*, int, .., .., int, .., .., ..))
+{
+}
+
+/* Aspect function parameters don't match to source function parameters. */
+before: execution (int a061(.., int *))
+{
+}
+before: execution (int a062(int *, ..))
+{
+}
+before: execution (int a063(.., int *, ..))
+{
+}
+before: execution (int a064(int, .., int))
+{
+}

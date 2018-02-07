@@ -1,0 +1,42 @@
+before: set (int e11)
+{
+  $arg1++;
+}
+before: get (int e11)
+{
+  $arg1--;
+}
+after: set (int e13)
+{
+  $arg1++;
+}
+after: get (int e13)
+{
+  $arg1--;
+}
+before: set (int e16)
+{
+  $arg1++;
+}
+before: get (int e16)
+{
+  $arg1--;
+}
+before: set (int e18)
+{
+  $arg1++;
+}
+before: get (int e18)
+{
+  $arg1--;
+}
+around: set (int e20)
+{
+  $arg1++;
+  return $proceed;
+}
+around: get (int e20)
+{
+  $arg1--;
+  return $proceed;
+}

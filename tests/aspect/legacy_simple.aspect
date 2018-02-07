@@ -1,0 +1,13 @@
+/* Primitives. */
+before: execution (void a011(int arg))
+{
+}
+before: execution (void a012(int))
+{
+}
+before: execution (void a013(unsigned const long long int arg))
+{
+}
+before: execution (void a014(long double))
+{
+}

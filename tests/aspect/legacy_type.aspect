@@ -1,0 +1,71 @@
+before: introduce (struct b11)
+{
+  int z;
+}
+before: introduce (struct b12)
+{
+  int z;
+}
+before: introduce (struct b13)
+{
+  int z;
+}
+before: introduce (struct b14)
+{
+  int z;
+}
+before: introduce (struct b15)
+{
+  int z;
+}
+before: introduce (struct b21)
+{
+  int z;
+}
+before: introduce (struct b22)
+{
+  int z;
+}
+before: introduce (struct b23)
+{
+  int z;
+}
+before: introduce (struct b24)
+{
+  int z;
+}
+before: introduce (struct b31)
+{
+  int z;
+}
+before: introduce (struct b32)
+{
+  int z;
+}
+before: introduce (struct b33)
+{
+  int z;
+}
+before: introduce (struct b34)
+{
+  int z;
+}
+before: introduce (struct b35)
+{
+  int z;
+}
+before: introduce (union b41)
+{
+  int z;
+}
+before: introduce (enum b51)
+{
+  C,
+  D,
+}
+after: introduce (enum b52)
+{
+  , 
+  G,
+  H
+}

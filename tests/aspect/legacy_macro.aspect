@@ -1,0 +1,47 @@
+/* Simple advice definition with one macro primitive pointcut. */
+around : define(A)
+{
+one()
+}
+
+/* Named pointcut for macro primitive pointcut. */
+pointcut DEFINEB : define(B)
+
+/* Advice definition with named pointuct. */
+around : DEFINEB
+{
+two()
+}
+
+/* Advice definition with 'or' composite pointcut. */ 
+around : define(C) || define(D)
+{
+three()
+}
+
+/* Advice definition with 'and' and 'not' composite pointcuts and infile primitive pointcut. */
+around : define(F) && !infile("stdio.h")
+{
+four()
+}
+
+/* Advice definition with match of macro in file. */
+around : define(G) && infile("file.h")
+{
+five()
+}
+
+/* Named pointcut for composite pointcut. */
+pointcut DEFINEINFILE :  infile("/usr/include/stdio.h") || !infile("/usr/include/stdio.h")
+
+/* Advice definition with named pointuct. */
+around : define(H) && DEFINEINFILE
+{
+sixth()
+}
+
+/* Advice definition with macro primitive pointcut. Macro is function like. */
+around : define(I(a, b))
+{
+seventh(a, b)
+}

@@ -1,0 +1,205 @@
+/* Primitives. */
+before: execution (void a011(int arg))
+{
+}
+before: execution (void a012(int))
+{
+}
+before: execution (void a013(unsigned const long long int arg))
+{
+}
+before: execution (void a014(long double))
+{
+}
+
+/* Pointer on primitives. */
+before: execution (void * a020(int *arg))
+{
+}
+before: execution (void a021(int *arg))
+{
+}
+before: execution (void a022(int *))
+{
+}
+before: execution (void a023(int * const * volatile arg))
+{
+}
+before: execution (void a024(int * const * volatile))
+{
+}
+
+/* Array of primitives. */
+before: execution (void a031(int arg[10]))
+{
+}
+before: execution (void a032(int [10]))
+{
+}
+before: execution (void a033(int arg[10][20][30]))
+{
+}
+before: execution (void a034(int [10][20][30]))
+{
+}
+
+/* Array of pointers on primitives. */
+before: execution (void a041(int *arg[10]))
+{
+}
+before: execution (void a042(int *[10]))
+{
+}
+before: execution (void a043(int * const * volatile arg[10][20][30]))
+{
+}
+before: execution (void a044(int * const * volatile [10][20][30]))
+{
+}
+
+/* Pointer on array of primitives. */
+before: execution (void a051(int (*arg)[10]))
+{
+}
+before: execution (void a052(int (*)[10]))
+{
+}
+before: execution (void a053(int (* const * volatile arg)[10][20][30]))
+{
+}
+before: execution (void a054(int (* const * volatile)[10][20][30]))
+{
+}
+
+/* Pointer on array of pointers on primitives. */
+before: execution (void a061(int ** (*arg)[10]))
+{
+}
+before: execution (void a062(int ** (*)[10]))
+{
+}
+before: execution (void a063(int * const * volatile (* const * volatile arg)[10][20][30]))
+{
+}
+before: execution (void a064(int * const * volatile (* const * volatile)[10][20][30]))
+{
+}
+
+/* Pointer on functions that return primitives. */
+before: execution (void a071(int (*arg)(void)))
+{
+}
+before: execution (void a072(int (*)(void)))
+{
+}
+before: execution (void a073(int (* const arg)(void)))
+{
+}
+before: execution (void a074(int (* const)(void)))
+{
+}
+
+/* Pointer on functions that return pointers on primitives. */
+before: execution (void a081(int ** (*arg)(void)))
+{
+}
+before: execution (void a082(int ** (*)(void)))
+{
+}
+before: execution (void a083(int * const * volatile *(* const arg)(void)))
+{
+}
+before: execution (void a084(int * const * volatile *(* const)(void)))
+{
+}
+
+/* Array of pointers on functions that return primitives. */
+before: execution (void a091(int (*arg[10])(void)))
+{
+}
+before: execution (void a092(int (*[10])(void)))
+{
+}
+before: execution (void a093(int (* const arg[10][20][30])(void)))
+{
+}
+before: execution (void a094(int (* const [10][20][30])(void)))
+{
+}
+
+/* Array of pointers on functions that return pointers on primitives. */
+before: execution (void a101(int ** (*arg[10])(void)))
+{
+}
+before: execution (void a102(int ** (*[10])(void)))
+{
+}
+before: execution (void a103(int * const * volatile *(* const * volatile const *arg[10][20][30])(void)))
+{
+}
+before: execution (void a104(int * const * volatile *(* const * volatile const *[10][20][30])(void)))
+{
+}
+
+/* Function that returns pointers on functions that return primitives. */
+before: execution (void (*a110(void))(void))
+{
+}
+before: execution (void a111(int (*arg(void))(void)))
+{
+}
+before: execution (void a112(int (*(*)(void))(void)))
+{
+}
+before: execution (void a113(int (* const * arg(void))(void)))
+{
+}
+before: execution (void a114(int (* const * (*)(void))(void)))
+{
+}
+
+/* Function that returns pointers on functions that return pointers on primitives. */
+before: execution (void ** (*a120(void))(void))
+{
+}
+before: execution (void a121(int ** (*arg(void))(void)))
+{
+}
+before: execution (void a122(int ** (*(*)(void))(void)))
+{
+}
+before: execution (void a123(int * const volatile * (* const * arg(void))(void)))
+{
+}
+before: execution (void a124(int * const volatile * (* const * (*)(void))(void)))
+{
+}
+
+/* Function that has many arguments. */
+before: execution (void a131(int arg1, double arg2))
+{
+}
+before: execution (void a132(int, double))
+{
+}
+before: execution (void a133(int * const * volatile *(* const * volatile *arg1)[10][20][30], int * const * volatile *(* const * volatile const *arg2[10][20][30])(void)))
+{
+}
+before: execution (void a134(int * const * volatile *(* const * volatile *)[10][20][30], int * const * volatile *(* const * volatile const *[10][20][30])(void)))
+{
+}
+
+/* Inline function. */
+before: execution (inline void a141(int arg1, double arg2))
+{
+}
+
+/* Static function. */
+before: execution (static void a151(int arg1, double arg2))
+{
+}
+
+/* Static inline function. */
+before: execution (static inline void a161(int arg1, double arg2))
+{
+}
