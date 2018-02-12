@@ -1,8 +1,8 @@
 .idea/workspace.xml
-# Aspectator directories for builds and binaries.
+# CIF and Aspectator directories for builds and binaries.
 bin/
 build/
-aspectator-build-debug/
+build-debug/
 # Tests
 tests/__pycache__
 tests/backup
