@@ -1,2 +1,0 @@
-input/simple_call.c
-input/simple_call.c

@@ -1,0 +1,3 @@
+info: introduce($ $) {
+    $fprintf<"work/info.txt","%s\n",$signature>
+}

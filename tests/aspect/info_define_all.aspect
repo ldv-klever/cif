@@ -1,0 +1,15 @@
+info: define($) {
+  $fprintf<"work/info.txt","%s %s %s\n",$path,$macro_name,$line>
+}
+
+info: define($(arg1)) {
+  $fprintf<"work/info.txt","%s %s %s\n",$path,$macro_name,$line>
+}
+
+info: define($(arg1, arg2)) {
+  $fprintf<"work/info.txt","%s %s %s\n",$path,$macro_name,$line>
+}
+
+info: define($(arg1, arg2, arg3)) {
+  $fprintf<"work/info.txt","%s %s %s\n",$path,$macro_name,$line>
+}

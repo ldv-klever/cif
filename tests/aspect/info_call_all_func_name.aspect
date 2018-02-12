@@ -1,3 +1,0 @@
-info: call($ $(..)) {
-    $fprintf<"work/info.txt","%s\n",$func_name>
-}

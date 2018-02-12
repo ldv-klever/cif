@@ -1,0 +1,1 @@
+input/simple.c main func 28

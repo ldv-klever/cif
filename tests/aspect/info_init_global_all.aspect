@@ -1,0 +1,5 @@
+info: init_global($ $) {
+  $fprintf<"work/info.txt","%s %s %s",$path,$var_name,$signature>
+  $fprintf_var_init_values<"work/info.txt">
+  $fprintf<"work/info.txt","\n">
+}

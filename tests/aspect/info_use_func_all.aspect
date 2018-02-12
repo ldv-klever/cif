@@ -1,0 +1,3 @@
+info: use_func($ $(..)) {
+  $fprintf<"work/info.txt","%s %s %s %s\n",$func_context_path,$func_context_name,$func_name,$use_line>
+}

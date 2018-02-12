@@ -55,7 +55,7 @@ class CIFTestCase(unittest.TestCase):
     def compare(self, output, expected):
         self._check_cif_status()
 
-        if 'DEV_TEST' in os.environ:
+        if 'OVERRIDE' in os.environ:
             shutil.copy(output, expected)
             return
 

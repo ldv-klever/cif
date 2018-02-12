@@ -1,0 +1,3 @@
+input/simple.c main func_ptr 34
+input/simple.c main func_ptr 35
+input/simple.c main func_ptr_global 38

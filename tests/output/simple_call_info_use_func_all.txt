@@ -1,0 +1,2 @@
+input/simple.c main func 32
+input/simple.c main func 37
