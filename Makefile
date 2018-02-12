@@ -79,6 +79,6 @@ check_prefix:
 test:
 	cd tests && python3 all_tests.py
 
-# Remove all directories created during Aspectator build.
+# Remove all directories created during CIF and Aspectator build.
 clean:
-	rm -rf $(ASPECTATOR_SRC_DIR)/gmp $(ASPECTATOR_SRC_DIR)/mpfr $(ASPECTATOR_SRC_DIR)/mpc $(BUILD_DIR) $(ASPECTATOR_BIN_DIR)
+	rm -rf $(ASPECTATOR_SRC_DIR)/gmp $(ASPECTATOR_SRC_DIR)/mpfr $(ASPECTATOR_SRC_DIR)/mpc $(BUILD_DIR) $(BIN_DIR)
