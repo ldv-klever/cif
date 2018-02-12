@@ -3,7 +3,7 @@ BUILD_DIR = build
 # Directories with Aspectator prerequisites, sources, objects and executables.
 ASPECTATOR_PREREQUISITES = aspectator-prerequisites
 ASPECTATOR_SRC_DIR = aspectator
-ASPECTATOR_BIN_DIR = $(BIN_DIR)/aspectator-bin
+ASPECTATOR_BIN_DIR = aspectator-bin
 
 # Standard directory for installation of executables.
 INSTALL_BIN_DIR = $(prefix)/bin
@@ -18,14 +18,14 @@ all: $(BIN_DIR)/cif $(ASPECTATOR_SRC_DIR)/gmp $(ASPECTATOR_SRC_DIR)/mpc $(ASPECT
 	  patch -p1 -d $(ASPECTATOR_SRC_DIR) < linux-unwind.patch; \
 	  echo "Configure Aspectator for the first time"; \
 	  cd $(BUILD_DIR); \
-	  MAKEINFO=missing ../$(ASPECTATOR_SRC_DIR)/configure --prefix=$(shell readlink -f $(ASPECTATOR_BIN_DIR)) --enable-languages=c --disable-multilib --disable-nls $(ASPECTATOR_CONFIGURE_OPTS); \
+	  MAKEINFO=missing ../$(ASPECTATOR_SRC_DIR)/configure --prefix=$(shell readlink -f $(BIN_DIR)/$(ASPECTATOR_BIN_DIR)) --enable-languages=c --disable-multilib --disable-nls $(ASPECTATOR_CONFIGURE_OPTS); \
 	fi
 	@echo "Begin to (re)build Aspectator"
 	make -C $(BUILD_DIR)
 	make -C $(BUILD_DIR) install
-	@echo "Create symlinks for CIF and Aspectator binaries for convinience"
-	ln -sf "$(CURDIR)/$(BIN_DIR)/cif" $(BIN_DIR)/compiler
-	ln -sf "$(CURDIR)/$(ASPECTATOR_BIN_DIR)/bin/gcc" $(BIN_DIR)/aspectator
+	@echo "Create symlinks for C Instrumentation Framework and Aspectator binaries for convinience"
+	cd $(BIN_DIR); ln -srf cif compiler
+	cd $(BIN_DIR); ln -srf "$(ASPECTATOR_BIN_DIR)/bin/gcc" aspectator
 
 $(BIN_DIR)/cif: cif.c
 	mkdir -p $(BIN_DIR)
