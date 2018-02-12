@@ -18,7 +18,7 @@ all: $(BIN_DIR)/cif $(ASPECTATOR_SRC_DIR)/gmp $(ASPECTATOR_SRC_DIR)/mpc $(ASPECT
 	  patch -p1 -d $(ASPECTATOR_SRC_DIR) < linux-unwind.patch; \
 	  echo "Configure Aspectator for the first time"; \
 	  cd $(BUILD_DIR); \
-	  ../$(ASPECTATOR_SRC_DIR)/configure --prefix=$(shell readlink -f $(ASPECTATOR_BIN_DIR)) --enable-languages=c --disable-nls $(ASPECTATOR_CONFIGURE_OPTS); \
+	  ../$(ASPECTATOR_SRC_DIR)/configure --prefix=$(shell readlink -f $(ASPECTATOR_BIN_DIR)) --enable-languages=c --disable-multilib --disable-nls $(ASPECTATOR_CONFIGURE_OPTS); \
 	fi
 	@echo "Begin to (re)build Aspectator"
 	make -C $(BUILD_DIR)
