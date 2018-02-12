@@ -11,7 +11,7 @@ RUN mkdir /src
 # Copy CIF source code.
 COPY aspectator /src/aspectator
 COPY aspectator-prerequisites /src/aspectator-prerequisites
-COPY siginfo.patch cif.c Makefile /src/
+COPY linux-unwind.patch cif.c Makefile /src/
 
 # Make and install CIF.
 RUN make -C /src all

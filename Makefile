@@ -15,7 +15,7 @@ all: $(BIN_DIR)/cif $(ASPECTATOR_SRC_DIR)/gmp $(ASPECTATOR_SRC_DIR)/mpc $(ASPECT
 	mkdir -p $(BUILD_DIR)
 	if [ ! -f $(BUILD_DIR)/Makefile ]; then \
 	  echo "Patch GCC source code to avoid build error"; \
-	  patch -p1 -d $(ASPECTATOR_SRC_DIR) < siginfo.patch; \
+	  patch -p1 -d $(ASPECTATOR_SRC_DIR) < linux-unwind.patch; \
 	  echo "Configure Aspectator for the first time"; \
 	  cd $(BUILD_DIR); \
 	  ../$(ASPECTATOR_SRC_DIR)/configure --prefix=$(shell readlink -f $(ASPECTATOR_BIN_DIR)) --enable-languages=c --disable-nls $(ASPECTATOR_CONFIGURE_OPTS); \
