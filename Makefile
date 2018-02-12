@@ -53,16 +53,11 @@ $(ASPECTATOR_SRC_DIR)/mpfr: $(ASPECTATOR_PREREQUISITES)/mpfr.tar.bz2
 	@echo "Extract MPFR source code to '$(ASPECTATOR_SRC_DIR)'"
 	tar -xamf $(ASPECTATOR_PREREQUISITES)/mpfr.tar.bz2 -C $(ASPECTATOR_SRC_DIR)
 
-# Before installation check prefix and perform build.
+# Before installation check prefix.
 install: check_prefix
 	mkdir -p $(INSTALL_BIN_DIR)
-	@echo "Install CIF to '$(INSTALL_BIN_DIR)'"
-	cp -u $(BIN_DIR)/cif $(INSTALL_BIN_DIR)
-	@echo "Install Aspectator to '$(INSTALL_BIN_DIR)'"
-	cp -ru $(ASPECTATOR_BIN_DIR) $(INSTALL_BIN_DIR)
-	@echo "Create symlinks for CIF and Aspectator binaries for convinience"
-	ln -sf $(INSTALL_BIN_DIR)/cif $(INSTALL_BIN_DIR)/compiler
-	ln -sf $(INSTALL_BIN_DIR)/$(ASPECTATOR_BIN_DIR)/bin/gcc $(INSTALL_BIN_DIR)/aspectator
+	@echo "Install C Instrumentation Framework and Aspecator to '$(INSTALL_BIN_DIR)'"
+	cp -ru $(BIN_DIR)/* $(INSTALL_BIN_DIR)
 
 check_prefix:
 	@echo "Check that prefix where tools to be installed is specified"
