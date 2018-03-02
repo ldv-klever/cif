@@ -7,8 +7,8 @@ Building Debug Version of Aspectator
 To build a debug version of Aspectator one needs create a separate directory for
 it, say:
 ----------------------------
-mkdir aspectator-build-debug
-cd aspectator-build-debug
+mkdir build-debug
+cd build-debug
 ----------------------------
 
 Then configure Aspectator as usual:
