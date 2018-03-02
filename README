@@ -6,15 +6,15 @@ Building Debug Version of Aspectator
 
 To build a debug version of Aspectator one needs create a separate directory for
 it, say:
-----------------------------
+-----------------
 mkdir build-debug
 cd build-debug
-----------------------------
+-----------------
 
 Then configure Aspectator as usual:
-----------------------------------------------------------
-../aspectator/configure --enable-languages=c --disable-nls
-----------------------------------------------------------
+----------------------------------------------------------------------------------------------
+MAKEINFO=missing ../aspectator/configure --enable-languages=c --disable-multilib --disable-nls
+----------------------------------------------------------------------------------------------
 and make the debug version of Aspectator (one can use option +-jN+ for +make+ to
 essentially speed up building):
 ---------------------------------------
