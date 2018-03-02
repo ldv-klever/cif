@@ -20,7 +20,7 @@ class TestLegacy(utils.CIFTestCase):
         self.compare(output='work/legacy_variable.c', expected='output/legacy_variable.c')
 
     def test_empty(self):
-        self.cif.run(cif_input='input/legacy_empty.c', aspect='aspect/legacy_empty.aspect', cif_output='work/legacy_empty.c')
+        self.cif.run(cif_input='input/legacy_empty.c', aspect='aspect/empty.aspect', cif_output='work/legacy_empty.c')
         self.compare(output='work/legacy_empty.c', expected='output/legacy_empty.c')
 
     def not_test_any_params(self):
