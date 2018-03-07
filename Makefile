@@ -21,8 +21,8 @@ all: $(BIN_DIR)/cif $(ASPECTATOR_SRC_DIR)/gmp $(ASPECTATOR_SRC_DIR)/mpc $(ASPECT
 	  MAKEINFO=missing ../$(ASPECTATOR_SRC_DIR)/configure --prefix=$(shell readlink -f $(BIN_DIR)/$(ASPECTATOR_BIN_DIR)) --enable-languages=c --disable-multilib --disable-nls $(ASPECTATOR_CONFIGURE_OPTS); \
 	fi
 	@echo "Begin to (re)build Aspectator"
-	make -C $(BUILD_DIR)
-	make -C $(BUILD_DIR) install
+	$(MAKE) -C $(BUILD_DIR)
+	$(MAKE) -C $(BUILD_DIR) install
 	@echo "Create symlinks for C Instrumentation Framework and Aspectator binaries for convinience"
 	cd $(BIN_DIR); ln -srf cif compiler
 	cd $(BIN_DIR); ln -srf "$(ASPECTATOR_BIN_DIR)/bin/gcc" aspectator
