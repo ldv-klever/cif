@@ -8,6 +8,9 @@ ASPECTATOR_BIN_DIR = aspectator-bin
 # Standard directory for installation of executables.
 INSTALL_BIN_DIR = $(prefix)/bin
 
+# Workaround for "cannot find crti.o" error (only for x86-64 Ubuntu systems)
+export LIBRARY_PATH ?= /usr/lib/x86_64-linux-gnu
+
 .PHONY: all install test clean
 
 # Before build install prerequisites.
