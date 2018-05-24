@@ -1,0 +1,6 @@
+declaration: struct ST st;
+value:
+  field declaration: int x;
+  value: 42
+declaration: int x;
+value: 5

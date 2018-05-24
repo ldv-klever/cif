@@ -1,0 +1,4 @@
+info: init_global($ $) {
+  $fprintf<"work/info.txt","declaration: %s\n",$signature>
+  $fprintf_var_init_list<"work/info.txt">
+}

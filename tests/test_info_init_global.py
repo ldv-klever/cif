@@ -7,6 +7,13 @@ class TestInfoInitGlobal(utils.CIFTestCase):
         self.cif.run(cif_input='input/simple.c', aspect='aspect/info_init_global_all.aspect', stage='instrumentation')
         self.compare(output='work/info.txt', expected='output/simple_call_info_init_global_all.txt')
 
+    def test_simple_info_init_list(self):
+        self.cif.run(cif_input='input/simple.c', aspect='aspect/info_init_list.aspect', stage='instrumentation')
+        self.compare(output='work/info.txt', expected='output/simple_call_info_init_list.txt')
+
+    def test_complex_struct_info_init_list(self):
+        self.cif.run(cif_input='input/complex_struct.c', aspect='aspect/info_init_list.aspect', stage='instrumentation')
+        self.compare(output='work/info.txt', expected='output/complex_struct_call_info_init_list.txt')
 
 if __name__ == '__main__':
     unittest.main()

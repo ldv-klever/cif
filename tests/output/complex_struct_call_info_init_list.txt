@@ -1,0 +1,8 @@
+declaration: struct A a;
+value:
+  field declaration: int a;
+  value: 42
+  field declaration: union {   int u; };
+  value:
+    field declaration: int u;
+    value: 24
