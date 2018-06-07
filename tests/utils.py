@@ -53,7 +53,7 @@ class CIFTestCase(unittest.TestCase):
             shutil.rmtree(WORK_DIR)
 
     def compare(self, output, expected):
-        self._check_cif_status()
+        self.check_cif_status()
 
         if 'OVERRIDE' in os.environ:
             shutil.copy(output, expected)
@@ -64,7 +64,7 @@ class CIFTestCase(unittest.TestCase):
 
         self.assertEqual(expected_str, output_str)
 
-    def _check_cif_status(self):
+    def check_cif_status(self):
         if self.cif and self.cif.status is not 0:
             print('\n', 'CMD:', self.cif.cmd, '\n')
             print('LOG:', self.cif.log, '\n')
