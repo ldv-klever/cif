@@ -14,14 +14,12 @@ export LIBRARY_PATH ?= /usr/lib/x86_64-linux-gnu
 .PHONY: all install test clean
 
 # Before build install prerequisites.
-all: $(BIN_DIR)/cif $(ASPECTATOR_SRC_DIR)/gmp $(ASPECTATOR_SRC_DIR)/mpc $(ASPECTATOR_SRC_DIR)/mpfr
+all: $(BIN_DIR)/cif
 	mkdir -p $(BUILD_DIR)
 	if [ ! -f $(BUILD_DIR)/Makefile ]; then \
-	  echo "Patch GCC source code to avoid build error"; \
-	  patch -p1 -d $(ASPECTATOR_SRC_DIR) < linux-unwind.patch; \
 	  echo "Configure Aspectator for the first time"; \
 	  cd $(BUILD_DIR); \
-	  MAKEINFO=missing ../$(ASPECTATOR_SRC_DIR)/configure --prefix=$(shell readlink -f $(BIN_DIR)/$(ASPECTATOR_BIN_DIR)) --enable-languages=c --disable-multilib --disable-nls $(ASPECTATOR_CONFIGURE_OPTS); \
+	  MAKEINFO=missing ../$(ASPECTATOR_SRC_DIR)/configure --prefix=$(shell readlink -f $(BIN_DIR)/$(ASPECTATOR_BIN_DIR)) --enable-languages=c --disable-libsanitizer $(ASPECTATOR_CONFIGURE_OPTS); \
 	fi
 	@echo "Begin to (re)build Aspectator"
 	$(MAKE) -C $(BUILD_DIR)
@@ -33,28 +31,6 @@ all: $(BIN_DIR)/cif $(ASPECTATOR_SRC_DIR)/gmp $(ASPECTATOR_SRC_DIR)/mpc $(ASPECT
 $(BIN_DIR)/cif: cif.c
 	mkdir -p $(BIN_DIR)
 	gcc -Wall -Werror cif.c -o $@
-
-$(ASPECTATOR_SRC_DIR)/gmp: $(ASPECTATOR_PREREQUISITES)/gmp.tar.bz2 $(ASPECTATOR_PREREQUISITES)/gmp-nodoc.patch
-	@echo "Remove GMP source code from '$(ASPECTATOR_SRC_DIR)'"
-	rm -rf $@
-	@echo "Extract GMP source code to '$(ASPECTATOR_SRC_DIR)'"
-	tar -xamf $(ASPECTATOR_PREREQUISITES)/gmp.tar.bz2 -C $(ASPECTATOR_SRC_DIR)
-	@echo "Patch GMP source code to disable documentation building"
-	patch -p1 -d $@ < $(ASPECTATOR_PREREQUISITES)/gmp-nodoc.patch
-
-$(ASPECTATOR_SRC_DIR)/mpc: $(ASPECTATOR_PREREQUISITES)/mpc.tar.bz2 $(ASPECTATOR_PREREQUISITES)/mpc-nodoc.patch
-	@echo "Remove MPC source code from '$(ASPECTATOR_SRC_DIR)'"
-	rm -rf $@
-	@echo "Extract MPC source code to '$(ASPECTATOR_SRC_DIR)'"
-	tar -xamf $(ASPECTATOR_PREREQUISITES)/mpc.tar.bz2 -C $(ASPECTATOR_SRC_DIR)
-	@echo "Patch MPC source code to disable documentation building"
-	patch -p1 -d $@ < $(ASPECTATOR_PREREQUISITES)/mpc-nodoc.patch
-
-$(ASPECTATOR_SRC_DIR)/mpfr: $(ASPECTATOR_PREREQUISITES)/mpfr.tar.bz2
-	@echo "Remove MPFR source code from '$(ASPECTATOR_SRC_DIR)'"
-	rm -rf $@
-	@echo "Extract MPFR source code to '$(ASPECTATOR_SRC_DIR)'"
-	tar -xamf $(ASPECTATOR_PREREQUISITES)/mpfr.tar.bz2 -C $(ASPECTATOR_SRC_DIR)
 
 # Before installation check prefix.
 install: check_prefix
@@ -79,4 +55,4 @@ test:
 
 # Remove all directories created during CIF and Aspectator build.
 clean:
-	rm -rf $(ASPECTATOR_SRC_DIR)/gmp $(ASPECTATOR_SRC_DIR)/mpfr $(ASPECTATOR_SRC_DIR)/mpc $(BUILD_DIR) $(BIN_DIR)
+	rm -rf $(BUILD_DIR) $(BIN_DIR)
