@@ -15,5 +15,9 @@ class TestCBackend(utils.CIFTestCase):
         self.cif.run(cif_input='input/c-backend/overflow-transform.c', aspect='aspect/empty.aspect', cif_output='work/overflow-transform.c')
         self.compare(output='work/overflow-transform.c', expected='output/c-backend/overflow-transform.c')
 
+    def test_memref_transform(self):
+        self.cif.run(cif_input='input/c-backend/memref-transform.c', aspect='aspect/empty.aspect', cif_output='work/memref-transform.c')
+        self.compare(output='work/memref-transform.c', expected='output/c-backend/memref-transform.c')
+
 if __name__ == '__main__':
     unittest.main()
