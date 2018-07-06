@@ -1,7 +1,5 @@
 BIN_DIR = bin
 BUILD_DIR = build
-# Directories with Aspectator prerequisites, sources, objects and executables.
-ASPECTATOR_PREREQUISITES = aspectator-prerequisites
 ASPECTATOR_SRC_DIR = aspectator
 ASPECTATOR_BIN_DIR = aspectator-bin
 
@@ -9,7 +7,12 @@ ASPECTATOR_BIN_DIR = aspectator-bin
 INSTALL_BIN_DIR = $(prefix)/bin
 
 # Workaround for "cannot find crti.o" error (only for x86-64 Ubuntu systems)
-export LIBRARY_PATH ?= /usr/lib/x86_64-linux-gnu
+UBUNTU_LIB = /usr/lib/x86_64-linux-gnu
+
+LN_FLAGS = "-srf"
+ifeq ($(shell uname), Darwin)
+	LN_FLAGS = "-sf"
+endif
 
 .PHONY: all install test clean
 
@@ -19,14 +22,15 @@ all: $(BIN_DIR)/cif
 	if [ ! -f $(BUILD_DIR)/Makefile ]; then \
 	  echo "Configure Aspectator for the first time"; \
 	  cd $(BUILD_DIR); \
-	  MAKEINFO=missing ../$(ASPECTATOR_SRC_DIR)/configure --prefix=$(shell readlink -f $(BIN_DIR)/$(ASPECTATOR_BIN_DIR)) --enable-languages=c --disable-libsanitizer --disable-multilib $(ASPECTATOR_CONFIGURE_OPTS); \
+	  MAKEINFO=missing ../$(ASPECTATOR_SRC_DIR)/configure --prefix=$(CURDIR)/$(BIN_DIR)/$(ASPECTATOR_BIN_DIR) --enable-languages=c --disable-libsanitizer --disable-multilib --enable-checking=release $(ASPECTATOR_CONFIGURE_OPTS); \
 	fi
 	@echo "Begin to (re)build Aspectator"
+	@if [[ -d $(UBUNTU_LIB) && ! -z LIBRARY_PATH ]]; then export LIBRARY_PATH=$(UBUNTU_LIB); fi
 	$(MAKE) -C $(BUILD_DIR)
 	$(MAKE) -C $(BUILD_DIR) install
 	@echo "Create symlinks for C Instrumentation Framework and Aspectator binaries for convinience"
-	cd $(BIN_DIR); ln -srf cif compiler
-	cd $(BIN_DIR); ln -srf "$(ASPECTATOR_BIN_DIR)/bin/gcc" aspectator
+	cd $(BIN_DIR); ln $(LN_FLAGS) cif compiler
+	cd $(BIN_DIR); ln $(LN_FLAGS) "$(ASPECTATOR_BIN_DIR)/bin/gcc" aspectator
 
 $(BIN_DIR)/cif: cif.c
 	mkdir -p $(BIN_DIR)
