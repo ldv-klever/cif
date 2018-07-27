@@ -1,4 +1,3 @@
-<built-in> __DECIMAL_BID_FORMAT__ 0
 input/simple.c SOMETHING 1
 input/simple.c CONST 2
 input/simple.c ZERO 3
