@@ -40,7 +40,7 @@ $(BIN_DIR)/cif: cif.c
 install: check_prefix
 	mkdir -p $(INSTALL_BIN_DIR)
 	@echo "Install C Instrumentation Framework and Aspecator to '$(INSTALL_BIN_DIR)'"
-	cp -ru $(BIN_DIR)/* $(INSTALL_BIN_DIR)
+	rsync -rlu $(BIN_DIR)/* $(INSTALL_BIN_DIR)
 
 check_prefix:
 	@echo "Check that prefix where tools to be installed is specified"
