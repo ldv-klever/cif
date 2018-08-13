@@ -2,11 +2,16 @@
 #include <stdlib.h>
 #include <getopt.h>
 #include <stdarg.h>
+#include <stdint.h>
 #include <string.h>
 #include <sys/stat.h>
 #include <limits.h>
 #include <libgen.h>
 #include <unistd.h>
+
+#ifdef __APPLE__
+#include <mach-o/dyld.h>    /* _NSGetExecutablePath */
+#endif
 
 #define QUIET   0
 #define NORMAL  10
@@ -317,14 +322,24 @@ static void parse_opts(int argc, char **argv) {
         print_debug(DEBUG, "Aspectator '%s' was specified by means or command-line option"\
             " --aspectator.\n", opts.aspectator);
     } else {
-        int len;
-        aspectator_path = malloc(PATH_MAX);
+        uint32_t len = PATH_MAX;
+        aspectator_path = malloc(sizeof(char) * PATH_MAX);
+
+        #ifdef __APPLE__
+        if (_NSGetExecutablePath(aspectator_path, &len)) {
+            fprintf(stderr, "Buffer is too small, which is impossible by the way.\n");
+            exit(-1);
+        }
+        #else
         len = readlink("/proc/self/exe", aspectator_path, PATH_MAX);
         aspectator_path[len] = '\0';
+        #endif
+
         aspectator_path = dirname(aspectator_path);
         strcat(aspectator_path, "/aspectator");
 
-        opts.aspectator = aspectator_path;
+        opts.aspectator = strdup(aspectator_path);
+        free(aspectator_path);
 
         print_debug(DEBUG, "Default aspectator '%s' will be used.\n", opts.aspectator);
     }
@@ -445,18 +460,33 @@ static void perform_stages(void) {
          * preprocessed aspect files otherwise.
          */
         /* TODO: remove this auxiliary search directory when will get rid of *.prepared files. */
-        aux_search_dir = dirname(strdup(in));
-        aux_base_len = strlen(dirname(strdup(out))) + strlen(basename(out)) + strlen("/");
+        char *out_copy1 = strdup(out);
+        char *out_copy2 = strdup(out);
+        char *out_dirname = strdup(dirname(out_copy1));
+        char *out_basename = strdup(basename(out_copy2));
+
+        aux_base_len = strlen(out_dirname) + strlen(out_basename) + strlen("/");
         aux_base = malloc(aux_base_len + 1);
-        sprintf(aux_base, "%s/%s", dirname(strdup(out)), basename(out));
+        sprintf(aux_base, "%s/%s", out_dirname, out_basename);
+
+        free(out_copy1);
+        free(out_copy2);
+        free(out_dirname);
+        free(out_basename);
+
         if (aspect) {
-            aspect_preprocessed_len
-                = strlen(aux_base) + strlen(".") + strlen(basename(aspect)) + strlen(".i");
+            char *aspect_copy = strdup(aspect);
+            char *aspect_basename = strdup(basename(aspect_copy));
+
+            aspect_preprocessed_len = strlen(aux_base) + strlen(".") + strlen(aspect_basename) + strlen(".i");
             aspect_preprocessed = malloc(aspect_preprocessed_len + 1);
-            sprintf(aspect_preprocessed, "%s.%s.i", aux_base, basename(aspect));
+            sprintf(aspect_preprocessed, "%s.%s.i", aux_base, aspect_basename);
+
+            free(aspect_copy);
+            free(aspect_basename);
         } else {
             aspect_preprocessed = malloc(strlen("") + 1);
-            aspect_preprocessed = "";
+            strcpy(aspect_preprocessed, "");
         }
 
         print_debug(DEBUG, "********* %s *********\n", stages[i]);
@@ -518,6 +548,14 @@ static void perform_stages(void) {
             }
             /* At macro instrumentation stage standard preprocessing will be done. */
             else if (!strcmp(stages[i], "macro instrumentation")) {
+                char *in_copy = strdup(in);
+                char *in_dirname = strdup(dirname(in_copy));
+
+                aux_search_dir = strdup(in_dirname);
+
+                free(in_copy);
+                free(in_dirname);
+
                 /* Input file is prepared file. */
                 free(in);
                 in = malloc(strlen(aux_base) + strlen(".prepared") + 1);
@@ -526,6 +564,7 @@ static void perform_stages(void) {
                 stage_pre_opts_len = strlen("-I \"\"") + strlen(aux_search_dir) ;
                 stage_pre_opts = malloc(stage_pre_opts_len + 1);
                 sprintf(stage_pre_opts, "-I \"%s\"", aux_search_dir);
+                free(aux_search_dir);
 
                 stage_post_opts_len = strlen(opts.macro_instrumentation_opts) + strlen("-E -x c ");
                 stage_post_opts = malloc(stage_post_opts_len + 1);
@@ -630,7 +669,6 @@ static void perform_stages(void) {
             stage_envs_full = stage_envs;
         }
 
-
         cmd_len =
             /* Stage specific environment variables. */
             strlen(stage_envs_full)
@@ -675,9 +713,9 @@ static void perform_stages(void) {
         /* Make some magic for aspect preprocessing stage. */
         if (!strcmp(stages[i], "aspect preprocessing")) {
             /* Replace '@' with '#' to return back standard preprocessing directives. */
-            cmd_len = strlen("sed -i 's/@/#/g' \"") + strlen(out) + strlen("\"");
+            cmd_len = strlen("sed -i.bak 's/@/#/g' \"") + strlen(out) + strlen("\"");
             cmd = malloc(cmd_len + 1);
-            sprintf(cmd, "sed -i 's/@/#/g' \"%s\"", out);
+            sprintf(cmd, "sed -i.bak 's/@/#/g' \"%s\"", out);
 
             print_debug(DEBUG, "Execute '%s'.\n", cmd);
 
