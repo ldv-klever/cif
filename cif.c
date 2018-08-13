@@ -459,7 +459,6 @@ static void perform_stages(void) {
          * file. When several CIF operates in parallel they can overwrite
          * preprocessed aspect files otherwise.
          */
-        /* TODO: remove this auxiliary search directory when will get rid of *.prepared files. */
         char *out_copy1 = strdup(out);
         char *out_copy2 = strdup(out);
         char *out_dirname = strdup(dirname(out_copy1));
@@ -551,6 +550,7 @@ static void perform_stages(void) {
                 char *in_copy = strdup(in);
                 char *in_dirname = strdup(dirname(in_copy));
 
+                /* TODO: remove this auxiliary search directory when will get rid of *.prepared files. */
                 aux_search_dir = strdup(in_dirname);
 
                 free(in_copy);
