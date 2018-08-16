@@ -1,6 +1,3 @@
-//Don't include stdio.h and print nice message since stdio.h confuses C backend.
-//#include <stdio.h>
-
 int one() 
 { 
   return 1; 
@@ -33,9 +30,3 @@ int seventh(int a, int b)
 #include "legacy_macro.h"
 #define H -6
 #define I(a, b) -(a + b)
-
-int main()
-{
-  //printf ("First advice: %d\nSecond advice: %d\nThird advice: %d\nFourth advice: %d\nFifth advice: %d\nSixth advice: %d\nSeventh advice: %d\n", A, B, D, F, G, H, I(3, 4));
-  return 0;
-}

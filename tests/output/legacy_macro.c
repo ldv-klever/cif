@@ -4,7 +4,7 @@
 #define LDV_LROTATE(X,Y) (((X) << (Y)) | ((X) >> (__CHAR_BIT__ * sizeof (X) - Y)))
 #define LDV_RROTATE(X,Y) (((X) >> (Y)) | ((X) << (__CHAR_BIT__ * sizeof (X) - Y)))
 typedef struct __va_list_tag __va_list_tag;
-#line 4 "input/legacy_macro.c"
+#line 1 "input/legacy_macro.c"
 int one(void)
 {
   return 1;
@@ -33,10 +33,4 @@ int seventh(int a, int b)
 int five(void)
 {
   return 5;
-}
-#line 37 "input/legacy_macro.c"
-int main(void)
-{
-#line 40 "input/legacy_macro.c"
-  return 0;
 }
