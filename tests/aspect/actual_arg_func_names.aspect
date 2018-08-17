@@ -1,0 +1,3 @@
+info: call($ $(..)) {
+    $fprintf<"work/info.txt","%s %s\n",$func_name,$actual_arg_func_names>
+}
