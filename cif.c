@@ -510,13 +510,14 @@ static void perform_stages(void) {
             /* Aspect preprocessing can affect file paths that use word 'linux', since
              * there is the standard built-in macro '#define linux 1'. So undefine the
              * most of built-in macros by means of '-undef' (#865).
+             * -nostdinc helps to avoid includes of system headers.
              * Keeps comments by means of option -C (#865).
              * Specify that aspect files "are" in C.
              */
 
-            stage_post_opts_len = strlen(opts.aspect_preprocessing_opts) + strlen("-E -undef -C -x c ");
+            stage_post_opts_len = strlen(opts.aspect_preprocessing_opts) + strlen("-E -undef -nostdinc -C -x c ");
             stage_post_opts = malloc(stage_post_opts_len + 1);
-            sprintf(stage_post_opts, "-E -undef -C -x c %s", opts.aspect_preprocessing_opts);
+            sprintf(stage_post_opts, "-E -undef -nostdinc -C -x c %s", opts.aspect_preprocessing_opts);
 
             free(out);
             out = aspect_preprocessed;
