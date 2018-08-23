@@ -20,3 +20,7 @@ value:
       value: 12
   array element index: 1
   value: {}
+declaration: struct B d;
+value:
+  field declaration: struct A b;
+  value: {}
