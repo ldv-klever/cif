@@ -6,3 +6,17 @@ value:
   value:
     field declaration: int u;
     value: 24
+declaration: struct A b;
+value: {}
+declaration: struct A c[2U];
+value:
+  array element index: 0
+  value:
+    field declaration: int a;
+    value: 21
+    field declaration: union {   int u; };
+    value:
+      field declaration: int u;
+      value: 12
+  array element index: 1
+  value: {}
