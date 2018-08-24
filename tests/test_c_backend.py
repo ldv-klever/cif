@@ -31,5 +31,9 @@ class TestCBackend(utils.CIFTestCase):
         self.cif.run(cif_input='input/c-backend/memref-transform.c', aspect='aspect/empty.aspect', cif_output='work/memref-transform.c')
         self.compare(output='work/memref-transform.c', expected='output/c-backend/memref-transform.c')
 
+    def test_transparent_union(self):
+        self.cif.run(cif_input='input/c-backend/transparent_union.c', aspect='aspect/empty.aspect', cif_output='work/transparent_union.c')
+        self.compare(output='work/transparent_union.c', expected='output/c-backend/transparent_union.c')
+
 if __name__ == '__main__':
     unittest.main()
