@@ -335,10 +335,15 @@ static void parse_opts(int argc, char **argv) {
         aspectator_path[len] = '\0';
         #endif
 
-        aspectator_path = dirname(aspectator_path);
+        char *aspectator_dir= strdup(aspectator_path);
+        aspectator_dir = dirname(aspectator_dir);
+
+        aspectator_path[0] = 0;
+        strcpy(aspectator_path, aspectator_dir);
         strcat(aspectator_path, "/aspectator");
 
         opts.aspectator = strdup(aspectator_path);
+        free(aspectator_dir);
         free(aspectator_path);
 
         print_debug(DEBUG, "Default aspectator '%s' will be used.\n", opts.aspectator);
