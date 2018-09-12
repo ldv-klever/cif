@@ -70,6 +70,14 @@ class CIFTestCase(unittest.TestCase):
             print('LOG:', self.cif.log, '\n')
             self.assertEqual(self.cif.status, 0)
 
+    def skip_os_specific_defines(self, output):
+        with open(output) as fp:
+            lines = fp.readlines()
+        with open(output, 'w') as fp:
+            for line in lines:
+                if not line.startswith('/usr/include/stdc-predef.h'):
+                    fp.write(line)
+
     def _read_file_to_str(self, file):
         if not os.path.exists(file):
             self.fail('File {} does not exist.'.format(file))
