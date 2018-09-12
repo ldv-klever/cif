@@ -1,3 +1,6 @@
+info: expand($) {
+    $fprintf<"work/info.txt","%s %s\n",$path,$macro_name>
+}
 info: expand($($)) {
     $fprintf<"work/info.txt","%s %s\n",$path,$macro_name>
 }

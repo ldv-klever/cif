@@ -1,1 +1,2 @@
+input/simple.c CONST
 input/simple.c ZERO
