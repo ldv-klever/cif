@@ -71,6 +71,8 @@ class CIFTestCase(unittest.TestCase):
             self.assertEqual(self.cif.status, 0)
 
     def skip_os_specific_defines(self, output):
+        self.check_cif_status()
+
         with open(output) as fp:
             lines = fp.readlines()
         with open(output, 'w') as fp:
