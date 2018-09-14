@@ -1,0 +1,3 @@
+input/macro_actual_args.c ONE_ARG actual_arg1=1
+input/macro_actual_args.c TWO_ARGS actual_arg1=2, actual_arg2= 3
+input/macro_actual_args.c THREE_ARGS actual_arg1=4, actual_arg2= 5, actual_arg3= 6

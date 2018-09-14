@@ -1,0 +1,3 @@
+info: expand($(..)) {
+    $fprintf<"work/info.txt","%s %s %s\n",$path,$macro_name,$actual_args>
+}
