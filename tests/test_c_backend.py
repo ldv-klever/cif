@@ -48,5 +48,17 @@ class TestCBackend(utils.CIFTestCase):
         self.cif.run(cif_input='input/c-backend/extern-func-decl-without-params.c', aspect='aspect/empty.aspect', cif_output='work/extern-func-decl-without-params.c')
         self.compare(output='work/extern-func-decl-without-params.c', expected='output/c-backend/extern-func-decl-without-params.c')
 
+    def test_float_expr(self):
+        self.cif.run(cif_input='input/c-backend/float-expr.c', aspect='aspect/empty.aspect', cif_output='work/float-expr.c')
+        self.compare(output='work/float-expr.c', expected='output/c-backend/float-expr.c')
+
+    def test_rdiv_expr(self):
+        self.cif.run(cif_input='input/c-backend/rdiv-expr.c', aspect='aspect/empty.aspect', cif_output='work/rdiv-expr.c')
+        self.compare(output='work/rdiv-expr.c', expected='output/c-backend/rdiv-expr.c')
+
+    def test_fix_trunc_expr(self):
+        self.cif.run(cif_input='input/c-backend/fix-trunc-expr.c', aspect='aspect/empty.aspect', cif_output='work/fix-trunc-expr.c')
+        self.compare(output='work/fix-trunc-expr.c', expected='output/c-backend/fix-trunc-expr.c')
+
 if __name__ == '__main__':
     unittest.main()
