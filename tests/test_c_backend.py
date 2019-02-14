@@ -60,5 +60,10 @@ class TestCBackend(utils.CIFTestCase):
         self.cif.run(cif_input='input/c-backend/fix-trunc-expr.c', aspect='aspect/empty.aspect', cif_output='work/fix-trunc-expr.c')
         self.compare(output='work/fix-trunc-expr.c', expected='output/c-backend/fix-trunc-expr.c')
 
+    # Let's support vector types one day later.
+    def _test_vector_type(self):
+        self.cif.run(cif_input='input/c-backend/vector-type.c', aspect='aspect/empty.aspect', cif_output='work/vector-type.c')
+        self.compare(output='work/vector-type.c', expected='output/c-backend/vector-type.c')
+
 if __name__ == '__main__':
     unittest.main()
