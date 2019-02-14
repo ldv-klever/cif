@@ -44,5 +44,9 @@ class TestCBackend(utils.CIFTestCase):
         self.cif.run(cif_input='input/c-backend/transparent_union.c', aspect='aspect/empty.aspect', cif_output='work/transparent_union.c')
         self.compare(output='work/transparent_union.c', expected='output/c-backend/transparent_union.c')
 
+    def test_extern_func_decl_without_params(self):
+        self.cif.run(cif_input='input/c-backend/extern-func-decl-without-params.c', aspect='aspect/empty.aspect', cif_output='work/extern-func-decl-without-params.c')
+        self.compare(output='work/extern-func-decl-without-params.c', expected='output/c-backend/extern-func-decl-without-params.c')
+
 if __name__ == '__main__':
     unittest.main()
