@@ -65,5 +65,9 @@ class TestCBackend(utils.CIFTestCase):
         self.cif.run(cif_input='input/c-backend/vector-type.c', aspect='aspect/empty.aspect', cif_output='work/vector-type.c')
         self.compare(output='work/vector-type.c', expected='output/c-backend/vector-type.c')
 
+    def test_multiple_decls(self):
+        self.cif.run(cif_input='input/c-backend/multiple-decls.c', aspect='aspect/empty.aspect', cif_output='work/multiple-decls.c')
+        self.compare(output='work/multiple-decls.c', expected='output/c-backend/multiple-decls.c')
+
 if __name__ == '__main__':
     unittest.main()
