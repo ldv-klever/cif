@@ -1,0 +1,2 @@
+typedef int T1;
+typedef int *T2;
