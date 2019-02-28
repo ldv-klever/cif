@@ -55,7 +55,7 @@ check_prefix:
 	fi
 
 test:
-	cd tests && python3 all_tests.py
+	cd tests && pytest
 
 # Remove all directories created during CIF and Aspectator build.
 clean:
