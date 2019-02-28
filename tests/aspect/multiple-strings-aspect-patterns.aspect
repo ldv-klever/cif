@@ -1,0 +1,3 @@
+info: call($ $(..)) {
+    $fprintf<"work/""info.txt", "%s""%s\n", "Hello,", " " "world" "!">
+}
