@@ -1,0 +1,3 @@
+info: call($ $(..)) {
+    $fprintf<"work/$env<PREFIX>-" $env<PREFIX> "-" $func_name ".txt", "%s""%s\n", "Hello,", " " $func_name "!">
+}
