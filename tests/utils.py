@@ -80,6 +80,13 @@ class CIFTestCase(unittest.TestCase):
                 if not line.startswith('/usr/include/stdc-predef.h'):
                     fp.write(line)
 
+    def make_relpath(self, output):
+        with open(output) as fp:
+            lines = fp.readlines()
+        with open(output, 'w') as fp:
+            for line in lines:
+                fp.write(line.replace(os.getcwd() + os.path.sep, ''))
+
     def _read_file_to_str(self, file):
         if not os.path.exists(file):
             self.fail('File {} does not exist.'.format(file))
