@@ -1,3 +1,3 @@
 info: call($ $(..)) {
-  $fprintf<"work/" $func_context_path,"%s %s %s\n",$func_context_name,$func_name,$call_line>
+  $fprintf<"work/" $path,"%s %s\n",$func_name,$call_line>
 }

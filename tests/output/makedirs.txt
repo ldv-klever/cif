@@ -1,1 +1,1 @@
-main func 28
+func 28
