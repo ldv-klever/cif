@@ -42,12 +42,12 @@ Tracking memory issues of Aspectator
 
 First of all you need to build a debug version of Aspectator.
 
-Then you need to run Aspectator under valgrind:
+Then you need to run Aspectator under valgrind (do not specify "--suppressions"
+if you do not have them):
 -----------------------------------------
 LDV_ASPECT_FILE=$PATH_TO_ASPECT_FILE \
 LDV_STAGE=$STAGE \
 LDV_OUT=$PATH_TO_OUT \
-LDV_COMMON_MODEL=$PATH_TO_COMMON_MODEL \
 valgrind \
 --tool=memcheck \
 --leak-check=yes \
@@ -65,3 +65,27 @@ After that you can either inspect output.xml manually or use valkyrie:
 valkyrie -l output.xml
 ----------------------
 
+Tracking CPU time issues of Aspectator
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+First of all you need to build a debug version of Aspectator but use another
+directory "build-profiled" and another build command:
+----------------------
+make profiledbootstrap
+----------------------
+
+Then you need to run Aspectator unber valgrind:
+-------------------------------------------
+LDV_ASPECT_FILE=$PATH_TO_ASPECT_FILE \
+LDV_STAGE=$STAGE \
+LDV_OUT=$PATH_TO_OUT \
+valgrind \
+--tool=callgrind \
+$PATH_TO_ASPECTATOR_PROFILED_DEBUG/gcc/cc1 \
+$PATH_TO_INPUT_FILE
+--------------------------------------------
+
+After that you can either inspect callgrind.out.* manually or use kcachegrind:
+------------------------------
+kcachegrind -l callgrind.out.*
+------------------------------
