@@ -1,1 +1,1 @@
-Hello, SOMETHING! (/home/novikov/work/cif/tests/input/simple.c)
+Hello, SOMETHING! (input/simple.c)

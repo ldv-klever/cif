@@ -1,1 +1,1 @@
-Hello, CONST! (/home/novikov/work/cif/tests/input/simple.c)
+Hello, CONST! (input/simple.c)
