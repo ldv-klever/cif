@@ -1,3 +1,3 @@
 info: call($ $($)) {
-    $fprintf<"work/info.txt","%s %s %s %s arg1='%s'\n",$func_context_path,$func_context_name,$func_name,$call_line,$arg_value1>
+    $fprintf<"work/info.txt","%s %s %s %d arg1='%s'\n",$func_context_path,$func_context_name,$func_name,$call_line,$arg_value1>
 }
