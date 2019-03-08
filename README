@@ -12,14 +12,20 @@ cd build-debug
 -----------------
 
 Then configure Aspectator as usual:
-----------------------------------------------------------------------------------------------
-MAKEINFO=missing ../aspectator/configure --enable-languages=c --disable-multilib --disable-nls
-----------------------------------------------------------------------------------------------
-and make the debug version of Aspectator (one can use option +-jN+ for +make+ to
-essentially speed up building):
+------------------------------------------------------------------------------------------------------------------------
+MAKEINFO=missing ../aspectator/configure --enable-languages=c --disable-multilib --disable-nls --enable-checking=release
+------------------------------------------------------------------------------------------------------------------------
+
+and make the debug version of Aspectator:
 ---------------------------------------
 make STAGE1_CFLAGS="-g3 -O0" all-stage1
 ---------------------------------------
+
+You can use option +-jN+ for +make+ to essentially speed up building, but it
+can cause failures (just invoke the command several times to overcome this):
+--------------------------------------------
+make -j16 STAGE1_CFLAGS="-g3 -O0" all-stage1
+--------------------------------------------
 
 After making some changes to files starting with _ldv-_ prefix it is strongly
 recommended to rebuild the debug version of Aspectator with +-Werror+ flag to
@@ -27,6 +33,11 @@ treat all warnings as errors:
 -----------------------------------------------
 make STAGE1_CFLAGS="-g3 -O0 -Werror" all-stage1
 -----------------------------------------------
+
+To debug Aspectator you can use +gdb+ or +ddd+:
+-------------
+ddd gcc/cc1 &
+-------------
 
 NOTE: These instructions were adapted from http://gcc.gnu.org/wiki/DebuggingGCC.
 
@@ -68,11 +79,7 @@ valkyrie -l output.xml
 Tracking CPU time issues of Aspectator
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-First of all you need to build a debug version of Aspectator but use another
-directory "build-profiled" and another build command:
-----------------------
-make profiledbootstrap
-----------------------
+First of all you need to build a debug version of Aspectator.
 
 Then you need to run Aspectator unber valgrind:
 -------------------------------------------

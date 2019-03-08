@@ -2,7 +2,6 @@
 bin/
 build/
 build-debug/
-build-profiled/
 # Tests
 tests/__pycache__
 tests/backup
