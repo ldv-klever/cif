@@ -1,0 +1,6 @@
+{
+  GCC-memory-leaks
+  Memcheck:Leak
+  ...
+  fun:*c_parser_peek_token*
+}
