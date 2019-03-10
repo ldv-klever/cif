@@ -63,7 +63,6 @@ valgrind \
 --tool=memcheck \
 --leak-check=yes \
 --suppressions=gcc.supp \
---gen-suppressions=all \
 --num-callers=500 \
 --xml=yes \
 --xml-file=output.xml \
