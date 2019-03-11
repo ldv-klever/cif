@@ -1,6 +1,20 @@
 {
-  GCC-memory-leaks
+  GCC-memory-leaks-1
   Memcheck:Leak
   ...
   fun:*c_parser_peek_token*
+}
+
+{
+  CPP-errors-1
+  Memcheck:Cond
+  ...
+  fun:*sparseset_bit_p*
+}
+
+{
+  CPP-errors-2
+  Memcheck:Value8
+  ...
+  fun:*sparseset_bit_p*
 }
