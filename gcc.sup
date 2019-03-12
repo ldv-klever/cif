@@ -18,3 +18,10 @@
   ...
   fun:*sparseset_bit_p*
 }
+
+{
+  CPP-memory-leaks-1
+  Memcheck:Leak
+  ...
+  fun:*_cpp_get_buff*
+}
