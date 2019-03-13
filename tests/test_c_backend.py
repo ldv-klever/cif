@@ -40,6 +40,14 @@ class TestCBackend(utils.CIFTestCase):
         self.cif.run(cif_input='input/c-backend/array.c', aspect='aspect/empty.aspect', cif_output='work/array.c')
         self.compare(output='work/array.c', expected='output/c-backend/array.c')
 
+    def test_array_zero_lenght(self):
+        self.cif.run(cif_input='input/c-backend/array-zero-lenght.c', aspect='aspect/empty.aspect', cif_output='work/array-zero-lenght.c')
+        self.compare(output='work/array-zero-lenght.c', expected='output/c-backend/array-zero-lenght.c')
+
+    def test_array_no_size(self):
+        self.cif.run(cif_input='input/c-backend/array-no-size.c', aspect='aspect/empty.aspect', cif_output='work/array-no-size.c')
+        self.compare(output='work/array-no-size.c', expected='output/c-backend/array-no-size.c')
+
     def test_transparent_union(self):
         self.cif.run(cif_input='input/c-backend/transparent_union.c', aspect='aspect/empty.aspect', cif_output='work/transparent_union.c')
         self.compare(output='work/transparent_union.c', expected='output/c-backend/transparent_union.c')
