@@ -1,3 +1,4 @@
+import os
 import unittest
 import utils
 
@@ -67,6 +68,12 @@ class TestCBackend(utils.CIFTestCase):
     def test_fix_trunc_expr(self):
         self.cif.run(cif_input='input/c-backend/fix-trunc-expr.c', aspect='aspect/empty.aspect', cif_output='work/fix-trunc-expr.c')
         self.compare(output='work/fix-trunc-expr.c', expected='output/c-backend/fix-trunc-expr.c')
+
+    def test_inline_asm_stub(self):
+        os.environ['LDV_INLINE_ASM_STUB'] = ''
+        self.cif.run(cif_input='input/c-backend/inline-asm-stub.c', aspect='aspect/empty.aspect', cif_output='work/inline-asm-stub.c')
+        del os.environ['LDV_INLINE_ASM_STUB']
+        self.compare(output='work/inline-asm-stub.c', expected='output/c-backend/inline-asm-stub.c')
 
     # Let's support vector types one day later.
     def _test_vector_type(self):
