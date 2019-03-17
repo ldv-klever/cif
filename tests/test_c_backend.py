@@ -79,6 +79,10 @@ class TestCBackend(utils.CIFTestCase):
         self.cif.run(cif_input='input/c-backend/builtin-overflow.c', aspect='aspect/empty.aspect', cif_output='work/builtin-overflow.c')
         self.compare(output='work/builtin-overflow.c', expected='output/c-backend/builtin-overflow.c')
 
+    def test_skip_save_expr(self):
+        self.cif.run(cif_input='input/c-backend/skip-save-expr.c', aspect='aspect/empty.aspect', cif_output='work/skip-save-expr.c', aspectator_opts=['-Os'])
+        self.compare(output='work/skip-save-expr.c', expected='output/c-backend/skip-save-expr.c')
+
     # Let's support vector types one day later.
     def _test_vector_type(self):
         self.cif.run(cif_input='input/c-backend/vector-type.c', aspect='aspect/empty.aspect', cif_output='work/vector-type.c')
