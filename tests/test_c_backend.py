@@ -75,6 +75,10 @@ class TestCBackend(utils.CIFTestCase):
         del os.environ['LDV_INLINE_ASM_STUB']
         self.compare(output='work/inline-asm-stub.c', expected='output/c-backend/inline-asm-stub.c')
 
+    def test_build_builtin_overflow(self):
+        self.cif.run(cif_input='input/c-backend/builtin-overflow.c', aspect='aspect/empty.aspect', cif_output='work/builtin-overflow.c')
+        self.compare(output='work/builtin-overflow.c', expected='output/c-backend/builtin-overflow.c')
+
     # Let's support vector types one day later.
     def _test_vector_type(self):
         self.cif.run(cif_input='input/c-backend/vector-type.c', aspect='aspect/empty.aspect', cif_output='work/vector-type.c')
