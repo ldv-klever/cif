@@ -83,6 +83,10 @@ class TestCBackend(utils.CIFTestCase):
         self.cif.run(cif_input='input/c-backend/skip-save-expr.c', aspect='aspect/empty.aspect', cif_output='work/skip-save-expr.c', aspectator_opts=['-Os'])
         self.compare(output='work/skip-save-expr.c', expected='output/c-backend/skip-save-expr.c')
 
+    def test_floatn(self):
+        self.cif.run(cif_input='input/c-backend/floatn.c', aspect='aspect/empty.aspect', cif_output='work/floatn.c')
+        self.compare(output='work/floatn.c', expected='output/c-backend/floatn.c')
+
     # Let's support vector types one day later.
     def _test_vector_type(self):
         self.cif.run(cif_input='input/c-backend/vector-type.c', aspect='aspect/empty.aspect', cif_output='work/vector-type.c')
