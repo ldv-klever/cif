@@ -87,6 +87,14 @@ class TestCBackend(utils.CIFTestCase):
         self.cif.run(cif_input='input/c-backend/floatn.c', aspect='aspect/empty.aspect', cif_output='work/floatn.c')
         self.compare(output='work/floatn.c', expected='output/c-backend/floatn.c')
 
+    def test_wide_char_str(self):
+        self.cif.run(cif_input='input/c-backend/wide-char-str.c', aspect='aspect/empty.aspect', cif_output='work/wide-char-str.c', aspectator_opts=['-DWCHAR_T=int'])
+        self.compare(output='work/wide-char-str.c', expected='output/c-backend/wide-char-str.c')
+
+    def test_short_wide_char_str(self):
+        self.cif.run(cif_input='input/c-backend/wide-char-str.c', aspect='aspect/empty.aspect', cif_output='work/short-wide-char-str.c', aspectator_opts=['-DWCHAR_T=unsigned short int', '-fshort-wchar'])
+        self.compare(output='work/short-wide-char-str.c', expected='output/c-backend/short-wide-char-str.c')
+
     # Let's support vector types one day later.
     def _test_vector_type(self):
         self.cif.run(cif_input='input/c-backend/vector-type.c', aspect='aspect/empty.aspect', cif_output='work/vector-type.c')
