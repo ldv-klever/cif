@@ -22,7 +22,7 @@ all: $(BIN_DIR)/cif
 	if [ ! -f $(BUILD_DIR)/Makefile ]; then \
 	  echo "Configure Aspectator for the first time"; \
 	  cd $(BUILD_DIR); \
-	  MAKEINFO=missing ../$(ASPECTATOR_SRC_DIR)/configure --prefix=$(CURDIR)/$(BIN_DIR)/$(ASPECTATOR_BIN_DIR) --enable-languages=c --disable-libsanitizer --disable-multilib --enable-checking=release $(ASPECTATOR_CONFIGURE_OPTS); \
+	  MAKEINFO=missing ../$(ASPECTATOR_SRC_DIR)/configure --prefix=$(CURDIR)/$(BIN_DIR)/$(ASPECTATOR_BIN_DIR) --enable-languages=c --disable-libsanitizer --disable-multilib --disable-bootstrap --enable-checking=release $(ASPECTATOR_CONFIGURE_OPTS); \
 	fi
 	@echo "Begin to (re)build Aspectator"
 	@if [[ -d $(UBUNTU_LIB) && ! -z LIBRARY_PATH ]]; then export LIBRARY_PATH=$(UBUNTU_LIB); fi
