@@ -104,5 +104,9 @@ class TestCBackend(utils.CIFTestCase):
         self.cif.run(cif_input='input/c-backend/multiple-decls.c', aspect='aspect/empty.aspect', cif_output='work/multiple-decls.c')
         self.compare(output='work/multiple-decls.c', expected='output/c-backend/multiple-decls.c')
 
+    def test_typedef_pointer(self):
+        self.cif.run(cif_input='input/c-backend/typedef-pointer.c', aspect='aspect/empty.aspect', cif_output='work/typedef-pointer.c')
+        self.compare(output='work/typedef-pointer.c', expected='output/c-backend/typedef-pointer.c')
+
 if __name__ == '__main__':
     unittest.main()
