@@ -108,5 +108,13 @@ class TestCBackend(utils.CIFTestCase):
         self.cif.run(cif_input='input/c-backend/typedef-pointer.c', aspect='aspect/empty.aspect', cif_output='work/typedef-pointer.c')
         self.compare(output='work/typedef-pointer.c', expected='output/c-backend/typedef-pointer.c')
 
+    def test_include1(self):
+        self.cif.run(cif_input='input/c-backend/include.c', aspect='aspect/empty.aspect', cif_output='work/include1.c', aspectator_opts=['-include', 'input/c-backend/include1.h'])
+        self.compare(output='work/include1.c', expected='output/c-backend/include1.c')
+
+    def test_include2(self):
+        self.cif.run(cif_input='input/c-backend/include.c', aspect='aspect/empty.aspect', cif_output='work/include2.c', aspectator_opts=['-include', 'input/c-backend/include1.h', '-include', 'input/c-backend/include2.h'])
+        self.compare(output='work/include2.c', expected='output/c-backend/include2.c')
+
 if __name__ == '__main__':
     unittest.main()

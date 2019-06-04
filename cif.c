@@ -432,7 +432,7 @@ static void perform_stages(void) {
         "instrumentation", "compilation", "C-backend"};
 
     /* Stage specific environment variables and options. */
-    char *stage_envs, *stage_envs_full, *stage_pre_opts, *stage_post_opts, *stage_opts_specific;
+    char *stage_envs, *stage_envs_full, *stage_pre_opts, *stage_post_opts, *stage_opts_specific, *pch;
 
     stages_len = sizeof(stages)/sizeof(stages[0]);
 
@@ -641,6 +641,81 @@ static void perform_stages(void) {
                 stage_post_opts = malloc(stage_post_opts_len + 1);
                 sprintf(stage_post_opts,
                     "-x c %s %s", stage_opts_specific, opts.compilation_opts);
+
+                /* Remove -include options since they cause repeating include of
+                 * headers that may cause build failures, e.g. due to type
+                 * redeclaration. Since it is the last stage, we can safely
+                 * overwrite options. */
+                if (options)
+                    pch = strstr(options, "\"-include\"");
+                else
+                    pch = NULL;
+
+                if (pch)
+                {
+                    char *new_options;
+                    const char *cur_start;
+                    int j;
+
+                    /* Original string length will be enough since we are going
+                     * to eclude some substrings from it. */
+                    new_options = malloc(strlen(options) + 1);
+
+                    /* Current start equals to beginning of former options. */
+                    cur_start = options;
+                    /* Current index of symbol within new options. */
+                    j = 0;
+
+                    while (1)
+                    {
+                        /* Copy characters between current start and pointer to
+                         * start of -include. */
+                        while (cur_start != pch)
+                        {
+                            new_options[j] = *cur_start;
+                            cur_start++;
+                            j++;
+                        }
+
+                        /* Skip -include and its mandatory value enclosed in
+                         * quotes. 12 = strlen("\"-include\" \"") */
+                        cur_start += 12;
+                        pch = strstr(cur_start, "\"");
+
+                        if (!pch)
+                        {
+                            fprintf(stderr, "Can't find double quote in '%s'.\n", cur_start);
+                            exit(-1);
+                        }
+
+                        /* Move to next symbol after -include value. */
+                        cur_start = pch + 1;
+
+                        /* Proceed to next -include if so. */
+                        pch = strstr(cur_start, "\"-include\"");
+
+                        /* Finish. */
+                        if (!pch)
+                        {
+                            /* Copy remaining general options. */
+                            while (1)
+                            {
+                                new_options[j] = *cur_start;
+
+                                if (*cur_start == '\0')
+                                    break;
+
+                                cur_start++;
+                                j++;
+                            }
+
+                            break;
+                        }
+                    }
+
+                    free(options);
+                    options = new_options;
+                }
             }
             /* At this stage input file is passed to C-backend. This likes back-end
              * 'src' for compilation stage.
