@@ -116,5 +116,9 @@ class TestCBackend(utils.CIFTestCase):
         self.cif.run(cif_input='input/c-backend/include.c', aspect='aspect/empty.aspect', cif_output='work/include2.c', aspectator_opts=['-include', 'input/c-backend/include1.h', '-include', 'input/c-backend/include2.h'])
         self.compare(output='work/include2.c', expected='output/c-backend/include2.c')
 
+    def test_pretty_func(self):
+        self.cif.run(cif_input='input/c-backend/pretty-func.c', aspect='aspect/empty.aspect', cif_output='work/pretty-func.c')
+        self.compare(output='work/pretty-func.c', expected='output/c-backend/pretty-func.c')
+
 if __name__ == '__main__':
     unittest.main()
