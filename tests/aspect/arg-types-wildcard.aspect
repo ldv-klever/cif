@@ -1,0 +1,7 @@
+around: execution(int func(.., int *))
+{
+}
+
+around: execution(int gunc(.., int *))
+{
+}
