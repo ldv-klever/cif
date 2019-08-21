@@ -1,2 +1,2 @@
-input/simple.c 30 CONST
-input/simple.c 40 ZERO
+input/simple.c 30 CONST input/simple.c 2
+input/simple.c 40 ZERO input/simple.c 3

@@ -1,6 +1,6 @@
 info: expand($) {
-    $fprintf<"work/info.txt","%s %d %s\n",$path,$line,$macro_name>
+    $fprintf<"work/info.txt","%s %d %s %s %d\n",$expansion_path,$expansion_line,$macro_name,$path,$line>
 }
 info: expand($(..)) {
-    $fprintf<"work/info.txt","%s %d %s\n",$path,$line,$macro_name>
+    $fprintf<"work/info.txt","%s %d %s %s %d\n",$expansion_path,$expansion_line,$macro_name,$path,$line>
 }
