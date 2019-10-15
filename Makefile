@@ -9,9 +9,16 @@ INSTALL_BIN_DIR = $(prefix)/bin
 # Workaround for "cannot find crti.o" error (only for x86-64 Ubuntu systems).
 UBUNTU_LIB = /usr/lib/x86_64-linux-gnu
 
+CONFIGURE_ARGS = --prefix=$(CURDIR)/$(BIN_DIR)/$(ASPECTATOR_BIN_DIR) --enable-languages=c --disable-libsanitizer --disable-multilib --enable-checking=release $(ASPECTATOR_CONFIGURE_OPTS)
+
+# System headers are no longer located in /usr/include on macOS >= Mojave
+CONFIGURE_ARGS_MACOS = --with-native-system-header-dir=/usr/include --with-sysroot=/Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk
+
 LN_FLAGS = "-srf"
 ifeq ($(shell uname), Darwin)
 	LN_FLAGS = "-sf"
+	# System headers are no longer located in /usr/include in macOS >= Mojave
+	CONFIGURE_ARGS += $(CONFIGURE_ARGS_MACOS)
 endif
 
 .PHONY: all install test clean
@@ -22,7 +29,7 @@ all: $(BIN_DIR)/cif
 	if [ ! -f $(BUILD_DIR)/Makefile ]; then \
 	  echo "Configure Aspectator for the first time"; \
 	  cd $(BUILD_DIR); \
-	  MAKEINFO=missing ../$(ASPECTATOR_SRC_DIR)/configure --prefix=$(CURDIR)/$(BIN_DIR)/$(ASPECTATOR_BIN_DIR) --enable-languages=c --disable-libsanitizer --disable-multilib --enable-checking=release $(ASPECTATOR_CONFIGURE_OPTS); \
+	  MAKEINFO=missing ../$(ASPECTATOR_SRC_DIR)/configure $(CONFIGURE_ARGS); \
 	fi
 	@echo "Begin to (re)build Aspectator"
 	@if [[ -d $(UBUNTU_LIB) && ! -z LIBRARY_PATH ]]; then export LIBRARY_PATH=$(UBUNTU_LIB); fi
