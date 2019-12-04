@@ -15,6 +15,10 @@ class TestLegacy(utils.CIFTestCase):
         self.cif.run(cif_input='input/legacy_type.c', aspect='aspect/legacy_type.aspect', cif_output='work/legacy_type.c')
         self.compare(output='work/legacy_type.c', expected='output/legacy_type.c')
 
+    def test_function(self):
+        self.cif.run(cif_input='input/legacy_function.c', aspect='aspect/legacy_function.aspect', cif_output='work/legacy_function.c')
+        self.compare(output='work/legacy_function.c', expected='output/legacy_function.c')
+
     def test_variable(self):
         self.cif.run(cif_input='input/legacy_variable.c', aspect='aspect/legacy_variable.aspect', cif_output='work/legacy_variable.c')
         self.compare(output='work/legacy_variable.c', expected='output/legacy_variable.c')
@@ -32,11 +36,6 @@ class TestLegacy(utils.CIFTestCase):
         # Aspectator failed at '4' stage
         self.cif.run(cif_input='input/legacy_simple.c', aspect='aspect/legacy_simple.aspect', cif_output='work/legacy_simple.c')
         self.compare(output='work/legacy_simple.c', expected='output/legacy_simple.c')
-
-    def not_test_function(self):
-        # Aspect file has incorrect syntax
-        self.cif.run(cif_input='input/legacy_function.c', aspect='aspect/legacy_function.aspect', cif_output='work/legacy_function.c')
-        self.compare(output='work/legacy_function.c', expected='output/legacy_function.c')
 
 
 if __name__ == '__main__':
