@@ -37,6 +37,9 @@ class TestLegacy(utils.CIFTestCase):
         self.cif.run(cif_input='input/legacy_simple.c', aspect='aspect/legacy_simple.aspect', cif_output='work/legacy_simple.c')
         self.compare(output='work/legacy_simple.c', expected='output/legacy_simple.c')
 
+    def test_aux_funcs(self):
+        self.cif.run(cif_input='input/aux-funcs.c', aspect='aspect/aux-funcs.aspect', cif_output='work/aux-funcs.c')
+        self.compare(output='work/aux-funcs.c', expected='output/aux-funcs.c')
 
 if __name__ == '__main__':
     unittest.main()
