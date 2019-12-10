@@ -8,18 +8,18 @@ typedef struct __va_list_tag __va_list_tag;
 int func(void);
 int func(void);
 #line 4 "input/aux-funcs.c"
-static int ldv_func(void);
+static int cif_func(void);
 #line 7 "input/aux-funcs.c"
 int gunc(void)
 {
-  ldv_func ( );
-  ldv_func ( );
+  cif_func ( );
+  cif_func ( );
 }
 #line 3 "work/aux-funcs.c.aux"
-static int ldv_func(void)
+static int cif_func(void)
 {
 #line 6 "work/aux-funcs.c.aux"
   return 1;
 #line 8 "work/aux-funcs.c.aux"
-  return ldv_func ( );
+  return cif_func ( );
 }
