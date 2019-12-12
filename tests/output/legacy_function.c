@@ -468,337 +468,337 @@ static inline void cif_a161(int arg1, double arg2)
 {
 }
 #line 3 "work/legacy_function.c.aux"
-static void a011(int arg)
+void a011(int arg)
 {
 #line 7 "work/legacy_function.c.aux"
   cif_a011 ( arg );
 }
 #line 11 "work/legacy_function.c.aux"
-static void a012(int arg)
+void a012(int arg)
 {
 #line 15 "work/legacy_function.c.aux"
   cif_a012 ( arg );
 }
 #line 19 "work/legacy_function.c.aux"
-static void a013(long long unsigned int const arg)
+void a013(long long unsigned int const arg)
 {
 #line 23 "work/legacy_function.c.aux"
   cif_a013 ( arg );
 }
 #line 27 "work/legacy_function.c.aux"
-static void a014(long double arg)
+void a014(long double arg)
 {
 #line 31 "work/legacy_function.c.aux"
   cif_a014 ( arg );
 }
 #line 35 "work/legacy_function.c.aux"
-static void *a020(int *arg)
+void *a020(int *arg)
 {
 #line 39 "work/legacy_function.c.aux"
   cif_a020 ( arg );
 }
 #line 43 "work/legacy_function.c.aux"
-static void a021(int *arg)
+void a021(int *arg)
 {
 #line 47 "work/legacy_function.c.aux"
   cif_a021 ( arg );
 }
 #line 51 "work/legacy_function.c.aux"
-static void a022(int *arg)
+void a022(int *arg)
 {
 #line 55 "work/legacy_function.c.aux"
   cif_a022 ( arg );
 }
 #line 59 "work/legacy_function.c.aux"
-static void a023(int *const *volatile arg)
+void a023(int *const *volatile arg)
 {
 #line 63 "work/legacy_function.c.aux"
   cif_a023 ( arg );
 }
 #line 67 "work/legacy_function.c.aux"
-static void a024(int *const *volatile arg)
+void a024(int *const *volatile arg)
 {
 #line 71 "work/legacy_function.c.aux"
   cif_a024 ( arg );
 }
 #line 75 "work/legacy_function.c.aux"
-static void a031(int *arg)
+void a031(int *arg)
 {
 #line 79 "work/legacy_function.c.aux"
   cif_a031 ( arg );
 }
 #line 83 "work/legacy_function.c.aux"
-static void a032(int *arg)
+void a032(int *arg)
 {
 #line 87 "work/legacy_function.c.aux"
   cif_a032 ( arg );
 }
 #line 91 "work/legacy_function.c.aux"
-static void a033(int (*arg)[20U][30U])
+void a033(int (*arg)[20U][30U])
 {
 #line 95 "work/legacy_function.c.aux"
   cif_a033 ( arg );
 }
 #line 99 "work/legacy_function.c.aux"
-static void a034(int (*arg)[20U][30U])
+void a034(int (*arg)[20U][30U])
 {
 #line 103 "work/legacy_function.c.aux"
   cif_a034 ( arg );
 }
 #line 107 "work/legacy_function.c.aux"
-static void a041(int **arg)
+void a041(int **arg)
 {
 #line 111 "work/legacy_function.c.aux"
   cif_a041 ( arg );
 }
 #line 115 "work/legacy_function.c.aux"
-static void a042(int **arg)
+void a042(int **arg)
 {
 #line 119 "work/legacy_function.c.aux"
   cif_a042 ( arg );
 }
 #line 123 "work/legacy_function.c.aux"
-static void a043(int *const *volatile (*arg)[20U][30U])
+void a043(int *const *volatile (*arg)[20U][30U])
 {
 #line 127 "work/legacy_function.c.aux"
   cif_a043 ( arg );
 }
 #line 131 "work/legacy_function.c.aux"
-static void a044(int *const *volatile (*arg)[20U][30U])
+void a044(int *const *volatile (*arg)[20U][30U])
 {
 #line 135 "work/legacy_function.c.aux"
   cif_a044 ( arg );
 }
 #line 139 "work/legacy_function.c.aux"
-static void a051(int (*arg)[10U])
+void a051(int (*arg)[10U])
 {
 #line 143 "work/legacy_function.c.aux"
   cif_a051 ( arg );
 }
 #line 147 "work/legacy_function.c.aux"
-static void a052(int (*arg)[10U])
+void a052(int (*arg)[10U])
 {
 #line 151 "work/legacy_function.c.aux"
   cif_a052 ( arg );
 }
 #line 155 "work/legacy_function.c.aux"
-static void a053(int (*const *volatile arg)[10U][20U][30U])
+void a053(int (*const *volatile arg)[10U][20U][30U])
 {
 #line 159 "work/legacy_function.c.aux"
   cif_a053 ( arg );
 }
 #line 163 "work/legacy_function.c.aux"
-static void a054(int (*const *volatile arg)[10U][20U][30U])
+void a054(int (*const *volatile arg)[10U][20U][30U])
 {
 #line 167 "work/legacy_function.c.aux"
   cif_a054 ( arg );
 }
 #line 171 "work/legacy_function.c.aux"
-static void a061(int **(*arg)[10U])
+void a061(int **(*arg)[10U])
 {
 #line 175 "work/legacy_function.c.aux"
   cif_a061 ( arg );
 }
 #line 179 "work/legacy_function.c.aux"
-static void a062(int **(*arg)[10U])
+void a062(int **(*arg)[10U])
 {
 #line 183 "work/legacy_function.c.aux"
   cif_a062 ( arg );
 }
 #line 187 "work/legacy_function.c.aux"
-static void a063(int *const *volatile (*const *volatile arg)[10U][20U][30U])
+void a063(int *const *volatile (*const *volatile arg)[10U][20U][30U])
 {
 #line 191 "work/legacy_function.c.aux"
   cif_a063 ( arg );
 }
 #line 195 "work/legacy_function.c.aux"
-static void a064(int *const *volatile (*const *volatile arg)[10U][20U][30U])
+void a064(int *const *volatile (*const *volatile arg)[10U][20U][30U])
 {
 #line 199 "work/legacy_function.c.aux"
   cif_a064 ( arg );
 }
 #line 203 "work/legacy_function.c.aux"
-static void a071(int (*arg)(void))
+void a071(int (*arg)(void))
 {
 #line 207 "work/legacy_function.c.aux"
   cif_a071 ( arg );
 }
 #line 211 "work/legacy_function.c.aux"
-static void a072(int (*arg)(void))
+void a072(int (*arg)(void))
 {
 #line 215 "work/legacy_function.c.aux"
   cif_a072 ( arg );
 }
 #line 219 "work/legacy_function.c.aux"
-static void a073(int (*const arg)(void))
+void a073(int (*const arg)(void))
 {
 #line 223 "work/legacy_function.c.aux"
   cif_a073 ( arg );
 }
 #line 227 "work/legacy_function.c.aux"
-static void a074(int (*const arg)(void))
+void a074(int (*const arg)(void))
 {
 #line 231 "work/legacy_function.c.aux"
   cif_a074 ( arg );
 }
 #line 235 "work/legacy_function.c.aux"
-static void a081(int **(*arg)(void))
+void a081(int **(*arg)(void))
 {
 #line 239 "work/legacy_function.c.aux"
   cif_a081 ( arg );
 }
 #line 243 "work/legacy_function.c.aux"
-static void a082(int **(*arg)(void))
+void a082(int **(*arg)(void))
 {
 #line 247 "work/legacy_function.c.aux"
   cif_a082 ( arg );
 }
 #line 251 "work/legacy_function.c.aux"
-static void a083(int *const *volatile *(*const arg)(void))
+void a083(int *const *volatile *(*const arg)(void))
 {
 #line 255 "work/legacy_function.c.aux"
   cif_a083 ( arg );
 }
 #line 259 "work/legacy_function.c.aux"
-static void a084(int *const *volatile *(*const arg)(void))
+void a084(int *const *volatile *(*const arg)(void))
 {
 #line 263 "work/legacy_function.c.aux"
   cif_a084 ( arg );
 }
 #line 267 "work/legacy_function.c.aux"
-static void a091(int (**arg)(void))
+void a091(int (**arg)(void))
 {
 #line 271 "work/legacy_function.c.aux"
   cif_a091 ( arg );
 }
 #line 275 "work/legacy_function.c.aux"
-static void a092(int (**arg)(void))
+void a092(int (**arg)(void))
 {
 #line 279 "work/legacy_function.c.aux"
   cif_a092 ( arg );
 }
 #line 283 "work/legacy_function.c.aux"
-static void a093(int (*const (*arg)[20U][30U])(void))
+void a093(int (*const (*arg)[20U][30U])(void))
 {
 #line 287 "work/legacy_function.c.aux"
   cif_a093 ( arg );
 }
 #line 291 "work/legacy_function.c.aux"
-static void a094(int (*const (*arg)[20U][30U])(void))
+void a094(int (*const (*arg)[20U][30U])(void))
 {
 #line 295 "work/legacy_function.c.aux"
   cif_a094 ( arg );
 }
 #line 299 "work/legacy_function.c.aux"
-static void a101(int **(**arg)(void))
+void a101(int **(**arg)(void))
 {
 #line 303 "work/legacy_function.c.aux"
   cif_a101 ( arg );
 }
 #line 307 "work/legacy_function.c.aux"
-static void a102(int **(**arg)(void))
+void a102(int **(**arg)(void))
 {
 #line 311 "work/legacy_function.c.aux"
   cif_a102 ( arg );
 }
 #line 315 "work/legacy_function.c.aux"
-static void a103(int *const *volatile *(*const *const volatile *(*arg)[20U][30U])(void))
+void a103(int *const *volatile *(*const *const volatile *(*arg)[20U][30U])(void))
 {
 #line 319 "work/legacy_function.c.aux"
   cif_a103 ( arg );
 }
 #line 323 "work/legacy_function.c.aux"
-static void a104(int *const *volatile *(*const *const volatile *(*arg)[20U][30U])(void))
+void a104(int *const *volatile *(*const *const volatile *(*arg)[20U][30U])(void))
 {
 #line 327 "work/legacy_function.c.aux"
   cif_a104 ( arg );
 }
 #line 331 "work/legacy_function.c.aux"
-static void (*a110(void))(void)
+void (*a110(void))(void)
 {
 #line 335 "work/legacy_function.c.aux"
   cif_a110 ( );
 }
 #line 339 "work/legacy_function.c.aux"
-static void a111(int (*(*arg)(void))(void))
+void a111(int (*(*arg)(void))(void))
 {
 #line 343 "work/legacy_function.c.aux"
   cif_a111 ( arg );
 }
 #line 347 "work/legacy_function.c.aux"
-static void a112(int (*(*arg)(void))(void))
+void a112(int (*(*arg)(void))(void))
 {
 #line 351 "work/legacy_function.c.aux"
   cif_a112 ( arg );
 }
 #line 355 "work/legacy_function.c.aux"
-static void a113(int (*const *(*arg)(void))(void))
+void a113(int (*const *(*arg)(void))(void))
 {
 #line 359 "work/legacy_function.c.aux"
   cif_a113 ( arg );
 }
 #line 363 "work/legacy_function.c.aux"
-static void a114(int (*const *(*arg)(void))(void))
+void a114(int (*const *(*arg)(void))(void))
 {
 #line 367 "work/legacy_function.c.aux"
   cif_a114 ( arg );
 }
 #line 371 "work/legacy_function.c.aux"
-static void **(*a120(void))(void)
+void **(*a120(void))(void)
 {
 #line 375 "work/legacy_function.c.aux"
   cif_a120 ( );
 }
 #line 379 "work/legacy_function.c.aux"
-static void a121(int **(*(*arg)(void))(void))
+void a121(int **(*(*arg)(void))(void))
 {
 #line 383 "work/legacy_function.c.aux"
   cif_a121 ( arg );
 }
 #line 387 "work/legacy_function.c.aux"
-static void a122(int **(*(*arg)(void))(void))
+void a122(int **(*(*arg)(void))(void))
 {
 #line 391 "work/legacy_function.c.aux"
   cif_a122 ( arg );
 }
 #line 395 "work/legacy_function.c.aux"
-static void a123(int *const volatile *(*const *(*arg)(void))(void))
+void a123(int *const volatile *(*const *(*arg)(void))(void))
 {
 #line 399 "work/legacy_function.c.aux"
   cif_a123 ( arg );
 }
 #line 403 "work/legacy_function.c.aux"
-static void a124(int *const volatile *(*const *(*arg)(void))(void))
+void a124(int *const volatile *(*const *(*arg)(void))(void))
 {
 #line 407 "work/legacy_function.c.aux"
   cif_a124 ( arg );
 }
 #line 411 "work/legacy_function.c.aux"
-static void a131(int arg1, double arg2)
+void a131(int arg1, double arg2)
 {
 #line 415 "work/legacy_function.c.aux"
   cif_a131 ( arg1 , arg2 );
 }
 #line 419 "work/legacy_function.c.aux"
-static void a132(int arg1, double arg2)
+void a132(int arg1, double arg2)
 {
 #line 423 "work/legacy_function.c.aux"
   cif_a132 ( arg1 , arg2 );
 }
 #line 427 "work/legacy_function.c.aux"
-static void a133(int *const *volatile *(*const *volatile *arg1)[10U][20U][30U], int *const *volatile *(*const *const volatile *(*arg2)[20U][30U])(void))
+void a133(int *const *volatile *(*const *volatile *arg1)[10U][20U][30U], int *const *volatile *(*const *const volatile *(*arg2)[20U][30U])(void))
 {
 #line 431 "work/legacy_function.c.aux"
   cif_a133 ( arg1 , arg2 );
 }
 #line 435 "work/legacy_function.c.aux"
-static void a134(int *const *volatile *(*const *volatile *arg1)[10U][20U][30U], int *const *volatile *(*const *const volatile *(*arg2)[20U][30U])(void))
+void a134(int *const *volatile *(*const *volatile *arg1)[10U][20U][30U], int *const *volatile *(*const *const volatile *(*arg2)[20U][30U])(void))
 {
 #line 439 "work/legacy_function.c.aux"
   cif_a134 ( arg1 , arg2 );
 }
 #line 443 "work/legacy_function.c.aux"
-static inline void a141(int arg1, double arg2)
+inline void a141(int arg1, double arg2)
 {
 #line 447 "work/legacy_function.c.aux"
   cif_a141 ( arg1 , arg2 );
