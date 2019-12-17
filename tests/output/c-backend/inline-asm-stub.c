@@ -4,7 +4,6 @@
 #define LDV_LROTATE(X,Y) (((X) << (Y)) | ((X) >> (__CHAR_BIT__ * sizeof (X) - Y)))
 #define LDV_RROTATE(X,Y) (((X) >> (Y)) | ((X) << (__CHAR_BIT__ * sizeof (X) - Y)))
 typedef struct __va_list_tag __va_list_tag;
-void ldv_inline_asm(void);
 #line 1 "input/c-backend/inline-asm-stub.c"
 short int add(short int *n)
 {
