@@ -467,296 +467,353 @@ static void a151(int arg1, double arg2);
 static inline void cif_a161(int arg1, double arg2)
 {
 }
-#line 1 "work/legacy_function.c.aux"
+#line 3 "work/legacy_function.c.aux"
 void a011(int arg)
 {
-#line 5 "work/legacy_function.c.aux"
+#line 7 "work/legacy_function.c.aux"
   cif_a011 ( arg );
 }
+#line 11 "work/legacy_function.c.aux"
 void a012(int arg)
 {
-#line 11 "work/legacy_function.c.aux"
+#line 15 "work/legacy_function.c.aux"
   cif_a012 ( arg );
 }
+#line 19 "work/legacy_function.c.aux"
 void a013(long long unsigned int const arg)
 {
-#line 17 "work/legacy_function.c.aux"
+#line 23 "work/legacy_function.c.aux"
   cif_a013 ( arg );
 }
+#line 27 "work/legacy_function.c.aux"
 void a014(long double arg)
 {
-#line 23 "work/legacy_function.c.aux"
+#line 31 "work/legacy_function.c.aux"
   cif_a014 ( arg );
 }
+#line 35 "work/legacy_function.c.aux"
 void *a020(int *arg)
 {
-#line 29 "work/legacy_function.c.aux"
+#line 39 "work/legacy_function.c.aux"
   cif_a020 ( arg );
 }
+#line 43 "work/legacy_function.c.aux"
 void a021(int *arg)
 {
-#line 35 "work/legacy_function.c.aux"
+#line 47 "work/legacy_function.c.aux"
   cif_a021 ( arg );
 }
+#line 51 "work/legacy_function.c.aux"
 void a022(int *arg)
 {
-#line 41 "work/legacy_function.c.aux"
+#line 55 "work/legacy_function.c.aux"
   cif_a022 ( arg );
 }
+#line 59 "work/legacy_function.c.aux"
 void a023(int *const *volatile arg)
 {
-#line 47 "work/legacy_function.c.aux"
+#line 63 "work/legacy_function.c.aux"
   cif_a023 ( arg );
 }
+#line 67 "work/legacy_function.c.aux"
 void a024(int *const *volatile arg)
 {
-#line 53 "work/legacy_function.c.aux"
+#line 71 "work/legacy_function.c.aux"
   cif_a024 ( arg );
 }
+#line 75 "work/legacy_function.c.aux"
 void a031(int *arg)
 {
-#line 59 "work/legacy_function.c.aux"
+#line 79 "work/legacy_function.c.aux"
   cif_a031 ( arg );
 }
+#line 83 "work/legacy_function.c.aux"
 void a032(int *arg)
 {
-#line 65 "work/legacy_function.c.aux"
+#line 87 "work/legacy_function.c.aux"
   cif_a032 ( arg );
 }
+#line 91 "work/legacy_function.c.aux"
 void a033(int (*arg)[20U][30U])
 {
-#line 71 "work/legacy_function.c.aux"
+#line 95 "work/legacy_function.c.aux"
   cif_a033 ( arg );
 }
+#line 99 "work/legacy_function.c.aux"
 void a034(int (*arg)[20U][30U])
 {
-#line 77 "work/legacy_function.c.aux"
+#line 103 "work/legacy_function.c.aux"
   cif_a034 ( arg );
 }
+#line 107 "work/legacy_function.c.aux"
 void a041(int **arg)
 {
-#line 83 "work/legacy_function.c.aux"
+#line 111 "work/legacy_function.c.aux"
   cif_a041 ( arg );
 }
+#line 115 "work/legacy_function.c.aux"
 void a042(int **arg)
 {
-#line 89 "work/legacy_function.c.aux"
+#line 119 "work/legacy_function.c.aux"
   cif_a042 ( arg );
 }
+#line 123 "work/legacy_function.c.aux"
 void a043(int *const *volatile (*arg)[20U][30U])
 {
-#line 95 "work/legacy_function.c.aux"
+#line 127 "work/legacy_function.c.aux"
   cif_a043 ( arg );
 }
+#line 131 "work/legacy_function.c.aux"
 void a044(int *const *volatile (*arg)[20U][30U])
 {
-#line 101 "work/legacy_function.c.aux"
+#line 135 "work/legacy_function.c.aux"
   cif_a044 ( arg );
 }
+#line 139 "work/legacy_function.c.aux"
 void a051(int (*arg)[10U])
 {
-#line 107 "work/legacy_function.c.aux"
+#line 143 "work/legacy_function.c.aux"
   cif_a051 ( arg );
 }
+#line 147 "work/legacy_function.c.aux"
 void a052(int (*arg)[10U])
 {
-#line 113 "work/legacy_function.c.aux"
+#line 151 "work/legacy_function.c.aux"
   cif_a052 ( arg );
 }
+#line 155 "work/legacy_function.c.aux"
 void a053(int (*const *volatile arg)[10U][20U][30U])
 {
-#line 119 "work/legacy_function.c.aux"
+#line 159 "work/legacy_function.c.aux"
   cif_a053 ( arg );
 }
+#line 163 "work/legacy_function.c.aux"
 void a054(int (*const *volatile arg)[10U][20U][30U])
 {
-#line 125 "work/legacy_function.c.aux"
+#line 167 "work/legacy_function.c.aux"
   cif_a054 ( arg );
 }
+#line 171 "work/legacy_function.c.aux"
 void a061(int **(*arg)[10U])
 {
-#line 131 "work/legacy_function.c.aux"
+#line 175 "work/legacy_function.c.aux"
   cif_a061 ( arg );
 }
+#line 179 "work/legacy_function.c.aux"
 void a062(int **(*arg)[10U])
 {
-#line 137 "work/legacy_function.c.aux"
+#line 183 "work/legacy_function.c.aux"
   cif_a062 ( arg );
 }
+#line 187 "work/legacy_function.c.aux"
 void a063(int *const *volatile (*const *volatile arg)[10U][20U][30U])
 {
-#line 143 "work/legacy_function.c.aux"
+#line 191 "work/legacy_function.c.aux"
   cif_a063 ( arg );
 }
+#line 195 "work/legacy_function.c.aux"
 void a064(int *const *volatile (*const *volatile arg)[10U][20U][30U])
 {
-#line 149 "work/legacy_function.c.aux"
+#line 199 "work/legacy_function.c.aux"
   cif_a064 ( arg );
 }
+#line 203 "work/legacy_function.c.aux"
 void a071(int (*arg)(void))
 {
-#line 155 "work/legacy_function.c.aux"
+#line 207 "work/legacy_function.c.aux"
   cif_a071 ( arg );
 }
+#line 211 "work/legacy_function.c.aux"
 void a072(int (*arg)(void))
 {
-#line 161 "work/legacy_function.c.aux"
+#line 215 "work/legacy_function.c.aux"
   cif_a072 ( arg );
 }
+#line 219 "work/legacy_function.c.aux"
 void a073(int (*const arg)(void))
 {
-#line 167 "work/legacy_function.c.aux"
+#line 223 "work/legacy_function.c.aux"
   cif_a073 ( arg );
 }
+#line 227 "work/legacy_function.c.aux"
 void a074(int (*const arg)(void))
 {
-#line 173 "work/legacy_function.c.aux"
+#line 231 "work/legacy_function.c.aux"
   cif_a074 ( arg );
 }
+#line 235 "work/legacy_function.c.aux"
 void a081(int **(*arg)(void))
 {
-#line 179 "work/legacy_function.c.aux"
+#line 239 "work/legacy_function.c.aux"
   cif_a081 ( arg );
 }
+#line 243 "work/legacy_function.c.aux"
 void a082(int **(*arg)(void))
 {
-#line 185 "work/legacy_function.c.aux"
+#line 247 "work/legacy_function.c.aux"
   cif_a082 ( arg );
 }
+#line 251 "work/legacy_function.c.aux"
 void a083(int *const *volatile *(*const arg)(void))
 {
-#line 191 "work/legacy_function.c.aux"
+#line 255 "work/legacy_function.c.aux"
   cif_a083 ( arg );
 }
+#line 259 "work/legacy_function.c.aux"
 void a084(int *const *volatile *(*const arg)(void))
 {
-#line 197 "work/legacy_function.c.aux"
+#line 263 "work/legacy_function.c.aux"
   cif_a084 ( arg );
 }
+#line 267 "work/legacy_function.c.aux"
 void a091(int (**arg)(void))
 {
-#line 203 "work/legacy_function.c.aux"
+#line 271 "work/legacy_function.c.aux"
   cif_a091 ( arg );
 }
+#line 275 "work/legacy_function.c.aux"
 void a092(int (**arg)(void))
 {
-#line 209 "work/legacy_function.c.aux"
+#line 279 "work/legacy_function.c.aux"
   cif_a092 ( arg );
 }
+#line 283 "work/legacy_function.c.aux"
 void a093(int (*const (*arg)[20U][30U])(void))
 {
-#line 215 "work/legacy_function.c.aux"
+#line 287 "work/legacy_function.c.aux"
   cif_a093 ( arg );
 }
+#line 291 "work/legacy_function.c.aux"
 void a094(int (*const (*arg)[20U][30U])(void))
 {
-#line 221 "work/legacy_function.c.aux"
+#line 295 "work/legacy_function.c.aux"
   cif_a094 ( arg );
 }
+#line 299 "work/legacy_function.c.aux"
 void a101(int **(**arg)(void))
 {
-#line 227 "work/legacy_function.c.aux"
+#line 303 "work/legacy_function.c.aux"
   cif_a101 ( arg );
 }
+#line 307 "work/legacy_function.c.aux"
 void a102(int **(**arg)(void))
 {
-#line 233 "work/legacy_function.c.aux"
+#line 311 "work/legacy_function.c.aux"
   cif_a102 ( arg );
 }
+#line 315 "work/legacy_function.c.aux"
 void a103(int *const *volatile *(*const *const volatile *(*arg)[20U][30U])(void))
 {
-#line 239 "work/legacy_function.c.aux"
+#line 319 "work/legacy_function.c.aux"
   cif_a103 ( arg );
 }
+#line 323 "work/legacy_function.c.aux"
 void a104(int *const *volatile *(*const *const volatile *(*arg)[20U][30U])(void))
 {
-#line 245 "work/legacy_function.c.aux"
+#line 327 "work/legacy_function.c.aux"
   cif_a104 ( arg );
 }
+#line 331 "work/legacy_function.c.aux"
 void (*a110(void))(void)
 {
-#line 251 "work/legacy_function.c.aux"
+#line 335 "work/legacy_function.c.aux"
   cif_a110 ( );
 }
+#line 339 "work/legacy_function.c.aux"
 void a111(int (*(*arg)(void))(void))
 {
-#line 257 "work/legacy_function.c.aux"
+#line 343 "work/legacy_function.c.aux"
   cif_a111 ( arg );
 }
+#line 347 "work/legacy_function.c.aux"
 void a112(int (*(*arg)(void))(void))
 {
-#line 263 "work/legacy_function.c.aux"
+#line 351 "work/legacy_function.c.aux"
   cif_a112 ( arg );
 }
+#line 355 "work/legacy_function.c.aux"
 void a113(int (*const *(*arg)(void))(void))
 {
-#line 269 "work/legacy_function.c.aux"
+#line 359 "work/legacy_function.c.aux"
   cif_a113 ( arg );
 }
+#line 363 "work/legacy_function.c.aux"
 void a114(int (*const *(*arg)(void))(void))
 {
-#line 275 "work/legacy_function.c.aux"
+#line 367 "work/legacy_function.c.aux"
   cif_a114 ( arg );
 }
+#line 371 "work/legacy_function.c.aux"
 void **(*a120(void))(void)
 {
-#line 281 "work/legacy_function.c.aux"
+#line 375 "work/legacy_function.c.aux"
   cif_a120 ( );
 }
+#line 379 "work/legacy_function.c.aux"
 void a121(int **(*(*arg)(void))(void))
 {
-#line 287 "work/legacy_function.c.aux"
+#line 383 "work/legacy_function.c.aux"
   cif_a121 ( arg );
 }
+#line 387 "work/legacy_function.c.aux"
 void a122(int **(*(*arg)(void))(void))
 {
-#line 293 "work/legacy_function.c.aux"
+#line 391 "work/legacy_function.c.aux"
   cif_a122 ( arg );
 }
+#line 395 "work/legacy_function.c.aux"
 void a123(int *const volatile *(*const *(*arg)(void))(void))
 {
-#line 299 "work/legacy_function.c.aux"
+#line 399 "work/legacy_function.c.aux"
   cif_a123 ( arg );
 }
+#line 403 "work/legacy_function.c.aux"
 void a124(int *const volatile *(*const *(*arg)(void))(void))
 {
-#line 305 "work/legacy_function.c.aux"
+#line 407 "work/legacy_function.c.aux"
   cif_a124 ( arg );
 }
+#line 411 "work/legacy_function.c.aux"
 void a131(int arg1, double arg2)
 {
-#line 311 "work/legacy_function.c.aux"
+#line 415 "work/legacy_function.c.aux"
   cif_a131 ( arg1 , arg2 );
 }
+#line 419 "work/legacy_function.c.aux"
 void a132(int arg1, double arg2)
 {
-#line 317 "work/legacy_function.c.aux"
+#line 423 "work/legacy_function.c.aux"
   cif_a132 ( arg1 , arg2 );
 }
+#line 427 "work/legacy_function.c.aux"
 void a133(int *const *volatile *(*const *volatile *arg1)[10U][20U][30U], int *const *volatile *(*const *const volatile *(*arg2)[20U][30U])(void))
 {
-#line 323 "work/legacy_function.c.aux"
+#line 431 "work/legacy_function.c.aux"
   cif_a133 ( arg1 , arg2 );
 }
+#line 435 "work/legacy_function.c.aux"
 void a134(int *const *volatile *(*const *volatile *arg1)[10U][20U][30U], int *const *volatile *(*const *const volatile *(*arg2)[20U][30U])(void))
 {
-#line 329 "work/legacy_function.c.aux"
+#line 439 "work/legacy_function.c.aux"
   cif_a134 ( arg1 , arg2 );
 }
+#line 443 "work/legacy_function.c.aux"
 inline void a141(int arg1, double arg2)
 {
-#line 335 "work/legacy_function.c.aux"
+#line 447 "work/legacy_function.c.aux"
   cif_a141 ( arg1 , arg2 );
 }
+#line 451 "work/legacy_function.c.aux"
 static void a151(int arg1, double arg2)
 {
-#line 341 "work/legacy_function.c.aux"
+#line 455 "work/legacy_function.c.aux"
   cif_a151 ( arg1 , arg2 );
 }
+#line 459 "work/legacy_function.c.aux"
 static inline void a161(int arg1, double arg2)
 {
-#line 347 "work/legacy_function.c.aux"
+#line 463 "work/legacy_function.c.aux"
   int cif_a161();
-#line 347 "work/legacy_function.c.aux"
+#line 463 "work/legacy_function.c.aux"
   cif_a161 ( arg1 , arg2 );
 }

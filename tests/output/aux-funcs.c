@@ -15,11 +15,11 @@ int gunc(void)
   cif_func ( );
   cif_func ( );
 }
-#line 1 "work/aux-funcs.c.aux"
+#line 3 "work/aux-funcs.c.aux"
 static int cif_func(void)
 {
-#line 4 "work/aux-funcs.c.aux"
-  return 1;
 #line 6 "work/aux-funcs.c.aux"
+  return 1;
+#line 8 "work/aux-funcs.c.aux"
   return cif_func ( );
 }
