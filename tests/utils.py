@@ -63,13 +63,20 @@ class CIFTestCase(unittest.TestCase):
             shutil.copy(output, expected)
             return
 
-        output_str = self._read_file_to_str(output)
-        expected_str = self._read_file_to_str(expected)
+        output_str_list = self._read_file_to_str_list(output)
+        expected_str_list = self._read_file_to_str_list(expected)
+
+        # ignore line directives since they may contain absolute paths
+        output_str_list = [line for line in output_str_list if not line.startswith("#line")]
+        expected_str_list = [line for line in expected_str_list if not line.startswith("#line")]
+
+        output_str = ''.join(output_str_list)
+        expected_str = ''.join(expected_str_list)
 
         self.assertEqual(expected_str, output_str)
 
     def check_cif_status(self):
-        if self.cif and self.cif.status is not 0:
+        if self.cif and self.cif.status != 0:
             print('\n', 'CMD:', self.cif.cmd, '\n')
             print('LOG:', self.cif.log, '\n')
             self.assertEqual(self.cif.status, 0)
@@ -91,12 +98,12 @@ class CIFTestCase(unittest.TestCase):
             for line in lines:
                 fp.write(line.replace(os.getcwd() + os.path.sep, ''))
 
-    def _read_file_to_str(self, file):
+    def _read_file_to_str_list(self, file):
         if not os.path.exists(file):
             self.fail('File {} does not exist.'.format(file))
 
         with open(file, 'r') as file_fh:
-            return ''.join(file_fh.readlines())
+            return file_fh.readlines()
 
     def _backup_work_dir(self):
         self.backup = 'backup/' + self._testMethodName
