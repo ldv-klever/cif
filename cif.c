@@ -726,7 +726,7 @@ static void perform_stages(void) {
                 /* Print output using such the way instead of the standard one. */
                 stage_envs_len = strlen("LDV_C_BACKEND_OUT=") + strlen(out);
                 stage_envs = malloc(stage_envs_len + 1);
-                sprintf(stage_post_opts, "LDV_C_BACKEND_OUT=%s", out);
+                sprintf(stage_envs, "LDV_C_BACKEND_OUT=%s", out);
             }
 
         }
@@ -821,6 +821,7 @@ static void perform_stages(void) {
 
         if (strcmp(stages[i], "C-backend")) {
             free(stage_envs_full);
+            free(stage_post_opts);
         }
 
         if ((!strcmp(stages[i], "compilation") && !strcmp(opts.back_end, "src"))
@@ -837,7 +838,6 @@ static void perform_stages(void) {
             free(stage_pre_opts);
         if (strcmp(options, ""))
             free(options);
-        free(stage_post_opts);
         free(aux_base);
         free(aspect_preprocessed);
 
