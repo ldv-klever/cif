@@ -20,5 +20,6 @@ class TestInfoInitGlobal(utils.CIFTestCase):
         self.cif.run(cif_input='input/large_array.c', aspect='aspect/info_init_list.aspect', stage='instrumentation')
         self.compare(output='work/info.txt', expected='output/large_array_call_info_init_list.txt')
 
+
 if __name__ == '__main__':
     unittest.main()

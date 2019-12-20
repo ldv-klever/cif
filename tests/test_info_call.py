@@ -18,5 +18,6 @@ class TestInfoCall(utils.CIFTestCase):
         self.make_relpath('work/info.txt')
         self.compare(output='work/info.txt', expected='output/actual_arg_func_names.txt')
 
+
 if __name__ == '__main__':
     unittest.main()
