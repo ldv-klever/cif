@@ -8,15 +8,17 @@ WORK_DIR = 'work'
 
 class CIFTestCase(unittest.TestCase):
     class CIF():
-        def run(self, cif_input, aspect, cif_output=WORK_DIR + '/a.out', stage='compilation', back_end='src', aspectator_opts=None):
+        def run(self, cif_input, aspect=None, cif_output=WORK_DIR + '/a.out', stage='compilation', back_end='src', aspectator_opts=None):
             self.cmd = ['../bin/cif',
                         '--in', cif_input,
-                        '--aspect', aspect,
                         '--back-end', back_end,
                         '--stage', stage,
                         '--out', cif_output,
                         '--debug', 'ALL',
                         '--keep']
+
+            if aspect:
+                self.cmd.extend(['--aspect', aspect])
 
             if aspectator_opts:
                 self.cmd.append('--')
