@@ -2,7 +2,10 @@
 bin/
 build/
 build-debug/
+
 # Tests
 tests/__pycache__
+tests/.mypy_cache
+tests/.pytest_cache
 tests/backup
 tests/work
