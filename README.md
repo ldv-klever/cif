@@ -1,4 +1,37 @@
-# C Instrumentation Framework Developer Guide
+# C Instrumentation Framework
+
+## Build dependencies
+
+To build CIF you will need the following packages:
+
+* make
+* lbzip2
+* patch
+* gcc
+* g++
+* flex
+* bison
+* libc6-dev-i386
+
+## Build and Install
+
+First you need to download archives with the source code of some prerequisites needed by GCC (gmp, mpfr, mpc and isl):
+
+    cd aspectator
+    ./contrib/download_prerequisites
+    
+Then return back to the root of the repository and simply execute _make_:
+
+    cd ..
+    make
+    
+You can use option _-jN_ for _make_ to significantly speed up building:
+
+    make -j16
+
+After successful build you may install CIF to the directory of your choosing:
+
+    prefix=~/work/inst/cif make install
 
 ## Building Debug Version of Aspectator
 
@@ -8,7 +41,6 @@ it, say:
     mkdir build-debug
     cd build-debug
 
-
 Then configure Aspectator as usual:
 
     MAKEINFO=missing ../aspectator/configure --enable-languages=c --disable-multilib --disable-nls --enable-checking=release
@@ -17,7 +49,7 @@ and make the debug version of Aspectator:
 
     make STAGE1_CXXFLAGS="-g -O0" all-stage1
 
-You can use option +-jN+ for +make+ to essentially speed up building, but it
+You can use option _-jN_ for _make_ to essentially speed up building, but it
 can cause failures (just invoke the command several times to overcome this):
 
     make -j16 STAGE1_CXXFLAGS="-g -O0" all-stage1
