@@ -724,9 +724,9 @@ static void perform_stages(void) {
                 /* Stop asfter preprocessed file is parsed. */
                 stage_post_opts = " -fsyntax-only";
                 /* Print output using such the way instead of the standard one. */
-                stage_envs_len = strlen("LDV_C_BACKEND_OUT=") + strlen(out);
+                stage_envs_len = strlen("LDV_C_BACKEND_OUT=\"") + strlen(out) + strlen("\"");
                 stage_envs = malloc(stage_envs_len + 1);
-                sprintf(stage_envs, "LDV_C_BACKEND_OUT=%s", out);
+                sprintf(stage_envs, "LDV_C_BACKEND_OUT=\"%s\"", out);
             }
 
         }
