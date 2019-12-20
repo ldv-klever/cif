@@ -17,54 +17,54 @@ To build CIF you will need the following packages:
 
 First you need to download archives with the source code of some prerequisites needed by GCC (gmp, mpfr, mpc and isl):
 
-    cd aspectator
-    ./contrib/download_prerequisites
+    $ cd aspectator
+    $ ./contrib/download_prerequisites
     
 Then return back to the root of the repository and simply execute _make_:
 
-    cd ..
-    make
+    $ cd ..
+    $ make
     
 You can use option _-jN_ for _make_ to significantly speed up building:
 
-    make -j16
+    $ make -j16
 
 After successful build you may install CIF to the directory of your choosing:
 
-    prefix=~/work/inst/cif make install
+    $ prefix=~/work/inst/cif make install
 
 ## Building Debug Version of Aspectator
 
 To build a debug version of Aspectator one needs create a separate directory for
 it, say:
 
-    mkdir build-debug
-    cd build-debug
+    $ mkdir build-debug
+    $ cd build-debug
 
 Then configure Aspectator as usual:
 
-    MAKEINFO=missing ../aspectator/configure --enable-languages=c --disable-multilib --disable-nls --enable-checking=release
+    $ MAKEINFO=missing ../aspectator/configure --enable-languages=c --disable-multilib --disable-nls --enable-checking=release
 
 and make the debug version of Aspectator:
 
-    make STAGE1_CXXFLAGS="-g -O0" all-stage1
+    $ make STAGE1_CXXFLAGS="-g -O0" all-stage1
 
 You can use option _-jN_ for _make_ to essentially speed up building, but it
 can cause failures (just invoke the command several times to overcome this):
 
-    make -j16 STAGE1_CXXFLAGS="-g -O0" all-stage1
+    $ make -j16 STAGE1_CXXFLAGS="-g -O0" all-stage1
 
 
 After making some changes to files starting with _ldv-_ prefix it is strongly
 recommended to rebuild the debug version of Aspectator with +-Werror+ flag to
 treat all warnings as errors:
 
-    make STAGE1_CXXFLAGS="-g -O0 -Werror" all-stage1
+    $ make STAGE1_CXXFLAGS="-g -O0 -Werror" all-stage1
 
 
-To debug Aspectator you can use +gdb+ or +ddd+:
+To debug Aspectator you can use _gdb_ or _ddd_:
 
-    ddd gcc/cc1 &
+    $ ddd gcc/cc1 &
 
 > NOTE: These instructions were adapted from http://gcc.gnu.org/wiki/DebuggingGCC.
 
@@ -97,7 +97,7 @@ if you do not have them):
 
 After that you can either inspect output.xml manually or use valkyrie:
 
-    valkyrie -l output.xml
+    $ valkyrie -l output.xml
 
 
 ### Tracking CPU time issues of Aspectator
@@ -116,4 +116,4 @@ Then you need to run Aspectator under valgrind:
 
 After that you can either inspect callgrind.out.* manually or use kcachegrind:
 
-    kcachegrind -l callgrind.out.*
+    $ kcachegrind -l callgrind.out.*
