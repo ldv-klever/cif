@@ -104,7 +104,7 @@ After that you can either inspect output.xml manually or use valkyrie:
 
 First of all you need to build a debug version of Aspectator.
 
-Then you need to run Aspectator unber valgrind:
+Then you need to run Aspectator under valgrind:
 
     LDV_ASPECT_FILE=$PATH_TO_ASPECT_FILE \
     LDV_STAGE=$STAGE \
