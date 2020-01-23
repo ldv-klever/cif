@@ -313,12 +313,7 @@ static void parse_opts(int argc, char **argv) {
     print_debug(DEBUG, "Output will be put to file '%s' at"\
         " 'compilation' stage.\n", opts.out);
 
-    if (getenv("LDV_ASPECTATOR")) {
-        opts.aspectator = getenv("LDV_ASPECTATOR");
-        print_debug(DEBUG, "Aspectator '%s' was specified by means or environment variable"\
-            " 'LDV_ASPECTATOR'.\n", opts.aspectator);
-    }
-    else if (opts.aspectator) {
+    if (opts.aspectator) {
         print_debug(DEBUG, "Aspectator '%s' was specified by means or command-line option"\
             " --aspectator.\n", opts.aspectator);
     } else {
@@ -968,12 +963,5 @@ OPTIONS\n\
   options_for_aspectator\n\
     This is list of options that will be passed to aspectator as is. Note that\n\
     these options are processed by your interpreter before passing to CIF, so\n\
-    don't forget about proper escaping.\n\
-\n\
-ENVIRONMENT VARIABLES\n\
-\n\
-  LDV_ASPECTATOR\n\
-    Optional environment variable that specifies aspectator to be used during\n\
-    instrumentation. This option has more priority then using default and\n\
-    specified by means of --aspectator aspectator.\n"), stdout);
+    don't forget about proper escaping.\n"), stdout);
 }
