@@ -19,19 +19,19 @@ First you need to download archives with the source code of some prerequisites n
 
     $ cd aspectator
     $ ./contrib/download_prerequisites
-    
+
 Then return back to the root of the repository and simply execute _make_:
 
     $ cd ..
     $ make
-    
-You can use option _-jN_ for _make_ to significantly speed up building:
+
+You can use option _-jN_ for _make_ to significantly speed up building, e.g.:
 
     $ make -j16
 
-After successful build you may install CIF to the directory of your choosing:
+After successful build you may install CIF, e.g.:
 
-    $ prefix=~/work/inst/cif make install
+    $ sudo make DESTDIR=/usr/local install
 
 ## Building Debug Version of Aspectator
 
@@ -54,13 +54,11 @@ can cause failures (just invoke the command several times to overcome this):
 
     $ make -j16 STAGE1_CXXFLAGS="-g -O0" all-stage1
 
-
 After making some changes to files starting with _ldv-_ prefix it is strongly
 recommended to rebuild the debug version of Aspectator with +-Werror+ flag to
 treat all warnings as errors:
 
     $ make STAGE1_CXXFLAGS="-g -O0 -Werror" all-stage1
-
 
 To debug Aspectator you can use _gdb_ or _ddd_:
 
