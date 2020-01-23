@@ -45,8 +45,7 @@ install-keep-previous-instances:
 install: uninstall-previous-instances install-keep-previous-instances
 
 test:
-	rm -rf tests/cif
-	$(MAKE) DESTDIR="$(shell readlink -f tests/cif)" install-keep-previous-instances
+	$(MAKE) DESTDIR="$(shell readlink -f tests/cif)" install
 	cd tests && pytest
 
 clean:
