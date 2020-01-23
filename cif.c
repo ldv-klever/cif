@@ -327,7 +327,7 @@ static void parse_opts(int argc, char **argv) {
 
     aspectator[0] = 0;
     strcpy(aspectator, aspectator_dir);
-    strcat(aspectator, "/aspectator");
+    strcat(aspectator, "/gcc");
 
     free(aspectator_dir);
 

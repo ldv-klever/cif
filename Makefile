@@ -1,69 +1,53 @@
-BIN_DIR = bin
-BUILD_DIR = build
-ASPECTATOR_SRC_DIR = aspectator
-ASPECTATOR_BIN_DIR = aspectator-bin
-
-# Standard directory for installation of executables.
-INSTALL_BIN_DIR = $(prefix)/bin
+GIT_HASH = $(shell git rev-parse --short HEAD)
 
 # Workaround for "cannot find crti.o" error (only for x86-64 Ubuntu systems).
 UBUNTU_LIB = /usr/lib/x86_64-linux-gnu
 
-CONFIGURE_ARGS = --prefix=$(CURDIR)/$(BIN_DIR)/$(ASPECTATOR_BIN_DIR) --enable-languages=c --disable-libsanitizer --disable-multilib --enable-checking=release $(ASPECTATOR_CONFIGURE_OPTS)
-
-# System headers are no longer located in /usr/include on macOS >= Mojave
-CONFIGURE_ARGS_MACOS = --with-native-system-header-dir=/usr/include --with-sysroot=/Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk
-
-LN_FLAGS = "-srf"
+# System headers are no longer located in /usr/include in macOS >= Mojave.
 ifeq ($(shell uname), Darwin)
-	LN_FLAGS = "-sf"
-	# System headers are no longer located in /usr/include in macOS >= Mojave
-	CONFIGURE_ARGS += $(CONFIGURE_ARGS_MACOS)
+	CONFIGURE_ARGS_MACOS = --with-native-system-header-dir=/usr/include
+	CONFIGURE_ARGS_MACOS += --with-sysroot=/Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk
+else
+	CONFIGURE_ARGS_MACOS =
 endif
 
-.PHONY: all install test clean
+.PHONY: all install install-keep-previous-instances test clean
 
-# Before build install prerequisites.
-all: $(BIN_DIR)/cif
-	mkdir -p $(BUILD_DIR)
-	if [ ! -f $(BUILD_DIR)/Makefile ]; then \
+all: build/cif
+	@if [ ! -f build/Makefile ]; then \
 	  echo "Configure Aspectator for the first time"; \
-	  cd $(BUILD_DIR); \
-	  MAKEINFO=missing ../$(ASPECTATOR_SRC_DIR)/configure $(CONFIGURE_ARGS); \
+	  cd build; \
+	  MAKEINFO=missing ../aspectator/configure --enable-languages=c \
+	    --disable-libsanitizer --disable-multilib \
+	    --enable-checking=release --with-pkgversion=CIF \
+	    --with-bugurl="https://forge.ispras.ru/projects/cif/issues" \
+	    $(CONFIGURE_ARGS_MACOS) $(ASPECTATOR_CONFIGURE_OPTS); \
 	fi
 	@echo "Begin to (re)build Aspectator"
 	@if [[ -d $(UBUNTU_LIB) && ! -z LIBRARY_PATH ]]; then export LIBRARY_PATH=$(UBUNTU_LIB); fi
-	$(MAKE) -C $(BUILD_DIR)
-	$(MAKE) -C $(BUILD_DIR) install
-	@echo "Create symlinks for C Instrumentation Framework and Aspectator binaries for convinience"
-	cd $(BIN_DIR); ln $(LN_FLAGS) cif compiler
-	cd $(BIN_DIR); ln $(LN_FLAGS) "$(ASPECTATOR_BIN_DIR)/bin/gcc" aspectator
+	$(MAKE) -C build
 
-$(BIN_DIR)/cif: cif.c
-	mkdir -p $(BIN_DIR)
+build/cif: cif.c
+	mkdir -p build
 	gcc -Wall -Werror cif.c -o $@
 
-# Before installation check prefix.
-install: check_prefix
-	mkdir -p $(INSTALL_BIN_DIR)
-	@echo "Install C Instrumentation Framework and Aspecator to '$(INSTALL_BIN_DIR)'"
-	rsync -rlu $(BIN_DIR)/* $(INSTALL_BIN_DIR)
+uninstall-previous-instances:
+	rm -rf "$(DESTDIR)/bin/cif" "$(DESTDIR)"/cif*
 
-check_prefix:
-	@echo "Check that prefix where tools to be installed is specified"
-	@case "$(prefix)" in \
-	  /*) prefix_abs=1 ;; \
-	  *) prefix_abs=0 ;; \
-	esac; \
-	if [ -z "$(prefix)" -o $$prefix_abs -eq 0 ]; then \
-	  echo "For installation you should specify prefix: 'prefix=install_dir_abs make install'!"; \
-	  exit 1; \
-	else echo "C Instrumentation Framework and Aspectator will be installed to '$(prefix)'"; \
-	fi
+# Install Aspectator (GCC) within dedicated directory to simplify its uninstall.
+install-keep-previous-instances:
+	mkdir -p "$(DESTDIR)/bin"
+	mkdir -p "$(DESTDIR)/cif-$(GIT_HASH)/bin"
+	cp build/cif "$(DESTDIR)/cif-$(GIT_HASH)/bin/cif"
+	ln -sf "$(DESTDIR)/cif-$(GIT_HASH)/bin/cif" "$(DESTDIR)/bin/cif"
+	$(MAKE) DESTDIR="$(DESTDIR)/cif-$(GIT_HASH)" prefix=/ -C build install
+
+install: uninstall-previous-instances install-keep-previous-instances
 
 test:
+	rm -rf tests/cif
+	$(MAKE) DESTDIR="$(shell readlink -f tests/cif)" install-keep-previous-instances
 	cd tests && pytest
 
-# Remove all directories created during CIF and Aspectator build.
 clean:
-	rm -rf $(BUILD_DIR) $(BIN_DIR)
+	rm -rf build
