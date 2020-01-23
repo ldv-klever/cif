@@ -51,7 +51,8 @@ struct options {
     const char *instrumentation_opts;
 } opts;
 
-char *rest_opts = NULL, *aspectator_path;
+char *rest_opts = NULL;
+char *aspectator = NULL;
 
 struct stat stat_buf;
 
@@ -63,9 +64,9 @@ int main (int argc, char **argv) {
 
     print_debug(NORMAL, "Make all successfully.\n");
 
-    //free(aspectator_path); TODO: Check memory leaks.
     if (rest_opts)
         free(rest_opts);
+
     free(aux_files.aspect_preprocessed);
     free(aux_files.file_prepared);
     free(aux_files.macro_instrumented);
@@ -101,10 +102,9 @@ static void parse_opts(int argc, char **argv) {
         {"macro-instrumentation-opts",  required_argument, 0, 'm'},
         {"out",                         required_argument, 0, 'o'},
         {"stage",                       required_argument, 0, 's'},
-        {"aspectator",                  required_argument, 0, '1'},
-        {"aspect-preprocessing-opts",   required_argument, 0, '2'},
-        {"compilation-opts",            required_argument, 0, '3'},
-        {"instrumentation-opts",        required_argument, 0, '4'},
+        {"aspect-preprocessing-opts",   required_argument, 0, '1'},
+        {"compilation-opts",            required_argument, 0, '2'},
+        {"instrumentation-opts",        required_argument, 0, '3'},
         {0, 0, 0, 0}
     };
 
@@ -175,18 +175,14 @@ static void parse_opts(int argc, char **argv) {
                 break;
 
             case '1':
-                opts.aspectator = optarg;
-                break;
-
-            case '2':
                 opts.aspect_preprocessing_opts = optarg;
                 break;
 
-            case '3':
+            case '2':
                 opts.compilation_opts = optarg;
                 break;
 
-            case '4':
+            case '3':
                 opts.instrumentation_opts = optarg;
                 break;
 
@@ -313,36 +309,29 @@ static void parse_opts(int argc, char **argv) {
     print_debug(DEBUG, "Output will be put to file '%s' at"\
         " 'compilation' stage.\n", opts.out);
 
-    if (opts.aspectator) {
-        print_debug(DEBUG, "Aspectator '%s' was specified by means or command-line option"\
-            " --aspectator.\n", opts.aspectator);
-    } else {
-        uint32_t len = PATH_MAX;
-        aspectator_path = malloc(sizeof(char) * PATH_MAX);
+    uint32_t len = PATH_MAX;
+    aspectator = malloc(sizeof(char) * PATH_MAX);
 
-        #ifdef __APPLE__
-        if (_NSGetExecutablePath(aspectator_path, &len)) {
-            fprintf(stderr, "Buffer is too small, which is impossible by the way.\n");
-            exit(-1);
-        }
-        #else
-        len = readlink("/proc/self/exe", aspectator_path, PATH_MAX);
-        aspectator_path[len] = '\0';
-        #endif
-
-        char *aspectator_dir= strdup(aspectator_path);
-        aspectator_dir = dirname(aspectator_dir);
-
-        aspectator_path[0] = 0;
-        strcpy(aspectator_path, aspectator_dir);
-        strcat(aspectator_path, "/aspectator");
-
-        opts.aspectator = strdup(aspectator_path);
-        free(aspectator_dir);
-        free(aspectator_path);
-
-        print_debug(DEBUG, "Default aspectator '%s' will be used.\n", opts.aspectator);
+    #ifdef __APPLE__
+    if (_NSGetExecutablePath(aspectator, &len)) {
+        fprintf(stderr, "Buffer is too small, which is impossible by the way.\n");
+        exit(-1);
     }
+    #else
+    len = readlink("/proc/self/exe", aspectator, PATH_MAX);
+    aspectator[len] = '\0';
+    #endif
+
+    char *aspectator_dir= strdup(aspectator);
+    aspectator_dir = dirname(aspectator_dir);
+
+    aspectator[0] = 0;
+    strcpy(aspectator, aspectator_dir);
+    strcat(aspectator, "/aspectator");
+
+    free(aspectator_dir);
+
+    print_debug(DEBUG, "Aspectator '%s' will be used.\n", aspectator);
 
     /* Check that back-end is specified and aspectator works correctly for 'compilation' stage. */
 
@@ -363,16 +352,16 @@ static void parse_opts(int argc, char **argv) {
 
         print_debug(DEBUG, "Back-end '%s' will be used at 'compilation' stage.\n", opts.back_end);
 
-        sprintf(aspectator_compilation, "%s -fsyntax-only -x c /dev/null", opts.aspectator);
+        sprintf(aspectator_compilation, "%s -fsyntax-only -x c /dev/null", aspectator);
         print_debug(DEBUG, "Execute '%s'.\n", aspectator_compilation);
 
         ret = system(aspectator_compilation);
         if (ret) {
-            fprintf(stderr, "Aspectator '%s' doesn't work.\n", opts.aspectator);
+            fprintf(stderr, "Aspectator '%s' doesn't work.\n", aspectator);
             exit(WEXITSTATUS(ret));
         }
 
-        print_debug(DEBUG, "Specified aspectator '%s' has worked well.\n", opts.aspectator);
+        print_debug(DEBUG, "Aspectator '%s' has worked well.\n", aspectator);
     }
 
     if (opts.general_opts)
@@ -749,7 +738,7 @@ static void perform_stages(void) {
             /* Stage specific environment variables. */
             strlen(stage_envs_full)
             /* CIF core executable. */
-            + strlen(opts.aspectator)
+            + strlen(aspectator)
             /* Some options like "-I" should be placed ahead to have more priority. */
             + strlen(stage_pre_opts)
             /* Standard compilation (preprocesing) options. */
@@ -771,7 +760,7 @@ static void perform_stages(void) {
             /* Double quotes. */
             + 4;
         cmd = malloc(cmd_len + 1);
-        sprintf(cmd, "%s %s %s %s -fno-builtin %s %s \"%s\" -o \"%s\"", stage_envs_full, opts.aspectator,
+        sprintf(cmd, "%s %s %s %s -fno-builtin %s %s \"%s\" -o \"%s\"", stage_envs_full, aspectator,
             stage_pre_opts, options, opts.general_opts, stage_post_opts, in, out);
 
         print_debug(DEBUG, "Execute '%s'.\n", cmd);
@@ -909,9 +898,6 @@ OPTIONS\n\
   --back-end <back-end>\n\
     Use specified back-end to produce output at 'compilation' stage. Following\n\
     back-ends available: 'bin', 'asm', 'obj' and 'src'.\n\
-\n\
-  --aspectator <bin>\n\
-    <bin> is executable to be used as aspectator during instrumentation.\n\
 \n\
   --compilation-opts <string>\n\
     Options specified by means of <string> will be passed as is at 'compilation'\n\
