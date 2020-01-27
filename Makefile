@@ -11,7 +11,7 @@ else
 	CONFIGURE_ARGS_MACOS =
 endif
 
-.PHONY: all install install-keep-previous-instances test clean
+.PHONY: all uninstall-previous-instances install-keep-previous-instances install test clean
 
 all: build/cif
 	@if [ ! -f build/Makefile ]; then \
