@@ -1,16 +1,9 @@
-#define LDV_MIN(X,Y) ((X) < (Y) ? (X) : (Y))
-#define LDV_MAX(X,Y) ((X) > (Y) ? (X) : (Y))
-#define LDV_ABS(X) ((X) < 0 ? -(X) : (X))
-#define LDV_LROTATE(X,Y) (((X) << (Y)) | ((X) >> (__CHAR_BIT__ * sizeof (X) - Y)))
-#define LDV_RROTATE(X,Y) (((X) >> (Y)) | ((X) << (__CHAR_BIT__ * sizeof (X) - Y)))
 struct b11
 {
 };
 struct b12
 {
-  int
-#line 6 "input/legacy_type.c"
-  x;
+  int x;
 };
 struct b13
 {
