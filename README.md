@@ -15,12 +15,12 @@ To build CIF you will need the following packages:
 
 ## Build and Install
 
-First you need to download archives with the source code of some prerequisites needed by GCC (gmp, mpfr, mpc and isl):
+First you need to download archives with the source code of prerequisites needed by GCC (gmp, mpfr, mpc and isl):
 
     $ cd aspectator
     $ ./contrib/download_prerequisites
 
-Then return back to the root of the repository and simply execute _make_:
+Then return back to the root of the repository and execute _make_:
 
     $ cd ..
     $ make
@@ -29,9 +29,13 @@ You can use option _-jN_ for _make_ to significantly speed up building, e.g.:
 
     $ make -j16
 
-After successful build you may install CIF, e.g.:
+After successful build you can install CIF, e.g.:
 
-    $ sudo make DESTDIR=/usr/local install
+    $ sudo make install
+
+You can specify the alternative directory where CIF will be installed, e.g.:
+
+    $ sudo DESTDIR=/home/user/cif make install
 
 ## Building Debug Version of Aspectator
 

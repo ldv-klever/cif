@@ -1,3 +1,5 @@
+DESTDIR ?= /usr/local
+
 GIT_HASH = $(shell git rev-parse --short HEAD)
 
 # Workaround for "cannot find crti.o" error (only for x86-64 Ubuntu systems).
