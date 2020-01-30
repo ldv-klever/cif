@@ -34,7 +34,7 @@ build/cif: cif.c
 	gcc -Wall -Werror cif.c -o $@
 
 uninstall-previous-instances:
-	rm -rf "$(DESTDIR)/bin/cif" "$(DESTDIR)"/cif*
+	rm -rf "$(DESTDIR)/bin/cif" "$(DESTDIR)/bin/aspectator" "$(DESTDIR)"/cif*
 
 # Install Aspectator (GCC) within dedicated directory to simplify its uninstall.
 install-keep-previous-instances:
@@ -43,6 +43,7 @@ install-keep-previous-instances:
 	cp build/cif "$(DESTDIR)/cif-$(GIT_HASH)/bin/cif"
 	ln -sf "$(DESTDIR)/cif-$(GIT_HASH)/bin/cif" "$(DESTDIR)/bin/cif"
 	$(MAKE) DESTDIR="$(DESTDIR)/cif-$(GIT_HASH)" -C build install
+	ln -sf "$(DESTDIR)/cif-$(GIT_HASH)/bin/gcc" "$(DESTDIR)/bin/aspectator"
 
 install: uninstall-previous-instances install-keep-previous-instances
 
