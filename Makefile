@@ -17,7 +17,7 @@ all: build/cif
 	@if [ ! -f build/Makefile ]; then \
 	  echo "Configure Aspectator for the first time"; \
 	  cd build; \
-	  MAKEINFO=missing ../aspectator/configure --enable-languages=c \
+	  MAKEINFO=missing ../aspectator/configure --prefix=/ --enable-languages=c \
 	    --disable-libsanitizer --disable-multilib \
 	    --enable-checking=release --with-pkgversion=CIF \
 	    --with-bugurl="https://forge.ispras.ru/projects/cif/issues" \
@@ -40,7 +40,7 @@ install-keep-previous-instances:
 	mkdir -p "$(DESTDIR)/cif-$(GIT_HASH)/bin"
 	cp build/cif "$(DESTDIR)/cif-$(GIT_HASH)/bin/cif"
 	ln -sf "$(DESTDIR)/cif-$(GIT_HASH)/bin/cif" "$(DESTDIR)/bin/cif"
-	$(MAKE) DESTDIR="$(DESTDIR)/cif-$(GIT_HASH)" prefix=/ -C build install
+	$(MAKE) DESTDIR="$(DESTDIR)/cif-$(GIT_HASH)" -C build install
 
 install: uninstall-previous-instances install-keep-previous-instances
 
