@@ -13,6 +13,12 @@ else
 	CONFIGURE_ARGS_MACOS =
 endif
 
+ifeq ($(shell uname), Darwin)
+	LN_FLAGS = "-sf"
+else
+	LN_FLAGS = "-srf"
+endif
+
 .PHONY: all uninstall-previous-instances install-keep-previous-instances install test clean
 
 all: build/cif
@@ -41,9 +47,9 @@ install-keep-previous-instances:
 	mkdir -p "$(DESTDIR)/bin"
 	mkdir -p "$(DESTDIR)/cif-$(GIT_HASH)/bin"
 	cp build/cif "$(DESTDIR)/cif-$(GIT_HASH)/bin/cif"
-	ln -sf "$(DESTDIR)/cif-$(GIT_HASH)/bin/cif" "$(DESTDIR)/bin/cif"
+	ln $(LN_FLAGS) "$(DESTDIR)/cif-$(GIT_HASH)/bin/cif" "$(DESTDIR)/bin/cif"
 	$(MAKE) DESTDIR="$(DESTDIR)/cif-$(GIT_HASH)" -C build install
-	ln -sf "$(DESTDIR)/cif-$(GIT_HASH)/bin/gcc" "$(DESTDIR)/bin/aspectator"
+	ln $(LN_FLAGS) "$(DESTDIR)/cif-$(GIT_HASH)/bin/gcc" "$(DESTDIR)/bin/aspectator"
 
 install: uninstall-previous-instances install-keep-previous-instances
 
