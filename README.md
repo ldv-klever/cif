@@ -29,6 +29,10 @@ You can use option _-jN_ for _make_ to significantly speed up building, e.g.:
 
     $ make -j16
 
+In addition, you can speed up building further by disabling bootstrap:
+
+    $ ASPECTATOR_CONFIGURE_OPTS="--disable-bootstrap" make -j8
+
 After successful build you can install CIF, e.g.:
 
     $ sudo make install
@@ -36,6 +40,10 @@ After successful build you can install CIF, e.g.:
 You can specify the alternative directory where CIF will be installed, e.g.:
 
     $ sudo DESTDIR=/home/user/cif make install
+
+Also, you can test CIF:
+
+    $ make test
 
 ## Building Debug Version of Aspectator
 
