@@ -52,7 +52,7 @@ struct options {
 } opts;
 
 char *rest_opts = NULL;
-char *aspectator = NULL;
+char aspectator[PATH_MAX];
 
 struct stat stat_buf;
 
@@ -310,13 +310,20 @@ static void parse_opts(int argc, char **argv) {
         " 'compilation' stage.\n", opts.out);
 
     uint32_t len = PATH_MAX;
-    aspectator = malloc(sizeof(char) * PATH_MAX);
 
     #ifdef __APPLE__
-    if (_NSGetExecutablePath(aspectator, &len)) {
+    char buf[PATH_MAX];
+
+    if (_NSGetExecutablePath(buf, &len)) {
         fprintf(stderr, "Buffer is too small, which is impossible by the way.\n");
         exit(-1);
     }
+
+    if (!realpath(buf, aspectator)) {
+        fprintf(stderr, "Can't find real path to aspectator.\n");
+        exit(-1);
+    }
+
     #else
     len = readlink("/proc/self/exe", aspectator, PATH_MAX);
     aspectator[len] = '\0';
