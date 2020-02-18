@@ -39,7 +39,7 @@ After successful build you can install CIF, e.g.:
 
 You can specify the alternative directory where CIF will be installed, e.g.:
 
-    $ sudo DESTDIR=/home/user/cif make install
+    $ DESTDIR=/home/user/cif make install
 
 Also, you can test CIF:
 
