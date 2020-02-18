@@ -31,7 +31,7 @@ You can use option _-jN_ for _make_ to significantly speed up building, e.g.:
 
 In addition, you can speed up building further by disabling bootstrap:
 
-    $ ASPECTATOR_CONFIGURE_OPTS="--disable-bootstrap" make -j8
+    $ ASPECTATOR_CONFIGURE_OPTS="--disable-bootstrap" make -j16
 
 After successful build you can install CIF, e.g.:
 
