@@ -120,6 +120,10 @@ class TestCBackend(utils.CIFTestCase):
         self.cif.run(cif_input='input/c-backend/pretty-func.c', stage='C-backend', cif_output='work/pretty-func.c')
         self.compare(output='work/pretty-func.c', expected='output/c-backend/pretty-func.c')
 
+    def test_cast_to_anon_struct(self):
+        self.cif.run(cif_input='input/c-backend/cast-to-anon-struct.c', stage='C-backend', cif_output='work/cast-to-anon-struct.c')
+        self.compare(output='work/cast-to-anon-struct.c', expected='output/c-backend/cast-to-anon-struct.c')
+
 
 if __name__ == '__main__':
     unittest.main()

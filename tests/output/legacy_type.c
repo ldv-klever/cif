@@ -14,7 +14,7 @@ struct b14
 {
   int x;
   int
-#line 15 "input/legacy_type.c"
+#line 15 "/home/novikov/work/cif/tests/input/legacy_type.c"
   y;
 };
 struct b15
@@ -66,7 +66,7 @@ struct b35
 union b41
 {
   int
-#line 66 "input/legacy_type.c"
+#line 66 "/home/novikov/work/cif/tests/input/legacy_type.c"
   x : 1U;
   int y : 2U;
 };

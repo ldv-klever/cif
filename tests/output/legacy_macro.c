@@ -22,7 +22,7 @@ int seventh(int a, int b)
 {
   return a + b;
 }
-#line 1 "input/legacy_macro.h"
+#line 1 "/home/novikov/work/cif/tests/input/legacy_macro.h"
 int five(void)
 {
   return 5;
