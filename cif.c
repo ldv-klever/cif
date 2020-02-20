@@ -183,7 +183,8 @@ static void parse_opts(int argc, char **argv) {
                 break;
 
             default:
-                break;
+                fprintf(stderr, "Invalid command-line options were specified - see error messages above.\n");
+                exit(-1);
         }
     }
 
