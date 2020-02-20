@@ -114,10 +114,6 @@ static void parse_opts(int argc, char **argv) {
         if (long_options[opt_index].flag != 0)
             continue;
 
-        /* Detect the end of the options. */
-        if (c == -1)
-            break;
-
         switch (c) {
             case 'h':
                 print_help();
