@@ -45,6 +45,9 @@ class TestLegacy(utils.CIFTestCase):
         self.cif.run(cif_input='input/va-funcs.c', aspect='aspect/va-funcs.aspect', cif_output='work/va-funcs.c')
         self.compare(output='work/va-funcs.c', expected='output/va-funcs.c')
 
+    def test_gnu_inline(self):
+        self.cif.run(cif_input='input/gnu_inline.c', aspect='aspect/gnu_inline.aspect', cif_output='work/gnu_inline.c')
+        self.compare(output='work/gnu_inline.c', expected='output/gnu_inline.c')
 
 if __name__ == '__main__':
     unittest.main()

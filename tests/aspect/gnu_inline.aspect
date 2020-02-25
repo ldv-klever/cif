@@ -1,0 +1,7 @@
+before: execution (static inline int func(int))
+{
+}
+
+before: call (static inline int gunc(int))
+{
+}
