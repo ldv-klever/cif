@@ -45,6 +45,16 @@ Also, you can test CIF:
 
     $ make test
 
+## Uninstall
+
+You can uninstall CIF by running the following command:
+
+    $ sudo make uninstall
+
+If CIF was installed into an alternative directory with DESTDIR option then you need to use it again:
+
+    $ DESTDIR=/home/user/cif make uninstall
+
 ## Building Debug Version of Aspectator
 
 To build a debug version of Aspectator one needs create a separate directory for

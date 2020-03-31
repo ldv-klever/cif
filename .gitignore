@@ -1,11 +1,14 @@
-# CIF and Aspectator build directories.
+# CIF and Aspectator build directories
 build/
 build-debug/
+inst/
 
-# Tests.
+# Tests
 tests/__pycache__
 tests/.mypy_cache
 tests/.pytest_cache
 tests/backup
 tests/work
-tests/cif
+
+# Python
+.mypy_cache
