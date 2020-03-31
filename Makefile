@@ -44,11 +44,10 @@ uninstall-previous-instances:
 
 # Install Aspectator (GCC) within dedicated directory to simplify its uninstall.
 install-keep-previous-instances:
-	mkdir -p "$(DESTDIR)/bin"
-	mkdir -p "$(DESTDIR)/cif-$(GIT_HASH)/bin"
-	cp build/cif "$(DESTDIR)/cif-$(GIT_HASH)/bin/cif"
-	ln $(LN_FLAGS) "$(DESTDIR)/cif-$(GIT_HASH)/bin/cif" "$(DESTDIR)/bin/cif"
 	$(MAKE) DESTDIR="$(DESTDIR)/cif-$(GIT_HASH)" -C build install
+	cp build/cif "$(DESTDIR)/cif-$(GIT_HASH)/bin/cif"
+	mkdir -p "$(DESTDIR)/bin"
+	ln $(LN_FLAGS) "$(DESTDIR)/cif-$(GIT_HASH)/bin/cif" "$(DESTDIR)/bin/cif"
 	ln $(LN_FLAGS) "$(DESTDIR)/cif-$(GIT_HASH)/bin/gcc" "$(DESTDIR)/bin/aspectator"
 
 install: uninstall-previous-instances install-keep-previous-instances
