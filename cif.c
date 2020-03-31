@@ -82,7 +82,7 @@ int main (int argc, char **argv) {
 static void parse_opts(int argc, char **argv) {
     int i, c, ret, opts_len = 0, opt_index = 0;
     char *opts_string;
-    char aspectator_compilation[PATH_MAX+32]; // 32 == for options
+    char aspectator_compilation[PATH_MAX + 32]; // 32 == for options
 
     if (argc <= 1) {
         fprintf (stderr, "No options were specified through command-line. "\
@@ -113,10 +113,8 @@ static void parse_opts(int argc, char **argv) {
         {0, 0, 0, 0}
     };
 
-    while ((c = getopt_long (argc, argv, "hco", long_options, &opt_index)) != -1) {
-        /* getopt_long stores the option index here. */
-
-        if (long_options[opt_index].flag != 0)
+    while ((c = getopt_long(argc, argv, "hva:c:o:", long_options, &opt_index)) != -1) {
+        if (c == 0 && long_options[opt_index].flag != 0)
             continue;
 
         switch (c) {
@@ -901,7 +899,7 @@ SYNOPSIS\n\
 \n\
 OPTIONS\n\
 \n\
-  --aspect <file>\n\
+  -a, --aspect <file>\n\
     Aspect <file> to be used for instrumentation. It is mandatory except for\n\
     stage 'C-backend'.\n\
 \n\

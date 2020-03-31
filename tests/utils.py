@@ -79,7 +79,7 @@ class CIFTestCase(unittest.TestCase):
 
     def check_cif_status(self):
         if self.cif and self.cif.status != 0:
-            print('\n', 'CMD:', self.cif.cmd, '\n')
+            print('\nCMD: {!r}'.format(' '.join(self.cif.cmd)))
             print('LOG:', self.cif.log, '\n')
             self.assertEqual(self.cif.status, 0)
 
