@@ -19,6 +19,10 @@
 
 #define LOG_PREFIX_SIZE 16
 
+#ifndef CIF_VERSION
+#define CIF_VERSION "unknown"
+#endif
+
 static void parse_opts(int argc, char **argv);
 static void perform_stages(void);
 static void print_debug(int level, const char *format, ...);
@@ -93,6 +97,7 @@ static void parse_opts(int argc, char **argv) {
         /* These options don’t set a flag.
          We distinguish them by their indices. */
         {"help",                        no_argument, 0, 'h'},
+        {"version",                     no_argument, 0, 'v'},
         {"aspect",                      required_argument, 0, 'a'},
         {"back-end",                    required_argument, 0, 'b'},
         {"debug",                       required_argument, 0, 'd'},
@@ -117,6 +122,11 @@ static void parse_opts(int argc, char **argv) {
         switch (c) {
             case 'h':
                 print_help();
+                exit(0);
+                break;
+
+            case 'v':
+                printf("cif-%s\n", CIF_VERSION);
                 exit(0);
                 break;
 
@@ -918,9 +928,6 @@ OPTIONS\n\
   --general-opts <string>\n\
     Options specified by means of <string> will be passed as is at all stages.\n\
 \n\
-  -h, --help\n\
-    Print this help and exit with a syntax error.\n\
-\n\
   -c, --in <file>\n\
     Input <file> to be instrumented.\n\
 \n\
@@ -949,6 +956,12 @@ OPTIONS\n\
     includes all previous stages. 'Compilation' stage is used by default.\n\
     Special stage 'C-backend' means that instrumentation will not be performed\n\
     at all, just C-backend will be invoked for the input file.\n\
+\n\
+  -h, --help\n\
+    Print this help and exit with a syntax error.\n\
+\n\
+  -v, --version\n\
+    Print CIF version.\n\
 \n\
   options_for_aspectator\n\
     This is list of options that will be passed to aspectator as is. Note that\n\
