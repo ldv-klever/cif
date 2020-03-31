@@ -12,3 +12,10 @@ tests/work
 
 # Python
 .mypy_cache
+
+# macOS
+.DS_Store
+
+# IDE
+.vscode
+.idea
