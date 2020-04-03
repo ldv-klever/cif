@@ -124,6 +124,10 @@ class TestCBackend(utils.CIFTestCase):
         self.cif.run(cif_input='input/c-backend/cast-to-anon-struct.c', stage='C-backend', cif_output='work/cast-to-anon-struct.c')
         self.compare(output='work/cast-to-anon-struct.c', expected='output/c-backend/cast-to-anon-struct.c')
 
+    def test_packed(self):
+        self.cif.run(cif_input='input/c-backend/packed.c', stage='C-backend', cif_output='work/packed.c')
+        self.compare(output='work/packed.c', expected='output/c-backend/packed.c')
+
 
 if __name__ == '__main__':
     unittest.main()
