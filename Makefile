@@ -1,4 +1,5 @@
 DESTDIR ?= /usr/local
+LOCAL_DESTDIR := "$(shell pwd -P)"/inst
 
 CIF_VERSION := $(shell git rev-parse --short HEAD || echo unknown)
 ASPECTATOR_VERSION := $(shell cd aspectator && git rev-parse --short HEAD || echo unknown)
@@ -36,7 +37,7 @@ all: build/cif
 	@if [[ -d $(UBUNTU_LIB) && ! -z LIBRARY_PATH ]]; then export LIBRARY_PATH=$(UBUNTU_LIB); fi
 	$(MAKE) -C build
 	@echo "Install C Instrumentation Framework and Aspecator locally"
-	$(MAKE) DESTDIR="$(shell pwd -P)"/inst build/install
+	$(MAKE) DESTDIR=${LOCAL_DESTDIR} build/install
 
 build/cif: cif.c
 	mkdir -p build
@@ -61,6 +62,10 @@ uninstall:
 	rm -rf "$(DESTDIR)/bin/cif" "$(DESTDIR)/bin/aspectator" "$(DESTDIR)"/cif*
 
 test:
+	@if [[ ! -d ${LOCAL_DESTDIR} || ! -f ${LOCAL_DESTDIR}/bin/cif || ! -f ${LOCAL_DESTDIR}/bin/aspectator ]]; then \
+	  echo "You must build CIF before running tests"; \
+	  exit -1; \
+	fi
 	cd tests && pytest
 
 clean:
