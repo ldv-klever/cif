@@ -1,3 +1,5 @@
+SHELL := /bin/bash
+
 DESTDIR ?= /usr/local
 LOCAL_DESTDIR := "$(shell pwd -P)"/inst
 
