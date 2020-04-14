@@ -4,7 +4,11 @@ on: [push]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
 
     steps:
     - uses: actions/checkout@v2
@@ -12,6 +16,7 @@ jobs:
         submodules: 'recursive'
 
     - name: Install system dependencies
+      if: startsWith(matrix.os, 'ubuntu')
       run: |
         sudo apt-get update
         sudo apt-get install -y make lbzip2 patch gcc g++ flex bison libc6-dev-i386
