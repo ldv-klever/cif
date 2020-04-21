@@ -5,13 +5,10 @@
 To build CIF you will need the following packages:
 
 * make
-* lbzip2
-* patch
 * gcc
 * g++
 * flex
 * bison
-* libc6-dev-i386
 
 ## Build and Install
 
