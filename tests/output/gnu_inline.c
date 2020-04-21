@@ -29,5 +29,5 @@ static inline int func(int arg)
 static inline int cif_gunc(int arg)
 {
 #line 15 "/home/novikov/work/cif/tests/work/gnu_inline.c.aux"
-  return cif_gunc ( arg );
+  return gunc ( arg );
 }

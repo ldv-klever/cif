@@ -14,5 +14,5 @@ static int cif_func(void)
 #line 6 "/home/novikov/work/cif/tests/work/aux-funcs.c.aux"
   return 1;
 #line 8 "/home/novikov/work/cif/tests/work/aux-funcs.c.aux"
-  return cif_func ( );
+  return func ( );
 }

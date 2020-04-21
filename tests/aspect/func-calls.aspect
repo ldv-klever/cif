@@ -1,0 +1,29 @@
+before: call(void func1(void))
+{
+    return;
+}
+
+after: call(void func2(void))
+{
+    return;
+}
+
+around: call(void func3(void))
+{
+    return;
+}
+
+before: call(int func4(void))
+{
+    return 0;
+}
+
+after: call(int func5(void))
+{
+    return 0;
+}
+
+around: call(int func6(void))
+{
+    return 0;
+}
