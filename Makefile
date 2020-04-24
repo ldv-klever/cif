@@ -17,12 +17,6 @@ else
 	CONFIGURE_ARGS_MACOS =
 endif
 
-ifeq ($(shell uname), Darwin)
-	LN_FLAGS = "-sf"
-else
-	LN_FLAGS = "-srf"
-endif
-
 .PHONY: all uninstall-previous-instances install-keep-previous-instances install test clean
 
 all: build/cif
@@ -52,8 +46,8 @@ install-keep-previous-instances:
 	$(MAKE) DESTDIR="$(DESTDIR)/cif" -C build install
 	cp build/cif "$(DESTDIR)/cif/bin/cif"
 	mkdir -p "$(DESTDIR)/bin"
-	ln $(LN_FLAGS) "$(DESTDIR)/cif/bin/cif" "$(DESTDIR)/bin/cif"
-	ln $(LN_FLAGS) "$(DESTDIR)/cif/bin/gcc" "$(DESTDIR)/bin/aspectator"
+	ln -sf "../cif/bin/cif" "$(DESTDIR)/bin/cif"
+	ln -sf "../cif/bin/gcc" "$(DESTDIR)/bin/aspectator"
 
 install:
 	@echo "Install C Instrumentation Framework and Aspecator to '$(DESTDIR)'"
