@@ -128,6 +128,10 @@ class TestCBackend(utils.CIFTestCase):
         self.cif.run(cif_input='input/c-backend/type-attrs.c', stage='C-backend', cif_output='work/type-attrs.c')
         self.compare(output='work/type-attrs.c', expected='output/c-backend/type-attrs.c')
 
+    def test_llongmin(self):
+        self.cif.run(cif_input='input/c-backend/llongmin.c', stage='C-backend', cif_output='work/llongmin.c')
+        self.compare(output='work/llongmin.c', expected='output/c-backend/llongmin.c')
+
 
 if __name__ == '__main__':
     unittest.main()
