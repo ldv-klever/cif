@@ -19,7 +19,9 @@ endif
 
 .PHONY: all uninstall-previous-instances install-keep-previous-instances install test clean
 
-all: build/cif
+all:
+	mkdir -p build
+	gcc -Wall -Werror -D CIF_VERSION=\"$(CIF_VERSION)\" cif.c -o build/cif
 	@if [ ! -f build/Makefile ]; then \
 	  echo "Configure Aspectator for the first time"; \
 	  cd build; \
@@ -34,10 +36,6 @@ all: build/cif
 	$(MAKE) -C build
 	@echo "Install C Instrumentation Framework and Aspecator locally"
 	$(MAKE) DESTDIR=${LOCAL_DESTDIR} build/install
-
-build/cif: cif.c
-	mkdir -p build
-	gcc -Wall -Werror -D CIF_VERSION=\"$(CIF_VERSION)\" cif.c -o $@
 
 build/install: uninstall install-keep-previous-instances
 
