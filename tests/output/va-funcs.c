@@ -7,7 +7,7 @@ void func(int, ...);
 void gunc(char const *, ...);
 void hunc(char const *, va_list);
 #line 7 "/home/novikov/work/cif/tests/input/va-funcs.c"
-int iunc(int arg1, char const *arg2, ...)
+void iunc(int arg1, char const *arg2, ...)
 {
   va_list args;
 #line 11 "/home/novikov/work/cif/tests/input/va-funcs.c"
@@ -16,4 +16,9 @@ int iunc(int arg1, char const *arg2, ...)
   __builtin_va_start ( args , arg2 );
   hunc ( arg2 , args );
   __builtin_va_end ( args );
+}
+#line 18 "/home/novikov/work/cif/tests/input/va-funcs.c"
+void junc(int arg, va_list va)
+{
+  func ( arg , va );
 }
