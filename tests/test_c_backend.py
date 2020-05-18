@@ -132,6 +132,10 @@ class TestCBackend(utils.CIFTestCase):
         self.cif.run(cif_input='input/c-backend/llongmin.c', stage='C-backend', cif_output='work/llongmin.c')
         self.compare(output='work/llongmin.c', expected='output/c-backend/llongmin.c')
 
+    def test_container_of(self):
+        self.cif.run(cif_input='input/c-backend/container-of.c', stage='C-backend', cif_output='work/container-of.c')
+        self.compare(output='work/container-of.c', expected='output/c-backend/container-of.c')
+
 
 if __name__ == '__main__':
     unittest.main()
