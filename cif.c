@@ -28,6 +28,7 @@ static void perform_stages(void);
 static void print_debug(int level, const char *format, ...);
 static void print_help(void);
 static void clean(void);
+static char *find_cross_compile_prefix(char *cif_exec_filename);
 
 struct aux {
     char *aspect_preprocessed;
@@ -331,16 +332,19 @@ static void parse_opts(int argc, char **argv) {
 
     #else
     len = readlink("/proc/self/exe", aspectator, PATH_MAX);
-    aspectator[len] = '\0';
+    aspectator[len] = 0;
     #endif
 
-    char *aspectator_dir= strdup(aspectator);
+    char *aspectator_dir = strdup(aspectator);
     aspectator_dir = dirname(aspectator_dir);
+    char *aspectator_file = strdup(aspectator);
+    aspectator_file = basename(aspectator_file);
+    char *cross_compile_prefix = find_cross_compile_prefix(aspectator_file);
 
     aspectator[0] = 0;
-    strcpy(aspectator, aspectator_dir);
-    strcat(aspectator, "/gcc");
+    sprintf(aspectator, "%s/%sgcc", aspectator_dir, cross_compile_prefix);
 
+    free(cross_compile_prefix);
     free(aspectator_dir);
 
     print_debug(DEBUG, "Aspectator '%s' will be used.\n", aspectator);
@@ -965,4 +969,16 @@ OPTIONS\n\
     This is list of options that will be passed to aspectator as is. Note that\n\
     these options are processed by your interpreter before passing to CIF, so\n\
     don't forget about proper escaping.\n"), stdout);
+}
+
+
+static char *find_cross_compile_prefix(char *cif_exec_filename)
+{
+    char *cross_compile_prefix, *pch;
+
+    cross_compile_prefix = strdup(cif_exec_filename);
+    pch = strstr(cross_compile_prefix, "cif");
+    *pch = 0;
+
+    return cross_compile_prefix;
 }
