@@ -41,7 +41,7 @@ build/install: uninstall install-keep-previous-instances
 
 # Install Aspectator (GCC) within dedicated directory to simplify its uninstall.
 install-keep-previous-instances:
-	$(MAKE) DESTDIR="$(DESTDIR)/cif" -C build install
+	$(MAKE) DESTDIR="$(DESTDIR)/cif" -C build install-strip
 	cp build/cif "$(DESTDIR)/cif/bin/cif"
 	mkdir -p "$(DESTDIR)/bin"
 	ln -sf "../cif/bin/cif" "$(DESTDIR)/bin/cif"
