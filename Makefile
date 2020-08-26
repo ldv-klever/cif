@@ -33,7 +33,7 @@ all:
 	fi
 	@echo "Begin to (re)build Aspectator"
 	@if [[ -d $(UBUNTU_LIB) && ! -z LIBRARY_PATH ]]; then export LIBRARY_PATH=$(UBUNTU_LIB); fi
-	$(MAKE) -C build
+	$(MAKE) BOOT_CFLAGS='-O2' -C build
 	@echo "Install C Instrumentation Framework and Aspecator locally"
 	$(MAKE) DESTDIR=${LOCAL_DESTDIR} build/install
 
