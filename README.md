@@ -83,6 +83,12 @@ To debug Aspectator you can use _gdb_ or _ddd_:
 
     $ ddd gcc/cc1 &
 
+To debug C back-end you need to set the following environment variables:
+
+    set env LDV_STAGE=4
+    set env LDV_C_BACKEND_OUT=out.c
+
+
 > NOTE: These instructions were adapted from http://gcc.gnu.org/wiki/DebuggingGCC.
 
 ## Profiling Aspectator
