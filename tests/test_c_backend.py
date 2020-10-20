@@ -116,10 +116,6 @@ class TestCBackend(utils.CIFTestCase):
         self.cif.run(cif_input='input/c-backend/include.c', stage='C-backend', cif_output='work/include2.c', aspectator_opts=['-include', 'input/c-backend/include1.h', '-include', 'input/c-backend/include2.h'])
         self.compare(output='work/include2.c', expected='output/c-backend/include2.c')
 
-    def test_pretty_func(self):
-        self.cif.run(cif_input='input/c-backend/pretty-func.c', stage='C-backend', cif_output='work/pretty-func.c')
-        self.compare(output='work/pretty-func.c', expected='output/c-backend/pretty-func.c')
-
     def test_cast_to_anon_struct(self):
         self.cif.run(cif_input='input/c-backend/cast-to-anon-struct.c', stage='C-backend', cif_output='work/cast-to-anon-struct.c')
         self.compare(output='work/cast-to-anon-struct.c', expected='output/c-backend/cast-to-anon-struct.c')
@@ -143,6 +139,10 @@ class TestCBackend(utils.CIFTestCase):
     def test_fallthrough(self):
         self.cif.run(cif_input='input/c-backend/fallthrough.c', stage='C-backend', cif_output='work/fallthrough.c')
         self.compare(output='work/fallthrough.c', expected='output/c-backend/fallthrough.c')
+
+    def test___func__(self):
+        self.cif.run(cif_input='input/c-backend/__func__.c', stage='C-backend', cif_output='work/__func__.c')
+        self.compare(output='work/__func__.c', expected='output/c-backend/__func__.c')
 
 
 if __name__ == '__main__':
