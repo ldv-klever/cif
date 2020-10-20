@@ -140,6 +140,10 @@ class TestCBackend(utils.CIFTestCase):
         self.cif.run(cif_input='input/c-backend/may-alias.c', stage='C-backend', cif_output='work/may-alias.c')
         self.compare(output='work/may-alias.c', expected='output/c-backend/may-alias.c')
 
+    def test_fallthrough(self):
+        self.cif.run(cif_input='input/c-backend/fallthrough.c', stage='C-backend', cif_output='work/fallthrough.c')
+        self.compare(output='work/fallthrough.c', expected='output/c-backend/fallthrough.c')
+
 
 if __name__ == '__main__':
     unittest.main()
