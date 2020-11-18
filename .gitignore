@@ -12,6 +12,7 @@ tests/work
 
 # Python
 .mypy_cache
+venv
 
 # macOS
 .DS_Store
