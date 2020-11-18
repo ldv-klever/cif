@@ -10,12 +10,12 @@ int func(int arg)
 #line 9 "/home/novikov/work/cif/tests/input/c-backend/fallthrough.c"
     case 2:;
     ret += 20;
-    goto ldv_1320;
+    goto ldv_1;
     default:;
-    goto ldv_1320;
+    goto ldv_1;
   }
 #line 16 "/home/novikov/work/cif/tests/input/c-backend/fallthrough.c"
-  ldv_1320:;
+  ldv_1:;
 #line 16 "/home/novikov/work/cif/tests/input/c-backend/fallthrough.c"
   return ret;
 }

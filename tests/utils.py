@@ -1,4 +1,5 @@
 import os
+import re
 import subprocess
 import shutil
 import unittest
@@ -92,6 +93,36 @@ class CIFTestCase(unittest.TestCase):
             for line in lines:
                 if not line.startswith('/usr/include/stdc-predef.h'):
                     fp.write(line)
+
+    def replace_gotos(self, output):
+        self.check_cif_status()
+
+        with open(output) as fp:
+            lines = fp.readlines()
+
+        goto_ids = dict()
+        counter = 1
+        for line in lines:
+            m = re.search(r"goto ldv_(\d*);", line)
+
+            if not m:
+                continue
+
+            old_id = m.group(1)
+
+            if old_id not in goto_ids:
+                goto_ids[old_id] = str(counter)
+                counter += 1
+
+        with open(output, 'w') as fp:
+            for line in lines:
+                m = re.search(r"ldv_(\d*)[;:]", line)
+
+                if m:
+                    old_id = m.group(1)
+                    line = line.replace(old_id, goto_ids[old_id])
+
+                fp.write(line)
 
     def make_relpath(self, output):
         with open(output) as fp:
