@@ -145,6 +145,10 @@ class TestCBackend(utils.CIFTestCase):
         self.cif.run(cif_input='input/c-backend/__func__.c', stage='C-backend', cif_output='work/__func__.c')
         self.compare(output='work/__func__.c', expected='output/c-backend/__func__.c')
 
+    def test_typedef_array(self):
+        self.cif.run(cif_input='input/c-backend/typedef-array.c', stage='C-backend', cif_output='work/typedef-array.c')
+        self.compare(output='work/typedef-array.c', expected='output/c-backend/typedef-array.c')
+
 
 if __name__ == '__main__':
     unittest.main()
