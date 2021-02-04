@@ -62,5 +62,8 @@ test:
 	fi
 	cd tests && pytest
 
+docker:
+	docker build --tag cif .
+
 clean:
 	rm -rf build

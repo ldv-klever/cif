@@ -1,7 +1,4 @@
-aspectator-bin
-aspectator-build
-aspectator-build-debug
-cif
-LICENSE
-Makefile1_cross
-Makefile2_cross
+build
+venv
+inst
+aspectator/.git
