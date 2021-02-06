@@ -16,12 +16,10 @@ COPY .git $CIF_SRC/.git
 WORKDIR $CIF_SRC/aspectator
 RUN ./contrib/download_prerequisites
 
-# Build CIF
+# Build and install CIF
 WORKDIR $CIF_SRC
 RUN make clean
 RUN make -j8
-
-# Install CIF
 RUN DESTDIR=$CIF_INST make install
 
 
