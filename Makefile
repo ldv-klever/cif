@@ -20,8 +20,7 @@ endif
 .PHONY: all uninstall-previous-instances install-keep-previous-instances install test clean
 
 all:
-	mkdir -p build
-	gcc -Wall -Werror -D CIF_VERSION=\"$(CIF_VERSION)\" cif.c -o build/cif
+	$(MAKE) cif
 	@if [ ! -f build/Makefile ]; then \
 	  echo "Configure Aspectator for the first time"; \
 	  cd build; \
@@ -36,6 +35,10 @@ all:
 	$(MAKE) BOOT_CFLAGS='-O2' -C build
 	@echo "Install C Instrumentation Framework and Aspecator locally"
 	$(MAKE) DESTDIR=${LOCAL_DESTDIR} build/install
+
+cif:
+	mkdir -p build
+	gcc -Wall -Werror -D CIF_VERSION=\"$(CIF_VERSION)\" cif.c -o build/cif
 
 build/install: uninstall install-keep-previous-instances
 
@@ -62,8 +65,66 @@ test:
 	fi
 	cd tests && pytest
 
-docker:
-	docker build --tag cif .
-
 clean:
 	rm -rf build
+
+archives:
+	$(MAKE) archive
+	$(MAKE) archives/cross
+
+archive:
+	$(MAKE) docker
+	docker run -d -it --name cif cif
+	docker exec cif mkdir /tmp/cif
+	docker exec cif cp -r /usr/local/bin/ /tmp/cif/bin
+	docker exec cif cp -r /usr/local/cif/ /tmp/cif/cif
+	docker exec cif apt-get update
+	docker exec cif apt-get install -y xz-utils
+	docker exec cif mkdir /tmp/cif-archives
+	docker exec cif bash -c "tar cJf /tmp/cif-archives/\$(cif --version).tar.xz /tmp/cif"
+	docker cp cif:/tmp/cif-archives/. .
+	docker stop cif
+	docker rm cif
+	docker rmi cif
+
+archive/arm-unknown-eabi:
+	$(MAKE) archives/cross-pre
+	docker exec cross-cif python3 build.py -o /tmp/cif-archives arm-unknown-eabi
+	$(MAKE) archives/cross-post
+
+archive/arm-unknown-linux-gnueabi:
+	$(MAKE) archives/cross-pre
+	docker exec cross-cif python3 build.py -o /tmp/cif-archives arm-unknown-linux-gnueabi
+	$(MAKE) archives/cross-post
+
+archive/aarch64_be-unknown-linux-gnu:
+	$(MAKE) archives/cross-pre
+	docker exec cross-cif python3 build.py -o /tmp/cif-archives aarch64_be-unknown-linux-gnu
+	$(MAKE) archives/cross-post
+
+archives/cross:
+	$(MAKE) archives/cross-pre
+	docker exec cross-cif python3 build.py -o /tmp/cif-archives
+	$(MAKE) archives/cross-post
+
+archives/cross-pre:
+	docker build -f Dockerfile.cross --tag cross-cif .
+	docker run -d -it --name cross-cif cross-cif
+
+archives/cross-post:
+	docker cp cross-cif:/tmp/cif-archives/. .
+	docker stop cross-cif
+	docker rm cross-cif
+	docker rmi cross-cif
+
+docker:
+	docker build --tag cif .
+	docker image prune --force --filter label=stage=builder
+
+docker/clean:
+	-docker stop cif
+	-docker stop cross-cif
+	-docker rm cif
+	-docker rm cross-cif
+	-docker rmi cif
+	-docker rmi cross-cif

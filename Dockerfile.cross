@@ -1,0 +1,35 @@
+FROM debian:9 as builder
+
+ENV CT_NG_SRC=/usr/src/crosstool-ng-1.24.0/
+ENV CIF_SRC=/usr/src/cif/
+
+# Install dependencies
+RUN apt-get update && \
+    apt-get install -y make gcc g++ flex bison git rsync \
+        autoconf texinfo help2man libtool libncurses5-dev \
+        bzip2 xz-utils unzip gawk libtool-bin wget python3
+
+# Install crosstool-ng
+WORKDIR /usr/src
+RUN wget http://crosstool-ng.org/download/crosstool-ng/crosstool-ng-1.24.0.tar.xz
+RUN tar -xf crosstool-ng-1.24.0.tar.xz
+
+# Build and install crosstool-ng
+WORKDIR $CT_NG_SRC
+RUN ./configure
+RUN make
+RUN make install
+
+# Copy CIF source code
+COPY cif.c Makefile $CIF_SRC
+COPY aspectator $CIF_SRC/aspectator
+COPY .git $CIF_SRC/.git
+
+# Copy configuration for crosstool-ng and build.py script
+COPY config $CIF_SRC/config
+COPY build.py $CIF_SRC
+
+# Create cache folder for crosstool-ng
+RUN mkdir /root/src
+
+WORKDIR $CIF_SRC

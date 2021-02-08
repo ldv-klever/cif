@@ -1,4 +1,5 @@
 FROM debian:9 as builder
+LABEL stage=builder
 
 ENV CIF_SRC=/usr/src/cif/
 ENV CIF_INST=/usr/local/
