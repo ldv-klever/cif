@@ -20,3 +20,6 @@ venv
 # IDE
 .vscode
 .idea
+
+# Release archives
+*.tar.xz
