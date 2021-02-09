@@ -20,7 +20,7 @@ RUN ./contrib/download_prerequisites
 # Build and install CIF
 WORKDIR $CIF_SRC
 RUN make clean
-RUN make -j8
+RUN make -j`nproc`
 RUN DESTDIR=$CIF_INST make install
 
 
