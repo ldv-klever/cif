@@ -149,6 +149,19 @@ class TestCBackend(utils.CIFTestCase):
         self.cif.run(cif_input='input/c-backend/typedef-array.c', stage='C-backend', cif_output='work/typedef-array.c')
         self.compare(output='work/typedef-array.c', expected='output/c-backend/typedef-array.c')
 
+    def test_cast_ptr_arithm(self):
+        self.cif.run(cif_input='input/c-backend/cast-ptr-arithm.c', stage='C-backend', cif_output='work/cast-ptr-arithm.c')
+        self.compare(output='work/cast-ptr-arithm.c', expected='output/c-backend/cast-ptr-arithm.c')
+
+    # TODO: this test needs cross CIF for ARM. Indeed, the previous test case makes almost the same, but for x86_64.
+    def _test_cast_ptr_arithm_arm(self):
+        self.cif.run(cif_input='input/c-backend/cast-ptr-arithm-arm.c', stage='C-backend', cif_output='work/cast-ptr-arithm-arm.c')
+        self.compare(output='work/cast-ptr-arithm-arm.c', expected='output/c-backend/cast-ptr-arithm-arm.c')
+
+    def test_bitfield_access(self):
+        self.cif.run(cif_input='input/c-backend/bitfield-access.c', stage='C-backend', cif_output='work/bitfield-access.c')
+        self.compare(output='work/bitfield-access.c', expected='output/c-backend/bitfield-access.c')
+
 
 if __name__ == '__main__':
     unittest.main()
