@@ -1,4 +1,5 @@
 build
+build-debug
 venv
 inst
 aspectator/.git
