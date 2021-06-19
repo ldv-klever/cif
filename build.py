@@ -153,5 +153,7 @@ if __name__ == "__main__":
             "tar",
             "cJf",
             os.path.join(args.output, archive_name),
-            cif_dir
+            "-C",
+            cif_dir,
+            "."
         ], cwd=args.build)

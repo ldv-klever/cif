@@ -81,7 +81,7 @@ archive:
 	docker exec cif apt-get update
 	docker exec cif apt-get install -y xz-utils
 	docker exec cif mkdir /tmp/cif-archives
-	docker exec cif bash -c "tar cJf /tmp/cif-archives/\`cif --version\`.tar.xz /tmp/cif"
+	docker exec cif bash -c "tar cJf /tmp/cif-archives/\`cif --version\`.tar.xz -C /tmp/cif ."
 	docker cp cif:/tmp/cif-archives/. .
 	docker stop cif
 	docker rm cif
