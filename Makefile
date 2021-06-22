@@ -99,7 +99,7 @@ archive/arm-unknown-linux-gnueabi:
 
 archive/aarch64_be-unknown-linux-gnu:
 	$(MAKE) archives/cross-pre
-	docker exec cross-cif python3 build.py -o /tmp/cif-archives aarch64_be-unknown-linux-gnu
+	docker exec --user builduser cross-cif python3 build.py -o /tmp/cif-archives aarch64_be-unknown-linux-gnu
 	$(MAKE) archives/cross-post
 
 archives/cross:

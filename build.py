@@ -93,7 +93,7 @@ if __name__ == "__main__":
         copy_and_patch(args.src, config_file, os.path.join(config_build_dir, ".config"))
 
         # Run crosstool-ng
-        r = subprocess.run(["ct-ng", "build"], cwd=config_build_dir)
+        r = subprocess.run(["/home/builduser/src/crosstool-ng-1.24.0/ct-ng", "build"], cwd=config_build_dir)
 
         if r.returncode:
             print("Build failed")
@@ -109,6 +109,9 @@ if __name__ == "__main__":
         ct_ng_build_dir = os.path.join(os.path.expanduser("~"), "x-tools", config_name)
         aspectator_dir = os.path.join(cif_dir, cif_name)
         shutil.copytree(ct_ng_build_dir, aspectator_dir)
+
+        # By default nobody can write to ct-ng build directory while we need this to copy cif binary
+        subprocess.run(["chmod", "-R", "u+w", aspectator_dir], stdout=subprocess.DEVNULL)
 
         # Build cif binary
         subprocess.run(["make", "cif"], cwd=args.src, stdout=subprocess.DEVNULL)
