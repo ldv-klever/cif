@@ -162,6 +162,10 @@ class TestCBackend(utils.CIFTestCase):
         self.cif.run(cif_input='input/c-backend/bitfield-access.c', stage='C-backend', cif_output='work/bitfield-access.c')
         self.compare(output='work/bitfield-access.c', expected='output/c-backend/bitfield-access.c')
 
+    def test_atomic_type_qual(self):
+        self.cif.run(cif_input='input/c-backend/atomic-type-qual.c', stage='C-backend', cif_output='work/atomic-type-qual.c')
+        self.compare(output='work/atomic-type-qual.c', expected='output/c-backend/atomic-type-qual.c')
+
 
 if __name__ == '__main__':
     unittest.main()
