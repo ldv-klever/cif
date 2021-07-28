@@ -108,14 +108,6 @@ class TestCBackend(utils.CIFTestCase):
         self.cif.run(cif_input='input/c-backend/typedef-pointer.c', stage='C-backend', cif_output='work/typedef-pointer.c')
         self.compare(output='work/typedef-pointer.c', expected='output/c-backend/typedef-pointer.c')
 
-    def test_include1(self):
-        self.cif.run(cif_input='input/c-backend/include.c', stage='C-backend', cif_output='work/include1.c', aspectator_opts=['-include', 'input/c-backend/include1.h'])
-        self.compare(output='work/include1.c', expected='output/c-backend/include1.c')
-
-    def test_include2(self):
-        self.cif.run(cif_input='input/c-backend/include.c', stage='C-backend', cif_output='work/include2.c', aspectator_opts=['-include', 'input/c-backend/include1.h', '-include', 'input/c-backend/include2.h'])
-        self.compare(output='work/include2.c', expected='output/c-backend/include2.c')
-
     def test_cast_to_anon_struct(self):
         self.cif.run(cif_input='input/c-backend/cast-to-anon-struct.c', stage='C-backend', cif_output='work/cast-to-anon-struct.c')
         self.compare(output='work/cast-to-anon-struct.c', expected='output/c-backend/cast-to-anon-struct.c')

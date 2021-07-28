@@ -645,9 +645,14 @@ static void perform_stages(void) {
                 /* Remove -include options since they cause repeating include of
                  * headers that may cause build failures, e.g. due to type
                  * redeclaration. Since it is the last stage, we can safely
-                 * overwrite options. */
+                 * overwrite options.
+                 * It is worth mentioning that a long ago this was not necessary
+                 * due to using "-x cpp-output" like for the instrumentation
+                 * stage. This was changed to support comments added during
+                 * instrumentation. Those comments are useful, e.g. to handle
+                 * CIF auxiliary functions in a specific way at visualization. */
                 if (options)
-                    pch = strstr(options, "\"-include\"");
+                    pch = strstr(options, "\"-include");
                 else
                     pch = NULL;
 
@@ -677,9 +682,11 @@ static void perform_stages(void) {
                             j++;
                         }
 
-                        /* Skip -include and its mandatory value enclosed in
-                         * quotes. 12 = strlen("\"-include\" \"") */
-                        cur_start += 12;
+                        /* Skip -include and its mandatory value that follows -include or
+                         * that is provide as one more option enclosed in quotes. */
+                        cur_start += strlen("\"-include");
+                        if (*cur_start == '"')
+                            cur_start += strlen("\" \"");
                         pch = strstr(cur_start, "\"");
 
                         if (!pch)
@@ -692,7 +699,7 @@ static void perform_stages(void) {
                         cur_start = pch + 1;
 
                         /* Proceed to next -include if so. */
-                        pch = strstr(cur_start, "\"-include\"");
+                        pch = strstr(cur_start, "\"-include");
 
                         /* Finish. */
                         if (!pch)
