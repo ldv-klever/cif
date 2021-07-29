@@ -52,6 +52,7 @@ def get_cif_version(cif_bin):
     finally:
         return version
 
+
 def copy_and_patch(cif_src, src, dst):
     with open(src, "r") as src_fh:
         config_lines = src_fh.readlines()
@@ -65,6 +66,7 @@ def copy_and_patch(cif_src, src, dst):
 
             dst_fh.write(line)
 
+
 def fix_permissions(path):
     for root, dirs, files in os.walk(path):
         for name in dirs + files:
@@ -72,6 +74,7 @@ def fix_permissions(path):
 
             st = os.stat(file_path)
             os.chmod(file_path, st.st_mode | stat.S_IWRITE)
+
 
 if __name__ == "__main__":
     args = parse_args(sys.argv[1:])
