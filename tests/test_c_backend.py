@@ -158,6 +158,11 @@ class TestCBackend(utils.CIFTestCase):
         self.cif.run(cif_input='input/c-backend/atomic-type-qual.c', stage='C-backend', cif_output='work/atomic-type-qual.c')
         self.compare(output='work/atomic-type-qual.c', expected='output/c-backend/atomic-type-qual.c')
 
+    def test_typedef_const_pointer(self):
+        self.cif.run(cif_input='input/c-backend/typedef-const-pointer.c', stage='C-backend', cif_output='work/typedef-const-pointer.c')
+        self.compare(output='work/typedef-const-pointer.c', expected='output/c-backend/typedef-const-pointer.c')
+
+
 
 if __name__ == '__main__':
     unittest.main()
