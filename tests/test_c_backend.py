@@ -158,6 +158,12 @@ class TestCBackend(utils.CIFTestCase):
         self.cif.run(cif_input='input/c-backend/atomic-type-qual.c', stage='C-backend', cif_output='work/atomic-type-qual.c')
         self.compare(output='work/atomic-type-qual.c', expected='output/c-backend/atomic-type-qual.c')
 
+    def test_omit_type_quals(self):
+        env = dict(os.environ)
+        env['LDV_C_BACKEND_OMIT_TYPE_QUALS'] = "1"
+        self.cif.run(cif_input='input/c-backend/omit-type-quals.c', stage='C-backend', cif_output='work/omit-type-quals.c', env=env)
+        self.compare(output='work/omit-type-quals.c', expected='output/c-backend/omit-type-quals.c')
+
 
 if __name__ == '__main__':
     unittest.main()

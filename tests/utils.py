@@ -9,8 +9,8 @@ WORK_DIR = 'work'
 
 class CIFTestCase(unittest.TestCase):
     class CIF():
-        def run(self, cif_input, aspect=None, cif_output=WORK_DIR + '/a.out', stage='compilation', back_end='src', aspectator_opts=None):
-            self.cmd = ['../inst/bin/cif',
+        def run(self, cif_input, aspect=None, cif_output=WORK_DIR + '/a.out', stage='compilation', back_end='src', aspectator_opts=None, env=None):
+            self.cmd = ['/home/novikov/work/cif-inst/arm-unknown-eabi-cif/bin/arm-unknown-eabi-cif',
                         '--in', cif_input,
                         '--back-end', back_end,
                         '--stage', stage,
@@ -25,7 +25,7 @@ class CIFTestCase(unittest.TestCase):
                 self.cmd.append('--')
                 self.cmd.extend(aspectator_opts)
 
-            proc = subprocess.Popen(self.cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            proc = subprocess.Popen(self.cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=env)
             stdout, stderr = proc.communicate()
 
             self.log = (stdout.decode('utf-8') + stderr.decode('utf-8')).strip()
