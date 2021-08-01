@@ -10,7 +10,7 @@ WORK_DIR = 'work'
 class CIFTestCase(unittest.TestCase):
     class CIF():
         def run(self, cif_input, aspect=None, cif_output=WORK_DIR + '/a.out', stage='compilation', back_end='src', aspectator_opts=None, env=None):
-            self.cmd = ['/home/novikov/work/cif-inst/arm-unknown-eabi-cif/bin/arm-unknown-eabi-cif',
+            self.cmd = ['../inst/bin/cif',
                         '--in', cif_input,
                         '--back-end', back_end,
                         '--stage', stage,
