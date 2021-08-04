@@ -1,4 +1,5 @@
 import os
+import pytest
 import unittest
 import utils
 
@@ -95,8 +96,8 @@ class TestCBackend(utils.CIFTestCase):
         self.cif.run(cif_input='input/c-backend/wide-char-str.c', stage='C-backend', cif_output='work/short-wide-char-str.c', aspectator_opts=['-DWCHAR_T=unsigned short int', '-fshort-wchar'])
         self.compare(output='work/short-wide-char-str.c', expected='output/c-backend/short-wide-char-str.c')
 
-    # Let's support vector types one day later.
-    def _test_vector_type(self):
+    @pytest.mark.skip(reason="Vector types are not supported")
+    def test_vector_type(self):
         self.cif.run(cif_input='input/c-backend/vector-type.c', stage='C-backend', cif_output='work/vector-type.c')
         self.compare(output='work/vector-type.c', expected='output/c-backend/vector-type.c')
 
@@ -145,8 +146,8 @@ class TestCBackend(utils.CIFTestCase):
         self.cif.run(cif_input='input/c-backend/cast-ptr-arithm.c', stage='C-backend', cif_output='work/cast-ptr-arithm.c')
         self.compare(output='work/cast-ptr-arithm.c', expected='output/c-backend/cast-ptr-arithm.c')
 
-    # TODO: this test needs cross CIF for ARM. Indeed, the previous test case makes almost the same, but for x86_64.
-    def _test_cast_ptr_arithm_arm(self):
+    @pytest.mark.arm
+    def test_cast_ptr_arithm_arm(self):
         self.cif.run(cif_input='input/c-backend/cast-ptr-arithm-arm.c', stage='C-backend', cif_output='work/cast-ptr-arithm-arm.c')
         self.compare(output='work/cast-ptr-arithm-arm.c', expected='output/c-backend/cast-ptr-arithm-arm.c')
 
