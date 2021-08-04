@@ -4,7 +4,7 @@ import utils
 
 
 class TestComplexAspectPatternParameters(utils.CIFTestCase):
-    def _test_multiple_strings(self):
+    def test_multiple_strings(self):
         self.cif.run(cif_input='input/simple.c', aspect='aspect/multiple-strings-aspect-pattern-parameters.aspect', stage='instrumentation')
         self.compare(output='work/info.txt', expected='output/multiple-strings-aspect-pattern-parameters.txt')
 
