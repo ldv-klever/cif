@@ -6,12 +6,14 @@ ENV CIF_INST=/usr/local/
 
 # Install dependencies and prepare environment
 RUN apt-get update && \
-    apt-get install -y make gcc g++ flex bison git rsync
+    apt-get install -y make gcc g++ flex bison git rsync python3 python3-pip
+RUN pip3 install pytest
 
 # Copy CIF source code
 COPY cif.c Makefile $CIF_SRC
 COPY aspectator $CIF_SRC/aspectator
 COPY .git $CIF_SRC/.git
+COPY tests $CIF_SRC/tests
 
 # Download prerequisites
 WORKDIR $CIF_SRC/aspectator
@@ -23,6 +25,8 @@ RUN make clean
 RUN make -j`nproc`
 RUN DESTDIR=$CIF_INST make install
 
+# Test CIF
+RUN make test
 
 # Final image, stripped from unnecessary layers
 FROM debian:9
