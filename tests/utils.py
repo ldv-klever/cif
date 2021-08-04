@@ -10,7 +10,7 @@ WORK_DIR = 'work'
 class CIFTestCase(unittest.TestCase):
     class CIF():
         def run(self, cif_input, aspect=None, cif_output=WORK_DIR + '/a.out', stage='compilation', back_end='src', aspectator_opts=None, env=None):
-            self.cmd = ['../inst/bin/cif',
+            self.cmd = [os.environ.get('CIF', '../inst/bin/cif'),
                         '--in', cif_input,
                         '--back-end', back_end,
                         '--stage', stage,
