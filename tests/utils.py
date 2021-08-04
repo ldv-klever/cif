@@ -87,9 +87,9 @@ class CIFTestCase(unittest.TestCase):
     def skip_os_specific_defines(self, output):
         self.check_cif_status()
 
-        with open(output) as fp:
+        with open(output, encoding='utf8') as fp:
             lines = fp.readlines()
-        with open(output, 'w') as fp:
+        with open(output, 'w', encoding='utf8') as fp:
             for line in lines:
                 if not line.startswith('/usr/include/stdc-predef.h'):
                     fp.write(line)
@@ -97,7 +97,7 @@ class CIFTestCase(unittest.TestCase):
     def replace_gotos(self, output):
         self.check_cif_status()
 
-        with open(output) as fp:
+        with open(output, encoding='utf8') as fp:
             lines = fp.readlines()
 
         goto_ids = dict()
@@ -114,7 +114,7 @@ class CIFTestCase(unittest.TestCase):
                 goto_ids[old_id] = str(counter)
                 counter += 1
 
-        with open(output, 'w') as fp:
+        with open(output, 'w', encoding='utf8') as fp:
             for line in lines:
                 m = re.search(r"ldv_(\d*)[;:]", line)
 
@@ -125,9 +125,9 @@ class CIFTestCase(unittest.TestCase):
                 fp.write(line)
 
     def make_relpath(self, output):
-        with open(output) as fp:
+        with open(output, encoding='utf8') as fp:
             lines = fp.readlines()
-        with open(output, 'w') as fp:
+        with open(output, 'w', encoding='utf8') as fp:
             for line in lines:
                 fp.write(line.replace(os.getcwd() + os.path.sep, ''))
 
@@ -135,7 +135,7 @@ class CIFTestCase(unittest.TestCase):
         if not os.path.exists(file):
             self.fail('File {} does not exist.'.format(file))
 
-        with open(file, 'r') as file_fh:
+        with open(file, 'r', encoding='utf8') as file_fh:
             return file_fh.readlines()
 
     def _backup_work_dir(self):
