@@ -25,7 +25,7 @@ all:
 	  echo "Configure Aspectator for the first time"; \
 	  cd build; \
 	  MAKEINFO=missing ../aspectator/configure --prefix=/ --enable-languages=c \
-	    --disable-libsanitizer --disable-multilib --disable-nls\
+	    --disable-libsanitizer --disable-multilib --disable-nls --disable-plugin \
 	    --enable-checking=release --with-pkgversion=$(ASPECTATOR_VERSION) \
 	    --with-bugurl="https://forge.ispras.ru/projects/cif/issues" \
 	    $(CONFIGURE_ARGS_MACOS) $(ASPECTATOR_CONFIGURE_OPTS); \
