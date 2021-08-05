@@ -1,5 +1,4 @@
 import os
-import unittest
 import utils
 
 
@@ -15,7 +14,3 @@ class TestComplexAspectPatternParameters(utils.CIFTestCase):
         self.compare(output='work/pre-pre-SOMETHING.txt', expected='output/strings-with-aspect-pattern-string-parameters1.txt')
         self.make_relpath('work/pre-pre-CONST.txt')
         self.compare(output='work/pre-pre-CONST.txt', expected='output/strings-with-aspect-pattern-string-parameters2.txt')
-
-
-if __name__ == '__main__':
-    unittest.main()

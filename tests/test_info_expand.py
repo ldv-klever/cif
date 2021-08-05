@@ -1,4 +1,3 @@
-import unittest
 import utils
 
 
@@ -14,7 +13,3 @@ class TestInfoExpand(utils.CIFTestCase):
         self.skip_os_specific_defines('work/info.txt')
         self.make_relpath('work/info.txt')
         self.compare(output='work/info.txt', expected='output/macro_actual_args.txt')
-
-
-if __name__ == '__main__':
-    unittest.main()

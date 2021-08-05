@@ -1,5 +1,4 @@
 import pytest
-import unittest
 import utils
 
 
@@ -51,6 +50,3 @@ class TestLegacy(utils.CIFTestCase):
     def test_gnu_inline(self):
         self.cif.run(cif_input='input/gnu_inline.c', aspect='aspect/gnu_inline.aspect', cif_output='work/gnu_inline.c')
         self.compare(output='work/gnu_inline.c', expected='output/gnu_inline.c')
-
-if __name__ == '__main__':
-    unittest.main()

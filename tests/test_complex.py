@@ -1,4 +1,3 @@
-import unittest
 import utils
 
 
@@ -9,7 +8,3 @@ class TestComplex(utils.CIFTestCase):
     def test_realpart_expr(self):
         self.cif.run(cif_input='input/complex.c', aspect='aspect/empty.aspect', stage='instrumentation')
         self.check_cif_status()
-
-
-if __name__ == '__main__':
-    unittest.main()

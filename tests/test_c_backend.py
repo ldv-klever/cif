@@ -1,6 +1,5 @@
 import os
 import pytest
-import unittest
 import utils
 
 
@@ -164,7 +163,3 @@ class TestCBackend(utils.CIFTestCase):
         env['LDV_C_BACKEND_OMIT_TYPE_QUALS'] = "1"
         self.cif.run(cif_input='input/c-backend/omit-type-quals.c', stage='C-backend', cif_output='work/omit-type-quals.c', env=env)
         self.compare(output='work/omit-type-quals.c', expected='output/c-backend/omit-type-quals.c')
-
-
-if __name__ == '__main__':
-    unittest.main()

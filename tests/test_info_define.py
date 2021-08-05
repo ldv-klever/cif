@@ -1,4 +1,3 @@
-import unittest
 import utils
 
 
@@ -8,7 +7,3 @@ class TestInfoDefine(utils.CIFTestCase):
         self.skip_os_specific_defines('work/info.txt')
         self.make_relpath('work/info.txt')
         self.compare(output='work/info.txt', expected='output/simple_call_info_define_all.txt')
-
-
-if __name__ == '__main__':
-    unittest.main()

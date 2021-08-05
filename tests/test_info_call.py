@@ -1,4 +1,3 @@
-import unittest
 import utils
 
 
@@ -17,7 +16,3 @@ class TestInfoCall(utils.CIFTestCase):
         self.cif.run(cif_input='input/actual_arg_func_names.c', aspect='aspect/actual_arg_func_names.aspect', stage='instrumentation')
         self.make_relpath('work/info.txt')
         self.compare(output='work/info.txt', expected='output/actual_arg_func_names.txt')
-
-
-if __name__ == '__main__':
-    unittest.main()
