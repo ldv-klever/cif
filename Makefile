@@ -89,12 +89,12 @@ archive:
 
 archive/arm-unknown-eabi:
 	$(MAKE) archives/cross-pre
-	docker exec cross-cif python3 build.py -o /tmp/cif-archives arm-unknown-eabi
+	docker exec --user builduser cross-cif python3 build.py -o /tmp/cif-archives arm-unknown-eabi
 	$(MAKE) archives/cross-post
 
 archive/arm-unknown-linux-gnueabi:
 	$(MAKE) archives/cross-pre
-	docker exec cross-cif python3 build.py -o /tmp/cif-archives arm-unknown-linux-gnueabi
+	docker exec --user builduser cross-cif python3 build.py -o /tmp/cif-archives arm-unknown-linux-gnueabi
 	$(MAKE) archives/cross-post
 
 archive/aarch64_be-unknown-linux-gnu:
@@ -104,7 +104,7 @@ archive/aarch64_be-unknown-linux-gnu:
 
 archives/cross:
 	$(MAKE) archives/cross-pre
-	docker exec cross-cif python3 build.py -o /tmp/cif-archives
+	docker exec --user builduser cross-cif python3 build.py -o /tmp/cif-archives
 	$(MAKE) archives/cross-post
 
 archives/cross-pre:
