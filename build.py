@@ -150,6 +150,11 @@ if __name__ == "__main__":
         # Fixing permissions (chmod +w to everything inside cif_dir)
         fix_permissions(cif_dir)
 
+        # Run tests
+        test_env = os.environ.copy()
+        test_env["CIF"] = cif_path
+        subprocess.run(["make", "test"], cwd=args.src, env=test_env)
+
         # Final step: create .tar.xz archive
         archive_name = config_name + "-" + get_cif_version(cif_path) + ".tar.xz"
         os.makedirs(args.output, exist_ok=True)

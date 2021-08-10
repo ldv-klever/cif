@@ -59,10 +59,6 @@ uninstall:
 	rm -rf "$(DESTDIR)/bin/cif" "$(DESTDIR)/bin/aspectator" "$(DESTDIR)"/cif*
 
 test:
-	@if [[ ! -d ${LOCAL_DESTDIR} || ! -f ${LOCAL_DESTDIR}/bin/cif || ! -f ${LOCAL_DESTDIR}/bin/aspectator ]]; then \
-	  echo "You must build CIF before running tests"; \
-	  exit -1; \
-	fi
 	cd tests && pytest
 
 clean:
