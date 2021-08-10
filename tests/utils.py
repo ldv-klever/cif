@@ -91,7 +91,7 @@ class CIFTestCase(unittest.TestCase):
             lines = fp.readlines()
         with open(output, 'w', encoding='utf8') as fp:
             for line in lines:
-                if not line.startswith('/usr/include/stdc-predef.h'):
+                if line.find('/usr/include/stdc-predef.h') == -1:
                     fp.write(line)
 
     def replace_gotos(self, output):

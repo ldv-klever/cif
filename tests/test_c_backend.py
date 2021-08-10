@@ -37,9 +37,15 @@ class TestCBackend(utils.CIFTestCase):
         self.cif.run(cif_input='input/c-backend/memref-transform2.c', stage='C-backend', cif_output='work/memref-transform2.c')
         self.compare(output='work/memref-transform2.c', expected='output/c-backend/memref-transform2.c')
 
+    @pytest.mark.not_arm
     def test_array(self):
         self.cif.run(cif_input='input/c-backend/array.c', stage='C-backend', cif_output='work/array.c')
         self.compare(output='work/array.c', expected='output/c-backend/array.c')
+
+    @pytest.mark.arm
+    def test_array_arm(self):
+        self.cif.run(cif_input='input/c-backend/array.c', stage='C-backend', cif_output='work/array-arm.c')
+        self.compare(output='work/array-arm.c', expected='output/c-backend/array-arm.c')
 
     def test_array_zero_lenght(self):
         self.cif.run(cif_input='input/c-backend/array-zero-lenght.c', stage='C-backend', cif_output='work/array-zero-lenght.c')
@@ -75,18 +81,42 @@ class TestCBackend(utils.CIFTestCase):
         del os.environ['LDV_INLINE_ASM_STUB']
         self.compare(output='work/inline-asm-stub.c', expected='output/c-backend/inline-asm-stub.c')
 
-    def test_build_builtin_overflow(self):
+    @pytest.mark.not_arm
+    def test_builtin_overflow(self):
         self.cif.run(cif_input='input/c-backend/builtin-overflow.c', stage='C-backend', cif_output='work/builtin-overflow.c')
         self.compare(output='work/builtin-overflow.c', expected='output/c-backend/builtin-overflow.c')
 
+    @pytest.mark.arm
+    def test_builtin_overflow_arm(self):
+        self.cif.run(cif_input='input/c-backend/builtin-overflow.c', stage='C-backend', cif_output='work/builtin-overflow-arm.c')
+        self.compare(output='work/builtin-overflow-arm.c', expected='output/c-backend/builtin-overflow-arm.c')
+
+    @pytest.mark.not_arm
     def test_skip_save_expr(self):
         self.cif.run(cif_input='input/c-backend/skip-save-expr.c', stage='C-backend', cif_output='work/skip-save-expr.c', aspectator_opts=['-Os'])
         self.compare(output='work/skip-save-expr.c', expected='output/c-backend/skip-save-expr.c')
 
+    @pytest.mark.arm
+    def test_skip_save_expr_arm(self):
+        self.cif.run(cif_input='input/c-backend/skip-save-expr.c', stage='C-backend', cif_output='work/skip-save-expr-arm.c', aspectator_opts=['-Os'])
+        self.compare(output='work/skip-save-expr-arm.c', expected='output/c-backend/skip-save-expr-arm.c')
+
+    @pytest.mark.x86_64
     def test_floatn(self):
         self.cif.run(cif_input='input/c-backend/floatn.c', stage='C-backend', cif_output='work/floatn.c')
         self.compare(output='work/floatn.c', expected='output/c-backend/floatn.c')
 
+    @pytest.mark.arm
+    def test_floatn_arm(self):
+        self.cif.run(cif_input='input/c-backend/floatn.c', stage='C-backend', cif_output='work/floatn-arm.c')
+        self.compare(output='work/floatn-arm.c', expected='output/c-backend/floatn-arm.c')
+
+    @pytest.mark.aarch64
+    def test_floatn_aarch64(self):
+        self.cif.run(cif_input='input/c-backend/floatn.c', stage='C-backend', cif_output='work/floatn-aarch64.c')
+        self.compare(output='work/floatn-aarch64.c', expected='output/c-backend/floatn-aarch64.c')
+
+    @pytest.mark.x86_64
     def test_wide_char_str(self):
         self.cif.run(cif_input='input/c-backend/wide-char-str.c', stage='C-backend', cif_output='work/wide-char-str.c', aspectator_opts=['-DWCHAR_T=int'])
         self.compare(output='work/wide-char-str.c', expected='output/c-backend/wide-char-str.c')
@@ -120,9 +150,15 @@ class TestCBackend(utils.CIFTestCase):
         self.cif.run(cif_input='input/c-backend/llongmin.c', stage='C-backend', cif_output='work/llongmin.c')
         self.compare(output='work/llongmin.c', expected='output/c-backend/llongmin.c')
 
+    @pytest.mark.not_arm
     def test_container_of(self):
         self.cif.run(cif_input='input/c-backend/container-of.c', stage='C-backend', cif_output='work/container-of.c')
         self.compare(output='work/container-of.c', expected='output/c-backend/container-of.c')
+
+    @pytest.mark.arm
+    def test_container_of_arm(self):
+        self.cif.run(cif_input='input/c-backend/container-of.c', stage='C-backend', cif_output='work/container-of-arm.c')
+        self.compare(output='work/container-of-arm.c', expected='output/c-backend/container-of-arm.c')
 
     def test_may_alias(self):
         self.cif.run(cif_input='input/c-backend/may-alias.c', stage='C-backend', cif_output='work/may-alias.c')
@@ -141,6 +177,7 @@ class TestCBackend(utils.CIFTestCase):
         self.cif.run(cif_input='input/c-backend/typedef-array.c', stage='C-backend', cif_output='work/typedef-array.c')
         self.compare(output='work/typedef-array.c', expected='output/c-backend/typedef-array.c')
 
+    @pytest.mark.not_arm
     def test_cast_ptr_arithm(self):
         self.cif.run(cif_input='input/c-backend/cast-ptr-arithm.c', stage='C-backend', cif_output='work/cast-ptr-arithm.c')
         self.compare(output='work/cast-ptr-arithm.c', expected='output/c-backend/cast-ptr-arithm.c')

@@ -10,22 +10,30 @@ def pytest_collection_modifyitems(config, items):
         reason='arm cif is not available'
     )
 
+    skip_not_arm = pytest.mark.skipif(
+        'arm' in os.path.basename(cif_path),
+        reason='arm cif is available'
+    )
+
     skip_aarch64 = pytest.mark.skipif(
         'aarch64' not in os.path.basename(cif_path),
         reason='aarch64 cif is not available'
     )
 
-    skip_x86 = pytest.mark.skipif(
+    skip_x86_64 = pytest.mark.skipif(
         'cif' != os.path.basename(cif_path),
-        reason='x86 cif is not available'
+        reason='x86_64 cif is not available'
     )
 
     for item in items:
         if 'arm' in item.keywords:
             item.add_marker(skip_arm)
 
+        if 'not_arm' in item.keywords:
+            item.add_marker(skip_not_arm)
+
         if 'aarch64' in item.keywords:
             item.add_marker(skip_aarch64)
 
-        if 'x86' in item.keywords:
-            item.add_marker(skip_x86)
+        if 'x86_64' in item.keywords:
+            item.add_marker(skip_x86_64)
