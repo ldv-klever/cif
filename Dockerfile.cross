@@ -5,7 +5,7 @@ RUN apt-get update && \
     apt-get install -y make gcc g++ flex bison git rsync \
         autoconf texinfo help2man libtool libncurses5-dev \
         bzip2 xz-utils unzip gawk libtool-bin wget python3 \
-        python3-pip
+        python3-pip curl
 RUN pip3 install pytest
 
 RUN groupadd -r builduser && \
@@ -38,5 +38,9 @@ COPY --chown=builduser:builduser tests $CIF_SRC/tests
 # Copy configuration for crosstool-ng and build.py script
 COPY --chown=builduser:builduser config $CIF_SRC/config
 COPY --chown=builduser:builduser build.py $CIF_SRC
+
+# Download prerequisites
+WORKDIR $CIF_SRC/aspectator
+RUN ./contrib/download_prerequisites
 
 WORKDIR $CIF_SRC

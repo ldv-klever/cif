@@ -83,6 +83,9 @@ archive:
 	docker rm cif
 	docker rmi cif
 
+archive/native:
+	$(MAKE) archive
+
 archive/arm-unknown-eabi:
 	$(MAKE) archives/cross-pre
 	docker exec --user builduser cross-cif python3 build.py -o /tmp/cif-archives arm-unknown-eabi
