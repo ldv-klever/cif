@@ -1,32 +1,22 @@
-name: test
+name: build
 
 on: [push]
 
 jobs:
-  build:
-    runs-on: ${{ matrix.os }}
-
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest]
+  build_macos:
+    runs-on: macos-latest
 
     steps:
     - uses: actions/checkout@v2
       with:
         submodules: 'recursive'
 
-    - name: Install system dependencies
-      if: startsWith(matrix.os, 'ubuntu')
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y make lbzip2 patch gcc g++ flex bison libc6-dev-i386
-
     - name: Download GCC dependencies
       run: |
         cd aspectator
         ./contrib/download_prerequisites
 
-    - name: Make CIF
+    - name: Build CIF
       run: make -j$(nproc)
 
     - name: Set up Python 3.7
@@ -36,6 +26,34 @@ jobs:
 
     - name: Test CIF
       run: |
-        python -m pip install --upgrade pip
         python -m pip install --upgrade pytest
         make test
+
+  build_docker:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        config: [native, aarch64_be-unknown-linux-gnu, arm-unknown-eabi]
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: 'recursive'
+
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y make
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Build CIF
+      run: make archive/${{ matrix.config }}
+
+    - name: Upload CIF
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{ matrix.config }}-cif
+        path: "*.tar.xz"
