@@ -1,0 +1,3 @@
+info: declare_func(int function(struct mutex *)) {
+  $fprintf<"work/info.txt","%s %s %d %s\n",$path,$func_name,$decl_line,$signature>
+}

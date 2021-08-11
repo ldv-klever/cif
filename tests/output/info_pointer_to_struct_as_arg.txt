@@ -1,0 +1,1 @@
+input/pointer_to_struct_as_arg.c function 5 int function(struct mutex *);
