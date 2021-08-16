@@ -1,0 +1,2 @@
+pointcut mutex_lock: define(mutex_lock(lock))
+pointcut mutex_lock: call(void mutex_lock(struct mutex *lock))
