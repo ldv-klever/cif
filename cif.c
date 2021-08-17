@@ -39,7 +39,6 @@ struct aux {
 
 struct options {
     int keep;
-    int keep_prepared_file;
     const char *aspect;
     const char *back_end;
     int debug_level;
@@ -94,7 +93,6 @@ static void parse_opts(int argc, char **argv) {
     struct option long_options[] = {
         /* These options set a flag. */
         {"keep",                no_argument, &(opts.keep), 1},
-        {"keep-prepared-file",  no_argument, &(opts.keep_prepared_file), 1},
         /* These options don’t set a flag.
          We distinguish them by their indices. */
         {"help",                        no_argument, 0, 'h'},
@@ -883,11 +881,10 @@ static void clean(void) {
     if (opts.keep)
         return;
 
-    /* Keep prepared files since error traces can reference them. */
-    if (!opts.keep_prepared_file)
-        unlink(aux_files.file_prepared);
-
     print_debug(DEBUG, "Remove intermediate files.\n");
+
+    if (!stat(aux_files.file_prepared, &stat_buf))
+        unlink(aux_files.file_prepared);
 
     if (!stat(aux_files.aspect_preprocessed, &stat_buf))
         unlink(aux_files.aspect_preprocessed);
