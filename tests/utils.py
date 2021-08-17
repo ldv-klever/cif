@@ -10,7 +10,10 @@ WORK_DIR = 'work'
 class CIFTestCase(unittest.TestCase):
     class CIF():
         def run(self, cif_input, aspect=None, cif_output=WORK_DIR + '/a.out', stage='compilation', back_end='src', aspectator_opts=None, env=None):
-            self.cmd = [os.environ.get('CIF', '../inst/bin/cif'),
+            self.cif = os.environ.get('CIF', '../inst/bin/cif')
+            self.aspectator = self.cif[:-3] + 'aspectator'
+
+            self.cmd = [self.cif,
                         '--in', cif_input,
                         '--back-end', back_end,
                         '--stage', stage,
@@ -35,6 +38,8 @@ class CIFTestCase(unittest.TestCase):
             self.instrumented = cif_output + '.instrumented'
             self.macroinstrumented = cif_output + '.instrumented'
             self.prepared = cif_output + '.prepared'
+            self.stage = stage
+            self.back_end = back_end
 
     def __init__(self, *arguments):
         self.cif = CIFTestCase.CIF()
@@ -61,6 +66,7 @@ class CIFTestCase(unittest.TestCase):
 
     def compare(self, output, expected):
         self.check_cif_status()
+        self.check_cif_output()
 
         if 'OVERRIDE' in os.environ:
             shutil.copy(output, expected)
@@ -83,6 +89,13 @@ class CIFTestCase(unittest.TestCase):
             print('\nCMD: {!r}'.format(' '.join(self.cif.cmd)))
             print('LOG:', self.cif.log, '\n')
             self.assertEqual(self.cif.status, 0)
+
+    def check_cif_output(self):
+        if self.cif.stage != 'compilation' or self.cif.back_end != 'src':
+            return
+
+        r = subprocess.run([self.cif.aspectator, '-fsyntax-only', self.cif.cif_output])
+        self.assertEqual(r.returncode, 0)
 
     def skip_os_specific_defines(self, output):
         self.check_cif_status()
