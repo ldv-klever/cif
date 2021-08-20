@@ -31,7 +31,6 @@ class TestLegacy(utils.CIFTestCase):
         self.cif.run(cif_input='input/legacy_any_params.c', aspect='aspect/legacy_any_params.aspect', cif_output='work/legacy_any_params.c')
         self.compare(output='work/legacy_any_params.c', expected='output/legacy_any_params.c')
 
-    @pytest.mark.skip()
     def test_simple(self):
         self.cif.run(cif_input='input/legacy_simple.c', aspect='aspect/legacy_simple.aspect', cif_output='work/legacy_simple.c')
         self.compare(output='work/legacy_simple.c', expected='output/legacy_simple.c')
