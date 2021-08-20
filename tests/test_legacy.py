@@ -15,7 +15,6 @@ class TestLegacy(utils.CIFTestCase):
         self.cif.run(cif_input='input/legacy_type.c', aspect='aspect/legacy_type.aspect', cif_output='work/legacy_type.c')
         self.compare(output='work/legacy_type.c', expected='output/legacy_type.c')
 
-    @pytest.mark.skip()
     def test_function(self):
         self.cif.run(cif_input='input/legacy_function.c', aspect='aspect/legacy_function.aspect', cif_output='work/legacy_function.c')
         self.compare(output='work/legacy_function.c', expected='output/legacy_function.c')

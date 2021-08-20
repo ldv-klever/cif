@@ -1,33 +1,32 @@
 void func1(void);
 void func1(void);
-#line 4 "/home/novikov/work/cif/tests/input/func-calls.c"
+#line 2 "/home/novikov/work/cif/tests/input/func-calls.c"
 static void cif_func1(void);
-#line 6 "/home/novikov/work/cif/tests/input/func-calls.c"
+#line 2 "/home/novikov/work/cif/tests/input/func-calls.c"
 void func2(void);
 void func2(void);
-#line 9 "/home/novikov/work/cif/tests/input/func-calls.c"
+#line 3 "/home/novikov/work/cif/tests/input/func-calls.c"
 static void cif_func2(void);
-#line 11 "/home/novikov/work/cif/tests/input/func-calls.c"
+#line 3 "/home/novikov/work/cif/tests/input/func-calls.c"
 void func3(void);
 void func3(void);
-#line 14 "/home/novikov/work/cif/tests/input/func-calls.c"
+#line 4 "/home/novikov/work/cif/tests/input/func-calls.c"
 static void cif_func3(void);
-#line 16 "/home/novikov/work/cif/tests/input/func-calls.c"
+#line 4 "/home/novikov/work/cif/tests/input/func-calls.c"
 int func4(void);
 int func4(void);
-#line 19 "/home/novikov/work/cif/tests/input/func-calls.c"
+#line 5 "/home/novikov/work/cif/tests/input/func-calls.c"
 static int cif_func4(void);
-#line 21 "/home/novikov/work/cif/tests/input/func-calls.c"
+#line 5 "/home/novikov/work/cif/tests/input/func-calls.c"
 int func5(void);
 int func5(void);
-#line 24 "/home/novikov/work/cif/tests/input/func-calls.c"
+#line 6 "/home/novikov/work/cif/tests/input/func-calls.c"
 static int cif_func5(void);
-#line 26 "/home/novikov/work/cif/tests/input/func-calls.c"
+#line 6 "/home/novikov/work/cif/tests/input/func-calls.c"
 int func6(void);
 int func6(void);
-#line 29 "/home/novikov/work/cif/tests/input/func-calls.c"
+#line 7 "/home/novikov/work/cif/tests/input/func-calls.c"
 static int cif_func6(void);
-#line 32 "/home/novikov/work/cif/tests/input/func-calls.c"
 void func7(void)
 {
   cif_func1 ( );

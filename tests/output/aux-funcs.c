@@ -1,8 +1,7 @@
 int func(void);
 int func(void);
-#line 4 "/home/novikov/work/cif/tests/input/aux-funcs.c"
+#line 2 "/home/novikov/work/cif/tests/input/aux-funcs.c"
 static int cif_func(void);
-#line 7 "/home/novikov/work/cif/tests/input/aux-funcs.c"
 int gunc(void)
 {
   cif_func ( );
