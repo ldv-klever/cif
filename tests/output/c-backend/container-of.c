@@ -1,10 +1,10 @@
+typedef long unsigned int
 #line 4 "/home/novikov/work/cif/tests/input/c-backend/container-of.c"
-typedef long unsigned int size_t;
+size_t;
+#line 6 "/home/novikov/work/cif/tests/input/c-backend/container-of.c"
 struct A
 {
-  int
-#line 8 "/home/novikov/work/cif/tests/input/c-backend/container-of.c"
-  x;
+  int x;
   int y;
 };
 #line 12 "/home/novikov/work/cif/tests/input/c-backend/container-of.c"

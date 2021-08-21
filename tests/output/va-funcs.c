@@ -1,7 +1,9 @@
+typedef __builtin_va_list
 #line 40 "/home/novikov/work/cif/inst/cif/lib64/gcc/x86_64-pc-linux-gnu/7.5.0/include/stdarg.h"
-typedef __builtin_va_list __gnuc_va_list;
+__gnuc_va_list;
+typedef __gnuc_va_list
 #line 99 "/home/novikov/work/cif/inst/cif/lib64/gcc/x86_64-pc-linux-gnu/7.5.0/include/stdarg.h"
-typedef __gnuc_va_list va_list;
+va_list;
 #line 3 "/home/novikov/work/cif/tests/input/va-funcs.c"
 void func(int, ...);
 void gunc(char const *, ...);

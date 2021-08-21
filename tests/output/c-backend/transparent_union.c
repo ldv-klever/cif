@@ -4,7 +4,9 @@ typedef union
   struct A
 #line 2 "/home/novikov/work/cif/tests/input/c-backend/transparent_union.c"
   *a;
-} __attribute__((__transparent_union__)) c;
+} __attribute__((__transparent_union__))
+#line 2 "/home/novikov/work/cif/tests/input/c-backend/transparent_union.c"
+c;
 union B
 {
   struct A

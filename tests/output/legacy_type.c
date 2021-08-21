@@ -63,11 +63,10 @@ struct b35
   int x;
   struct b35 *y;
 };
+#line 64 "/home/novikov/work/cif/tests/input/legacy_type.c"
 union b41
 {
-  int
-#line 66 "/home/novikov/work/cif/tests/input/legacy_type.c"
-  x : 1U;
+  int x : 1U;
   int y : 2U;
 };
 enum b51
