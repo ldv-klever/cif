@@ -200,3 +200,7 @@ class TestCBackend(utils.CIFTestCase):
         env['LDV_C_BACKEND_OMIT_TYPE_QUALS'] = "1"
         self.cif.run(cif_input='input/c-backend/omit-type-quals.c', stage='C-backend', cif_output='work/omit-type-quals.c', env=env)
         self.compare(output='work/omit-type-quals.c', expected='output/c-backend/omit-type-quals.c')
+
+    def test_decls_and_stmts_intermix(self):
+        self.cif.run(cif_input='input/c-backend/decls-and-stmts-intermix.c', stage='C-backend', cif_output='work/decls-and-stmts-intermix.c')
+        self.compare(output='work/decls-and-stmts-intermix.c', expected='output/c-backend/decls-and-stmts-intermix.c')
