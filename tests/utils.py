@@ -76,8 +76,14 @@ class CIFTestCase(unittest.TestCase):
         expected_str_list = self._read_file_to_str_list(expected)
 
         # ignore line directives since they may contain absolute paths
-        output_str_list = [line for line in output_str_list if not line.startswith("#line")]
-        expected_str_list = [line for line in expected_str_list if not line.startswith("#line")]
+        output_str_list = [line for line in output_str_list if not line.startswith('#line')]
+        expected_str_list = [line for line in expected_str_list if not line.startswith('#line')]
+
+        # ignore lines with goto ldv_12345; and ldv_12345:;
+        output_str_list = [line for line in output_str_list if not line.strip().startswith('goto ldv_')]
+        expected_str_list = [line for line in expected_str_list if not line.strip().startswith('goto ldv_')]
+        output_str_list = [line for line in output_str_list if not line.strip().endswith(':;')]
+        expected_str_list = [line for line in expected_str_list if not line.strip().endswith(':;')]
 
         output_str = ''.join(output_str_list)
         expected_str = ''.join(expected_str_list)
