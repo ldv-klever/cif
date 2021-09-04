@@ -204,3 +204,7 @@ class TestCBackend(utils.CIFTestCase):
     def test_decls_and_stmts_intermix(self):
         self.cif.run(cif_input='input/c-backend/decls-and-stmts-intermix.c', stage='C-backend', cif_output='work/decls-and-stmts-intermix.c')
         self.compare(output='work/decls-and-stmts-intermix.c', expected='output/c-backend/decls-and-stmts-intermix.c')
+
+    def test_implicit_func_decls(self):
+        self.cif.run(cif_input='input/c-backend/implicit-func-decls.c', stage='C-backend', cif_output='work/implicit-func-decls.c')
+        self.compare(output='work/implicit-func-decls.c', expected='output/c-backend/implicit-func-decls.c')
