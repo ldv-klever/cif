@@ -114,10 +114,10 @@ if __name__ == "__main__":
         shutil.copytree(ct_ng_build_dir, aspectator_dir)
 
         # By default nobody can write to ct-ng build directory while we need this to copy cif binary
-        subprocess.run(["chmod", "-R", "u+w", aspectator_dir], stdout=subprocess.DEVNULL)
+        subprocess.run(["chmod", "-R", "u+w", aspectator_dir], stdout=subprocess.DEVNULL, check=True)
 
         # Build cif binary
-        subprocess.run(["make", "cif"], cwd=args.src, stdout=subprocess.DEVNULL)
+        subprocess.run(["make", "cif"], cwd=args.src, stdout=subprocess.DEVNULL, check=True)
 
         # Copy cif binary
         cif_bin_src = os.path.join(args.src, "build", "cif")
@@ -135,7 +135,7 @@ if __name__ == "__main__":
             "-sf",
             os.path.join("..", cif_name, "bin", cif_name),
             cif_path
-        ], cwd=cif_bin_dir)
+        ], cwd=cif_bin_dir, check=True)
 
         # Create aspectator simlink
         aspectator_name = config_name + "-aspectator"
@@ -145,7 +145,7 @@ if __name__ == "__main__":
             "-sf",
             os.path.join("..", cif_name, "bin", gcc_name),
             os.path.join(cif_bin_dir, aspectator_name)
-        ], cwd=cif_bin_dir)
+        ], cwd=cif_bin_dir, check=True)
 
         # Fixing permissions (chmod +w to everything inside cif_dir)
         fix_permissions(cif_dir)
@@ -153,7 +153,11 @@ if __name__ == "__main__":
         # Run tests
         test_env = os.environ.copy()
         test_env["CIF"] = cif_path
-        subprocess.run(["make", "test"], cwd=args.src, env=test_env)
+        r = subprocess.run(["make", "test"], cwd=args.src, env=test_env)
+
+        if r.returncode:
+            print("Tests failed")
+            sys.exit(-1)
 
         # Final step: create .tar.xz archive
         archive_name = config_name + "-" + get_cif_version(cif_path) + ".tar.xz"
@@ -167,4 +171,4 @@ if __name__ == "__main__":
             "-C",
             cif_dir,
             "."
-        ], cwd=args.build)
+        ], cwd=args.build, check=True)
