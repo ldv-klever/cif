@@ -97,7 +97,6 @@ if __name__ == "__main__":
 
         # Run crosstool-ng
         r = subprocess.run(["/home/builduser/src/crosstool-ng-1.24.0/ct-ng", "build"], cwd=config_build_dir)
-
         if r.returncode:
             print("Build failed")
             sys.exit(-1)
@@ -147,6 +146,15 @@ if __name__ == "__main__":
             os.path.join(cif_bin_dir, aspectator_name)
         ], cwd=cif_bin_dir, check=True)
 
+        # Disable plugins if so
+        r = subprocess.run([
+            os.path.join(cif_bin_dir, aspectator_name),
+            "-print-file-name=plugin"
+        ], stdout=subprocess.PIPE, universal_newlines=True, check=True)
+        plugin_dir = r.stdout.rstrip()
+        if os.path.isdir(plugin_dir):
+            os.rename(plugin_dir, plugin_dir + '~')
+
         # Fixing permissions (chmod +w to everything inside cif_dir)
         fix_permissions(cif_dir)
 
@@ -154,7 +162,6 @@ if __name__ == "__main__":
         test_env = os.environ.copy()
         test_env["CIF"] = cif_path
         r = subprocess.run(["make", "test"], cwd=args.src, env=test_env)
-
         if r.returncode:
             print("Tests failed")
             sys.exit(-1)
