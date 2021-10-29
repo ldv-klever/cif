@@ -1,0 +1,20 @@
+
+These functions were matched by name but have different signatures:
+  source function declaration: void func2 (void)
+  aspect function declaration: int func2 (void)
+
+These functions were matched by name but have different signatures:
+  source function declaration: void func3 (void)
+  aspect function declaration: void func3 (char, char *)
+
+These functions were matched by name but have different signatures:
+  source function declaration: int func5 (void)
+  aspect function declaration: void func5 (int **)
+
+These functions were matched by name but have different signatures:
+  source function declaration: int func6 (void)
+  aspect function declaration: int func6 (int (*)(void))
+
+These functions were matched by name but have different signatures:
+  source function declaration: int func6 (void)
+  aspect function declaration: int func6 (char, .., int)

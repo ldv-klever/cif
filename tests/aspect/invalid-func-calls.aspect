@@ -1,0 +1,34 @@
+before: call(void func1(void))
+{
+    return;
+}
+
+after: call(int func2(void))
+{
+    return;
+}
+
+around: call(void func3(char, char *))
+{
+    return;
+}
+
+before: call(int func_4(void))
+{
+    return 0;
+}
+
+after: call(void func5(int **))
+{
+    return 0;
+}
+
+around: call(int func6(int (*)(void)))
+{
+    return 0;
+}
+
+around: call($ func6(char, .., int))
+{
+    return 0;
+}

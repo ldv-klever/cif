@@ -90,6 +90,14 @@ class CIFTestCase(unittest.TestCase):
 
         self.assertEqual(expected_str, output_str)
 
+    def compare_log(self, expected):
+        with open('work/log', 'w', encoding='utf8') as fp:
+            for line in self.cif.log.split('\n'):
+                if not line.startswith('CIF: '):
+                    fp.write(line + '\n')
+
+        self.compare('work/log', expected)
+
     def check_cif_status(self):
         if self.cif and self.cif.status != 0:
             print('\nCMD: {!r}'.format(' '.join(self.cif.cmd)))
