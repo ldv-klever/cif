@@ -32,3 +32,8 @@ around: call($ func6(char, .., int))
 {
     return 0;
 }
+
+around: call(int func6(int)) || call(int func7(char))
+{
+    return 0;
+}
