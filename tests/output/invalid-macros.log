@@ -1,0 +1,16 @@
+
+These macros were matched by name but have different signatures:
+  source macro: X(x)
+  aspect macro: X(y, z)
+
+These macros were matched by name but have different signatures:
+  source macro: YZ(y, z)
+  aspect macro: YZ(x)
+
+These macros were matched by name but have different signatures:
+  source macro: PRINTF(fmt, ...)
+  aspect macro: PRINTF(fmt)
+
+These macros were matched by name but have different signatures:
+  source macro: PRINTF(fmt, ...)
+  aspect macro: PRINTF(arg, fmt, ...)

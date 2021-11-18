@@ -1,0 +1,18 @@
+around: define(X(y, z))
+{
+1
+}
+
+around: define(YZ(x))
+{
+2
+}
+
+around: define(PRINTF(fmt))
+{
+}
+
+
+around: define(PRINTF(arg, fmt, ...))
+{
+}
