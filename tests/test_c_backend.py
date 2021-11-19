@@ -166,7 +166,6 @@ class TestCBackend(utils.CIFTestCase):
 
     def test_fallthrough(self):
         self.cif.run(cif_input='input/c-backend/fallthrough.c', stage='C-backend', cif_output='work/fallthrough.c')
-        self.replace_gotos('work/fallthrough.c')
         self.compare(output='work/fallthrough.c', expected='output/c-backend/fallthrough.c')
 
     def test___func__(self):
