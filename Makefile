@@ -62,7 +62,7 @@ test:
 	cd tests && pytest
 
 clean:
-	rm -rf build
+	rm -rf build build-debug
 
 archives:
 	$(MAKE) archive
@@ -127,3 +127,12 @@ docker/clean:
 	-docker rm cross-cif
 	-docker rmi cif
 	-docker rmi cross-cif
+
+debug:
+	mkdir -p build-debug
+	@if [ ! -f build-debug/Makefile ]; then \
+	  cd build-debug; \
+	  MAKEINFO=missing ../aspectator/configure --enable-languages=c --disable-multilib --disable-nls \
+	  --enable-checking=release $(CONFIGURE_ARGS_MACOS); \
+	fi
+	$(MAKE) -C build-debug STAGE1_CXXFLAGS="-g -O0" all-stage1
