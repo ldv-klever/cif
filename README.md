@@ -83,6 +83,12 @@ To debug Aspectator you can use _gdb_ or _ddd_:
 
     $ ddd gcc/cc1 &
 
+To debug instrumentation you need to set the following environment variables:
+
+    set env LDV_STAGE=3
+    set env LDV_ASPECT_FILE=$ABS_PATH_TO_ASPECT_FILE
+    set env LDV_OUT=out.c
+
 To debug C back-end you need to set the following environment variables:
 
     set env LDV_STAGE=4
