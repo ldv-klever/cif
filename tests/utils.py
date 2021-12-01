@@ -99,9 +99,10 @@ class CIFTestCase(unittest.TestCase):
         self.compare('work/log', expected)
 
     def check_cif_status(self):
-        if self.cif and self.cif.status != 0:
+        if self.cif:
             print('\nCMD: {!r}'.format(' '.join(self.cif.cmd)))
             print('LOG:', self.cif.log, '\n')
+
             self.assertEqual(self.cif.status, 0)
 
     def check_cif_output(self):
