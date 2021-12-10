@@ -12,8 +12,8 @@ void func(int *arg)
 {
   struct A *a = ({
 #line 14 "/home/novikov/work/cif/tests/input/c-backend/container-of.c"
-    int const *__mptr = ( int const *) arg;
+    int const *__mptr = arg;
 #line 14 "/home/novikov/work/cif/tests/input/c-backend/container-of.c"
-    ( struct A *) ( ( char *) __mptr + 18446744073709551612U );
+    ( __mptr + 18446744073709551612U );
   } );
 }
