@@ -223,3 +223,7 @@ class TestCBackend(utils.CIFTestCase):
     def test_inc_dec(self):
         self.cif.run(cif_input='input/c-backend/inc_dec.c', stage='C-backend', cif_output='work/inc_dec.c')
         self.compare(output='work/inc_dec.c', expected='output/c-backend/inc_dec.c')
+
+    def test_array_of_chars_init(self):
+        self.cif.run(cif_input='input/c-backend/array-of-chars-init.c', stage='C-backend', cif_output='work/array-of-chars-init.c')
+        self.compare(output='work/array-of-chars-init.c', expected='output/c-backend/array-of-chars-init.c')
