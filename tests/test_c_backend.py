@@ -186,6 +186,10 @@ class TestCBackend(utils.CIFTestCase):
         self.cif.run(cif_input='input/c-backend/cast-ptr-arithm-arm.c', stage='C-backend', cif_output='work/cast-ptr-arithm-arm.c')
         self.compare(output='work/cast-ptr-arithm-arm.c', expected='output/c-backend/cast-ptr-arithm-arm.c')
 
+    def test_cast_ptr_void(self):
+        self.cif.run(cif_input='input/c-backend/cast-ptr-void.c', stage='C-backend', cif_output='work/cast-ptr-void.c')
+        self.compare(output='work/cast-ptr-void.c', expected='output/c-backend/cast-ptr-void.c')
+
     def test_bitfield_access(self):
         self.cif.run(cif_input='input/c-backend/bitfield-access.c', stage='C-backend', cif_output='work/bitfield-access.c')
         self.compare(output='work/bitfield-access.c', expected='output/c-backend/bitfield-access.c')
