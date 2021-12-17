@@ -40,6 +40,7 @@ class CIFTestCase(unittest.TestCase):
             self.prepared = cif_output + '.prepared'
             self.stage = stage
             self.back_end = back_end
+            self.aspectator_opts = aspectator_opts
 
     def __init__(self, *arguments):
         self.cif = CIFTestCase.CIF()
@@ -109,7 +110,7 @@ class CIFTestCase(unittest.TestCase):
         if self.cif.stage not in ('compilation', 'C-backend') or self.cif.back_end != 'src':
             return
 
-        r = subprocess.run([self.cif.aspectator, '-fsyntax-only', self.cif.cif_output])
+        r = subprocess.run([self.cif.aspectator, '-fsyntax-only', *(self.cif.aspectator_opts if self.cif.aspectator_opts else []), self.cif.cif_output])
         self.assertEqual(r.returncode, 0)
 
     def skip_os_specific_defines(self, output):
