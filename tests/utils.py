@@ -106,7 +106,7 @@ class CIFTestCase(unittest.TestCase):
             self.assertEqual(self.cif.status, 0)
 
     def check_cif_output(self):
-        if self.cif.stage != 'compilation' or self.cif.back_end != 'src':
+        if self.cif.stage not in ('compilation', 'C-backend') or self.cif.back_end != 'src':
             return
 
         r = subprocess.run([self.cif.aspectator, '-fsyntax-only', self.cif.cif_output])
