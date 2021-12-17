@@ -61,7 +61,7 @@ static int cif_func5(void)
 #line 18 "/home/novikov/work/cif-gcc-11/tests/work/for.c.aux"
   return 0;
 #line 20 "/home/novikov/work/cif-gcc-11/tests/work/for.c.aux"
-  return ldv_func_res;
+  return ( int ) ldv_func_res;
 }
 #line 24 "/home/novikov/work/cif-gcc-11/tests/work/for.c.aux"
 static int cif_func6(void)

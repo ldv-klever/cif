@@ -1,4 +1,4 @@
 void func(void *p, void *res)
 {
-  * res = * p;
+  * ( char *) res = * ( char *) p;
 }

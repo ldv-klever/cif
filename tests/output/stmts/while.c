@@ -24,7 +24,7 @@ static int cif_func5(void)
 #line 9 "/home/novikov/work/cif-gcc-11/tests/work/while.c.aux"
   return 0;
 #line 11 "/home/novikov/work/cif-gcc-11/tests/work/while.c.aux"
-  return ldv_func_res;
+  return ( int ) ldv_func_res;
 }
 #line 15 "/home/novikov/work/cif-gcc-11/tests/work/while.c.aux"
 static void cif_func2(void)

@@ -43,5 +43,5 @@ static int cif_func5(void)
 #line 25 "/home/novikov/work/cif-gcc-11/tests/work/elvis.c.aux"
   return 0;
 #line 27 "/home/novikov/work/cif-gcc-11/tests/work/elvis.c.aux"
-  return ldv_func_res;
+  return ( int ) ldv_func_res;
 }
