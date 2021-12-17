@@ -75,7 +75,7 @@ static int cif_func5(void)
 #line 43 "/home/novikov/work/cif/tests/work/func-calls.c.aux"
   return 0;
 #line 45 "/home/novikov/work/cif/tests/work/func-calls.c.aux"
-  return ldv_func_res;
+  return ( int ) ldv_func_res;
 }
 #line 49 "/home/novikov/work/cif/tests/work/func-calls.c.aux"
 static int cif_func6(void)

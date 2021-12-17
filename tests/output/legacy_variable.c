@@ -94,7 +94,7 @@ int cif_set_e13(int ldv_var_arg)
 #line 21 "/home/siddhartha/work/git/cif/tests/work/legacy_variable.c.aux"
   ldv_var_arg++;
 #line 23 "/home/siddhartha/work/git/cif/tests/work/legacy_variable.c.aux"
-  return ldv_func_res;
+  return ( int ) ldv_func_res;
 }
 int cif_get_e13(int ldv_var_arg)
 {
@@ -104,7 +104,7 @@ int cif_get_e13(int ldv_var_arg)
 #line 31 "/home/siddhartha/work/git/cif/tests/work/legacy_variable.c.aux"
   ldv_var_arg--;
 #line 33 "/home/siddhartha/work/git/cif/tests/work/legacy_variable.c.aux"
-  return ldv_func_res;
+  return ( int ) ldv_func_res;
 }
 int cif_get_e16(int ldv_var_arg)
 {

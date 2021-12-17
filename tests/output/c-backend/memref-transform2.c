@@ -14,5 +14,5 @@ struct A a;
 void func(void)
 {
 #line 10 "/home/siddhartha/work/git/cif/tests/input/c-backend/memref-transform2.c"
-  int cond = ( a . a & 1 ) != 0 && a . b [ 2 ] == 2U && a . b [ 1 ] == 3U;
+  int cond = ( ( int ) a . a & 1 ) != 0 && a . b [ 2 ] == 2U && a . b [ 1 ] == 3U;
 }
