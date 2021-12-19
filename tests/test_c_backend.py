@@ -166,7 +166,6 @@ class TestCBackend(utils.CIFTestCase):
 
     def test_fallthrough(self):
         self.cif.run(cif_input='input/c-backend/fallthrough.c', stage='C-backend', cif_output='work/fallthrough.c')
-        self.replace_gotos('work/fallthrough.c')
         self.compare(output='work/fallthrough.c', expected='output/c-backend/fallthrough.c')
 
     def test___func__(self):
@@ -186,6 +185,10 @@ class TestCBackend(utils.CIFTestCase):
     def test_cast_ptr_arithm_arm(self):
         self.cif.run(cif_input='input/c-backend/cast-ptr-arithm-arm.c', stage='C-backend', cif_output='work/cast-ptr-arithm-arm.c')
         self.compare(output='work/cast-ptr-arithm-arm.c', expected='output/c-backend/cast-ptr-arithm-arm.c')
+
+    def test_cast_ptr_void(self):
+        self.cif.run(cif_input='input/c-backend/cast-ptr-void.c', stage='C-backend', cif_output='work/cast-ptr-void.c')
+        self.compare(output='work/cast-ptr-void.c', expected='output/c-backend/cast-ptr-void.c')
 
     def test_bitfield_access(self):
         self.cif.run(cif_input='input/c-backend/bitfield-access.c', stage='C-backend', cif_output='work/bitfield-access.c')
@@ -208,3 +211,23 @@ class TestCBackend(utils.CIFTestCase):
     def test_implicit_func_decls(self):
         self.cif.run(cif_input='input/c-backend/implicit-func-decls.c', stage='C-backend', cif_output='work/implicit-func-decls.c')
         self.compare(output='work/implicit-func-decls.c', expected='output/c-backend/implicit-func-decls.c')
+
+    def test_while(self):
+        self.cif.run(cif_input='input/c-backend/while.c', stage='C-backend', cif_output='work/while.c')
+        self.compare(output='work/while.c', expected='output/c-backend/while.c')
+
+    def test_do_while(self):
+        self.cif.run(cif_input='input/c-backend/do_while.c', stage='C-backend', cif_output='work/do_while.c')
+        self.compare(output='work/do_while.c', expected='output/c-backend/do_while.c')
+
+    def test_for(self):
+        self.cif.run(cif_input='input/c-backend/for.c', stage='C-backend', cif_output='work/for.c')
+        self.compare(output='work/for.c', expected='output/c-backend/for.c')
+
+    def test_inc_dec(self):
+        self.cif.run(cif_input='input/c-backend/inc_dec.c', stage='C-backend', cif_output='work/inc_dec.c')
+        self.compare(output='work/inc_dec.c', expected='output/c-backend/inc_dec.c')
+
+    def test_array_of_chars_init(self):
+        self.cif.run(cif_input='input/c-backend/array-of-chars-init.c', stage='C-backend', cif_output='work/array-of-chars-init.c')
+        self.compare(output='work/array-of-chars-init.c', expected='output/c-backend/array-of-chars-init.c')

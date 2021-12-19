@@ -718,7 +718,7 @@ CT_ISL_PKG_NAME="isl"
 # CT_ISL_SRC_RELEASE is not set
 # CT_ISL_SRC_DEVEL is not set
 CT_ISL_SRC_CUSTOM=y
-CT_ISL_CUSTOM_LOCATION="/var/lib/klever/workspace/Branches-and-Tags-Processing/cif/aspectator/isl-0.16.1"
+CT_ISL_CUSTOM_LOCATION="/var/lib/klever/workspace/Branches-and-Tags-Processing/cif/aspectator/isl-0.18"
 CT_ISL_PATCH_GLOBAL=y
 # CT_ISL_PATCH_BUNDLED is not set
 # CT_ISL_PATCH_LOCAL is not set
@@ -810,7 +810,7 @@ CT_MPFR_PKG_NAME="mpfr"
 # CT_MPFR_SRC_RELEASE is not set
 # CT_MPFR_SRC_DEVEL is not set
 CT_MPFR_SRC_CUSTOM=y
-CT_MPFR_CUSTOM_LOCATION="/var/lib/klever/workspace/Branches-and-Tags-Processing/cif/aspectator/mpfr-3.1.4"
+CT_MPFR_CUSTOM_LOCATION="/var/lib/klever/workspace/Branches-and-Tags-Processing/cif/aspectator/mpfr-3.1.6"
 CT_MPFR_PATCH_GLOBAL=y
 # CT_MPFR_PATCH_BUNDLED is not set
 # CT_MPFR_PATCH_LOCAL is not set

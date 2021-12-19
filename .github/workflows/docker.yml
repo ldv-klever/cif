@@ -1,34 +1,8 @@
-name: build
+name: docker
 
 on: [push]
 
 jobs:
-  build_macos:
-    runs-on: macos-10.15
-
-    steps:
-    - uses: actions/checkout@v2
-      with:
-        submodules: 'recursive'
-
-    - name: Download GCC dependencies
-      run: |
-        cd aspectator
-        ./contrib/download_prerequisites
-
-    - name: Build CIF
-      run: make -j$(nproc)
-
-    - name: Set up Python 3.7
-      uses: actions/setup-python@v1
-      with:
-        python-version: '3.7'
-
-    - name: Test CIF
-      run: |
-        python -m pip install --upgrade pytest
-        make test
-
   build_docker:
     runs-on: ubuntu-20.04
 

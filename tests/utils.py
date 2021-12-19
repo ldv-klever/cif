@@ -40,6 +40,7 @@ class CIFTestCase(unittest.TestCase):
             self.prepared = cif_output + '.prepared'
             self.stage = stage
             self.back_end = back_end
+            self.aspectator_opts = aspectator_opts or []
 
     def __init__(self, *arguments):
         self.cif = CIFTestCase.CIF()
@@ -99,16 +100,22 @@ class CIFTestCase(unittest.TestCase):
         self.compare('work/log', expected)
 
     def check_cif_status(self):
-        if self.cif and self.cif.status != 0:
+        if self.cif:
             print('\nCMD: {!r}'.format(' '.join(self.cif.cmd)))
             print('LOG:', self.cif.log, '\n')
+
             self.assertEqual(self.cif.status, 0)
 
     def check_cif_output(self):
-        if self.cif.stage != 'compilation' or self.cif.back_end != 'src':
+        if self.cif.stage not in ('compilation', 'C-backend') or self.cif.back_end != 'src':
             return
 
-        r = subprocess.run([self.cif.aspectator, '-fsyntax-only', self.cif.cif_output])
+        extra_opts = []
+        for aspectator_opt in self.cif.aspectator_opts:
+            if aspectator_opt == '-fshort-wchar':
+                extra_opts.append(aspectator_opt)
+
+        r = subprocess.run([self.cif.aspectator, '-fsyntax-only', *extra_opts, self.cif.cif_output])
         self.assertEqual(r.returncode, 0)
 
     def skip_os_specific_defines(self, output):
