@@ -1,6 +1,6 @@
-info: expand($) {
+query: expand($) {
     $fprintf<"work/info.txt","%s %d %s %s %d\n",$expansion_path,$expansion_line,$macro_name,$path,$line>
 }
-info: expand($(..)) {
+query: expand($(..)) {
     $fprintf<"work/info.txt","%s %d %s %s %d\n",$expansion_path,$expansion_line,$macro_name,$path,$line>
 }

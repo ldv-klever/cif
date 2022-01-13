@@ -1,3 +1,3 @@
-info: init_global($ $) {
+query: init_global($ $) {
   $fprintf<"work/info.txt","%s %s %s%s\n",$path,$var_name,$signature,$var_init_values>
 }

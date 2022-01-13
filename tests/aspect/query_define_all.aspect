@@ -1,7 +1,7 @@
-info: define($) {
+query: define($) {
   $fprintf<"work/info.txt","%s %s %d\n",$path,$macro_name,$line>
 }
 
-info: define($(..)) {
+query: define($(..)) {
   $fprintf<"work/info.txt","%s %s %d\n",$path,$macro_name,$line>
 }
