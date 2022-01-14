@@ -1,0 +1,13 @@
+import re
+import sys
+
+# These 2 lines differ from the original script (Sphnix 1.8.5). They enable using "-" in token names within definitions
+# of the productionlist directive.
+import sphinx.domains.std
+sphinx.domains.std.token_re = re.compile(r'`([-\w]+)`', re.U)
+
+from sphinx.cmd.build import main
+
+if __name__ == '__main__':
+    sys.argv[0] = re.sub(r'(-script\.pyw?|\.exe)?$', '', sys.argv[0])
+    sys.exit(main())
