@@ -47,7 +47,7 @@ In case matches are found, join points are framed with the code specified in :re
 can see section :ref:`advices` for more insights).
 
 Hereinafter nonterminals are bold and they may be links to appropriate definitions, e.g. `pointcut`, while terminals are
-enclosed into quotes, e.g. \\"pointcut\\" (quotes themselves are enclosed into single quotes like \\'\\"\\').
+enclosed into quotes, e.g. \"pointcut\" (quotes themselves are enclosed into single quotes like \'\"\').
 :== following a nonterminal represents a definition of this nonterminal.
 Various variants of a nonterminal definition are either placed on separate lines or separated by \|.
 In nonterminal definitions optional nonterminals are enclosed into square brackets, e.g. [`pointer`].
@@ -126,18 +126,18 @@ Constraints
 
 In comparison with `keyword` presented in 6.4.1 of [ISO-9899-2011]_ in AOC `c-or-aoc-keyword` can be either a
 `c-keyword` keyword or an AOC `aoc-keyword` keyword.
-`c-keyword` does not support \\"break\\", \\"case\\", \\"continue\\", \\"default\\", \\"do\\", \\"else\\", \\"for\\",
-\\"goto\\", \\"if\\", \\"return\\", \\"switch\\" and \\"while\\", i.e. those keywords that can only be used in C
+`c-keyword` does not support \"break\", \"case\", \"continue\", \"default\", \"do\", \"else\", \"for\",
+\"goto\", \"if\", \"return\", \"switch\" and \"while\", i.e. those keywords that can only be used in C
 statements and expressions.
 You still can use them in :ref:`advice bodies <advice_bodies>`, but they are not parsed at aspect weaving.
 
 `aoc-keyword` is the definition of the AOC keywords.
 It supports:
 
-* \\"after\\", \\"around\\", \\"before\\", \\"info\\", \\"new\\" and \\"query\\" (:ref:`advices`);
-* \\"call\\", \\"define\\", \\"declare_func\\", \\"execution\\", \\"expand\\", \\"file\\", \\"get\\", \\"get_global\\",
-  \\"get_local\\", \\"infile\\", \\"infunc\\", \\"introduce\\", \\"pointcut\\", \\"set\\", \\"set_global\\" and
-  \\"set_local\\" (:ref:`pointcuts`).
+* \"after\", \"around\", \"before\", \"info\", \"new\" and \"query\" (:ref:`advices`);
+* \"call\", \"define\", \"declare_func\", \"execution\", \"expand\", \"file\", \"get\", \"get_global\",
+  \"get_local\", \"infile\", \"infunc\", \"introduce\", \"pointcut\", \"set\", \"set_global\" and
+  \"set_local\" (:ref:`pointcuts`).
 
 Semantics
 ^^^^^^^^^
@@ -175,20 +175,20 @@ non-digital characters `aoc-identifier-nondigit` instead of `identifier-nondigit
 
 `aoc-identifier-nondigit` does not support universal character names `universal-character-name` and any other
 characters.
-Additionally, `aoc-identifier-nondigit` supports wildcard \\"$\\" (take into account that the **$** symbol is not
+Additionally, `aoc-identifier-nondigit` supports wildcard \"$\" (take into account that the **$** symbol is not
 included in the standard sets of non-digital characters `nondigit` and digits `digit`).
-We will consider other constraints related to \\"$\\" in following sections.
+We will consider other constraints related to \"$\" in following sections.
 
 Semantics
 ^^^^^^^^^
 
 In general the semantics of `aoc-identifier` corresponds to the semantics of `identifier` described in 6.4.2 of
 [ISO-9899-2011]_.
-Each \\"$\\" wildcard in `aoc-identifier` corresponds to a sequence of characters (both `digit` and `nondigit`) of
+Each \"$\" wildcard in `aoc-identifier` corresponds to a sequence of characters (both `digit` and `nondigit`) of
 arbitrary length, including zero.
-If several \\"$\\" wildcards are contiguous in the same identifier, they are treated as one \\"$\\".
-An identifier is not converted to a keyword if it uses at least one \\"$\\" wildcard.
-Following sections describe specific semantics of \\"$\\" wildcards for certain entities.
+If several \"$\" wildcards are contiguous in the same identifier, they are treated as one \"$\".
+An identifier is not converted to a keyword if it uses at least one \"$\" wildcard.
+Following sections describe specific semantics of \"$\" wildcards for certain entities.
 
 .. _integer_constants:
 
@@ -234,7 +234,7 @@ Constraints
 
 Nonterminal `s-char-sequence` is defined in 6.4.5 of [ISO-9899-2011]_.
 Compared to `string-literal` specified in 6.4.5 of [ISO-9899-2011]_, `aoc-string-literal` does not support wide string
-literals L\\" s-char-sequenceopt \\".
+literals L\" s-char-sequenceopt \".
 
 Semantics
 ^^^^^^^^^
@@ -260,21 +260,21 @@ Constraints
 
 In comparison with `punctuator`, which is presented in 6.4.6 of [ISO-9899-2011]_, in AOC `c-or-aoc-punctuator` can be
 either punctuator of the C programming language `c-punctuator`, or AOC punctuator `aoc-punctuator`.
-The definition of `c-punctuator` supports only \\"(\\", \\")\\", \\"[\\", \\"]\\", \\"\*\\", \\"\\...\\", \\",\\", i.e.
+The definition of `c-punctuator` supports only \"(\", \")\", \"[\", \"]\", \"\*\", \"\...\", \",\", i.e.
 those punctuators that can be used when writing :ref:`macros <macros>` and
 ref:`declarations of functions, variables and composite types <decls>`.
 Besides, `c-punctuator` supports following extra punctuators:
 
-* \\"$\\" -- a universal type specifier or a universal array size (:ref:`decls`);
-* \\"..\\" -- a list of arbitrary parameters of a macro function or a function of arbitrary length, including zero (see
+* \"$\" -- a universal type specifier or a universal array size (:ref:`decls`);
+* \"..\" -- a list of arbitrary parameters of a macro function or a function of arbitrary length, including zero (see
   :ref:`macros` and :ref:`decls` for more details).
 
 The `aoc-punctuator` definition includes:
 
-* \\":\\" -- it introduces a definition of a :ref:`named pointcut <pointcuts>` or :ref:`advice <advices>`.
-* \\"(\\", \\")\\", \\"!\\", \\"&&\\", \\"||\\" -- punctuators for the sake of development of
+* \":\" -- it introduces a definition of a :ref:`named pointcut <pointcuts>` or :ref:`advice <advices>`.
+* \"(\", \")\", \"!\", \"&&\", \"||\" -- punctuators for the sake of development of
   :ref:`composite pointcuts <pointcuts>`.
-* \\"(\\", \\")\\" -- braces separate :ref:`macros <macros>` and
+* \"(\", \")\" -- braces separate :ref:`macros <macros>` and
   :ref:`declarations of functions, variables and composite types <decls>` from descriptions of
   :ref:`pointcuts <pointcuts>` and :ref:`advices <advices>`.
 
@@ -321,7 +321,7 @@ Some specific character sequences in file names are interpreted as follows:
   :ref:`special directives <special_directives>`).
   Each **$$** corresponds to sequence of q-characters `q-char-sequence` of arbitrary length including zero.
   If several **$$** are contiguous in the same file name, they are treated as one **$$**.
-* Special directive **$this** that can be used only to indicate the file name and only in the form of \\"**$this**\\"
+* Special directive **$this** that can be used only to indicate the file name and only in the form of \"**$this**\"
   (:ref:`special_directives`).
 * Special directives with predefined values (see :ref:`special_directives` for more details).
 
@@ -500,10 +500,10 @@ Constraints
 ^^^^^^^^^^^
 
 In comparison with preprocessor directives defined in 6.10 of [ISO-9899-2011]_, in AOC `macro` supports a
-`GCC <https://gcc.gnu.org/>`__ compiler extension that allows associating a name to \\"\\...\\" in the form of optional
+`GCC <https://gcc.gnu.org/>`__ compiler extension that allows associating a name to \"\...\" in the form of optional
 `identifier` before it.
-\\"\\...\\" designates a list of arbitrary macro parameters of arbitrary length, including zero.
-Also, `identifier-or-any-param-list` supports the \\"..\\" wildcard.
+\"\...\" designates a list of arbitrary macro parameters of arbitrary length, including zero.
+Also, `identifier-or-any-param-list` supports the \"..\" wildcard.
 It means a list of arbitrary macro parameters of arbitrary length, including zero.
 
 Semantics
@@ -511,8 +511,8 @@ Semantics
 
 In general, ghe semantics of `macro` corresponds to the semantics of preprocessor directives described in 6.10 of
 [ISO-9899-2011]_.
-Wildcard \\"..\\" matches a list of arbitrary macro parameters of arbitrary length, including zero at a joint point.
-If there are several consecutive \\"..\\" separated by commas, they are treated as one \\"..\\".
+Wildcard \"..\" matches a list of arbitrary macro parameters of arbitrary length, including zero at a joint point.
+If there are several consecutive \"..\" separated by commas, they are treated as one \"..\".
 
 .. _decls:
 
@@ -595,24 +595,24 @@ In comparison with `declaration` that represents declarations of functions, vari
   * Various forms of array assignment.
   * The outdated form of providing function parameters.
 
-* `parameter-type-list` does not support \\"\\...\\" that designates of a list of arbitrary function parameters of
+* `parameter-type-list` does not support \"\...\" that designates of a list of arbitrary function parameters of
   arbitrary length including zero (it is supported at the level of `declaration-specifiers` which is discussed below).
 * The `direct-abstract-declarator` definition does not support various forms of array assignment.
 * `declaration-specifiers` additionally supports:
 
-  * Wildcard \\"..\\" capturing a list of arbitrary function parameters of arbitrary length including zero.
-  * \\"\\...\\" that designates of a list of arbitrary function parameters of arbitrary length including zero.
+  * Wildcard \"..\" capturing a list of arbitrary function parameters of arbitrary length including zero.
+  * \"\...\" that designates of a list of arbitrary function parameters of arbitrary length including zero.
     This works only for declarations from `parameter-list`.
 
-* The `type-specifier` definition supports universal type specifier \\"$\\" in addition.
+* The `type-specifier` definition supports universal type specifier \"$\" in addition.
   One declaration can contain no more than one universal type specifier among all its specifiers.
   This restriction is important since exactly the same wildcard can be used in place of a declaration name.
   For a structure, union, or enumeration declaration a corresponding type specifier should be specified.
-  This is necessary to distinguish declarations using two \\"$\\" symbols that match variables or functions.
+  This is necessary to distinguish declarations using two \"$\" symbols that match variables or functions.
   For example, **$ $** can correspond to variables such as *int var1*, *static long int var2* and *char var3[10]*, but
   it does not match *struct S*, *union U* and *enum E* types.
   For the latter you can use **struct $**, **union $** and **enum $** respectively.
-* `direct-declarator` and `direct-abstract-declarator` supports universal array size \\"$\\".
+* `direct-declarator` and `direct-abstract-declarator` supports universal array size \"$\".
 
 Semantics
 ^^^^^^^^^
@@ -622,27 +622,27 @@ Absence of `declarator` in the `declaration` definition means that this declarat
 If `declarator` is present then the declaration is either a function declaration (if there is `parameter-type-list`) or
 a variable.
 
-Wildcard \\"..\\" in the definition of `declaration-specifiers` corresponds to a list of arbitrary function parameters
+Wildcard \"..\" in the definition of `declaration-specifiers` corresponds to a list of arbitrary function parameters
 of arbitrary length, including zero, at a joint point.
-Several consecutive, separated by commas \\"..\\" are treated as one \\"..\\".
+Several consecutive, separated by commas \"..\" are treated as one \"..\".
 
-As a matter of fact \\"\\...\\" in `declaration-specifiers` exactly coincides with the same terminal in
+As a matter of fact \"\...\" in `declaration-specifiers` exactly coincides with the same terminal in
 `parameter-type-list` (6.7.6 of [ISO-9899-2011]_).
 The need to transfer it arose due to the ambiguity of the grammar otherwise.
 
 Basically the semantics of `declaration` corresponds to the semantics of `declaration` described in 6.7 of
 [ISO-9899-2011]_.
 
-Universal type specifier \\"$\\" in the definition of `type-specifier` means the following:
+Universal type specifier \"$\" in the definition of `type-specifier` means the following:
 
 * If the universal type specifier is located before any other type specifier, then it denotes a list of arbitrary
-  declaration specifiers of arbitrary length, including zero (the \\"$\\" symbol does not match arbitrary
+  declaration specifiers of arbitrary length, including zero (the \"$\" symbol does not match arbitrary
   `typedef-name`).
 * If the universal type specifier is the only type specifier among declaration specifiers (according to the restriction
   specified earlier, it can be functions or variables only), then it denotes a type of variable or return value of a
   function, which is arbitrary up to the specified declaration specifiers.
 
-Universal array size \\"$\\" in definitions of `direct-declarator` and `direct-abstract-declarator` corresponds to an
+Universal array size \"$\" in definitions of `direct-declarator` and `direct-abstract-declarator` corresponds to an
 arbitrary array size at a joint point.
 
 .. _pointcuts:
@@ -681,11 +681,11 @@ Syntax
 Constraints
 ^^^^^^^^^^^
 
-It is forbidden to use \\"$\\" wildcards in `identifier` in the definition of `named-pointcut`.
+It is forbidden to use \"$\" wildcards in `identifier` in the definition of `named-pointcut`.
 Preprocessed aspect files can not define several `named-pointcut`s with the same `identifier`.
 
 `identifier` can be only an identifier of a previously defined named pointcut in the definition of `pointcut`.
-It also can not use \\"$\\" wildcards.
+It also can not use \"$\" wildcards.
 
 Strictly speaking `pointcut1 <pointcut>` and `pointcut2 <pointcut>` represent different pointcuts in the definition of
 `composite-pointcut`.
@@ -693,33 +693,33 @@ Strictly speaking `pointcut1 <pointcut>` and `pointcut2 <pointcut>` represent di
 The definition of `primitive-pointcut` has following constraints (you can find extra details about declarations in
 :ref:`decls`):
 
-* `declaration` for \\"declare_func\\", \\"execution\\" and \\"call\\" should be only a function declaration.
-* `declaration` for \\"get\\", \\"get_global\\", \\"get_local\\", \\"set\\", \\"set_global\\" and \\"set_local\\" should
+* `declaration` for \"declare_func\", \"execution\" and \"call\" should be only a function declaration.
+* `declaration` for \"get\", \"get_global\", \"get_local\", \"set\", \"set_global\" and \"set_local\" should
   be only a variable declaration.
-* `declaration` for \\"introduce\\" should be only a declaration of a composite type.
+* `declaration` for \"introduce\" should be only a declaration of a composite type.
 
 Semantics
 ^^^^^^^^^
 
 `named-pointcut` binds `pointcut` to `identifier` that one can use in other pointcuts to refer the given one.
 
-`composite-pointcut` is a composition of pointcuts obtained using parentheses and operators \\"!\\", \\"&&\\" and
-\\"||\\".
-The precedence of operators \\"!\\", \\"&&\\" and \\"||\\" decreases left to right.
+`composite-pointcut` is a composition of pointcuts obtained using parentheses and operators \"!\", \"&&\" and
+\"||\".
+The precedence of operators \"!\", \"&&\" and \"||\" decreases left to right.
 
 `primitive-pointcut` describes the following sets of joint points:
 
-* \\"define\\" and \\"expand\\" -- respectively a definition or a substitution of `macro`.
-* \\"declare_func\\", \\"execution\\" and \\"call\\" -- correspondingly a declaration, definition or call of a functions
+* \"define\" and \"expand\" -- respectively a definition or a substitution of `macro`.
+* \"declare_func\", \"execution\" and \"call\" -- correspondingly a declaration, definition or call of a functions
   having appropriate `declaration`.
-* \\"get\\" and \\"set\\" -- respectively a usage or assignment of a value to a variable with corresponding
+* \"get\" and \"set\" -- respectively a usage or assignment of a value to a variable with corresponding
   `declaration`.
-* \\"get_global\\", \\"set_global\\", \\"get_local\\" and \\"set_local\\" -- the same as the previous primitive
+* \"get_global\", \"set_global\", \"get_local\" and \"set_local\" -- the same as the previous primitive
   pointcut, but global and local (including function parameters) variables are distinguished.
-* \\"infunc\\" -- join points in a context of a functions with specified `declaration`.
-* \\"introduce\\" -- a definition of a structure, union or enumeration with specified `declaration`.
-* \\"file\\" -- a file with `file-name`.
-* \\"infile\\" -- join points in a context of a file with `file-name`.
+* \"infunc\" -- join points in a context of a functions with specified `declaration`.
+* \"introduce\" -- a definition of a structure, union or enumeration with specified `declaration`.
+* \"file\" -- a file with `file-name`.
+* \"infile\" -- join points in a context of a file with `file-name`.
 
 .. _advices:
 
@@ -738,36 +738,36 @@ Syntax
                      : "new"    ":" `pointcut`
                      : "query"  ":" `pointcut`
 
-.. note:: \\"info\\" is a deprecated alias for \\"query\\".
-          You can use any of them, but \\"query\\" is more preferable.
+.. note:: \"info\" is a deprecated alias for \"query\".
+          You can use any of them, but \"query\" is more preferable.
 
-.. note:: It is not recommended to use \\"new\\".
+.. note:: It is not recommended to use \"new\".
 
 Constraints
 ^^^^^^^^^^^
 
 Each advice should consist of `advice-declaration` and `advice-body` (:ref:`advice_bodies`).
-Any `pointcut` is allowed for `advice-declaration` with \\"before\\", \\"around\\", \\"after\\" and \\"query\\".
-Only `primitive-pointcut` corresponding to `file-name` is allowed for \\"new\\" `advice-declaration`.
+Any `pointcut` is allowed for `advice-declaration` with \"before\", \"around\", \"after\" and \"query\".
+Only `primitive-pointcut` corresponding to `file-name` is allowed for \"new\" `advice-declaration`.
 
-In `advice-body` of \\"before\\", \\"around\\", \\"after\\", \\"new\\" and \\"query\\" one can use special directives
-\\"$env\\", \\"$fprintf\\" (if other special directives represent its parameters, then similar restrictions are imposed
-on them) and \\"$signature\\".
-Besides, in `advice-body` of \\"before\\", \\"around\\", \\"after\\" and \\"query\\" it is possible to use the following
+In `advice-body` of \"before\", \"around\", \"after\", \"new\" and \"query\" one can use special directives
+\"$env\", \"$fprintf\" (if other special directives represent its parameters, then similar restrictions are imposed
+on them) and \"$signature\".
+Besides, in `advice-body` of \"before\", \"around\", \"after\" and \"query\" it is possible to use the following
 special directives when `pointcut` matches an appropriate joint point:
 
-* For macro definitions -- \\"$arg\\", \\"$arg_numb\\", \\"$context_file\\", \\"$name\\" and \\"$proceed\\".
-* For macro substitutions -- \\"$arg\\", \\"$arg_numb\\", \\"$arg_val\\" (a value of an actual macro parameter as is),
-  \\"$context_file\\", \\"$name\\" and \\"$proceed\\".
-* For function calls -- \\"$arg\\", \\"$arg_numb\\", \\"$arg_sign\\", \\"$arg_size\\", \\"$arg_type\\", \\"$arg_val\\",
-  \\"$context_file\\", \\"$context_func_file\\", \\"$context_func_name\\", \\"$name\\", \\"$proceed\\", \\"$res\\"
-  (only for \\"around\\" and \\"after\\") and \\"$ret_type\\".
-* For function declarations -- \\"$arg_numb\\", \\"$arg_type\\", \\"$context_file\\", \\"$name\\" and \\"$ret_type\\".
-* For function definitions -- \\"$arg\\", \\"$arg_numb\\", \\"$arg_type\\", \\"$context_file\\", \\"$name\\",
-  \\"$proceed\\", \\"$res\\" (only for \\"around\\" and \\"after\\") and \\"$ret_type\\".
-* For usages and assignments of values to local or global variables -- \\"$context_file\\", \\"$context_func_file\\",
-  \\"$context_func_name\\", \\"$name\\", \\"$proceed\\" and \\"$ret_type\\" (a matched variable type).
-* For declarations of composite types -- \\"$context_file\\", \\"$name\\" and \\"$ret_type\\" (a matched composite
+* For macro definitions -- \"$arg\", \"$arg_numb\", \"$context_file\", \"$name\" and \"$proceed\".
+* For macro substitutions -- \"$arg\", \"$arg_numb\", \"$arg_val\" (a value of an actual macro parameter as is),
+  \"$context_file\", \"$name\" and \"$proceed\".
+* For function calls -- \"$arg\", \"$arg_numb\", \"$arg_sign\", \"$arg_size\", \"$arg_type\", \"$arg_val\",
+  \"$context_file\", \"$context_func_file\", \"$context_func_name\", \"$name\", \"$proceed\", \"$res\"
+  (only for \"around\" and \"after\") and \"$ret_type\".
+* For function declarations -- \"$arg_numb\", \"$arg_type\", \"$context_file\", \"$name\" and \"$ret_type\".
+* For function definitions -- \"$arg\", \"$arg_numb\", \"$arg_type\", \"$context_file\", \"$name\",
+  \"$proceed\", \"$res\" (only for \"around\" and \"after\") and \"$ret_type\".
+* For usages and assignments of values to local or global variables -- \"$context_file\", \"$context_func_file\",
+  \"$context_func_name\", \"$name\", \"$proceed\" and \"$ret_type\" (a matched variable type).
+* For declarations of composite types -- \"$context_file\", \"$name\" and \"$ret_type\" (a matched composite
   type).
 
 Semantics
@@ -776,21 +776,21 @@ Semantics
 `pointcut` included in `advice-declaration` determines a set of join points for which this advice should be applied,
 that is to execute the code from `advice-body` or to frame join points with it.
 
-\\"before\\", \\"after\\" and \\"around\\" advices are applied before, after or instead matched join points
+\"before\", \"after\" and \"around\" advices are applied before, after or instead matched join points
 respectively.
-\\"around\\" advices can also wrap corresponding join points indicated by the \\"$proceed\\" special directive in
+\"around\" advices can also wrap corresponding join points indicated by the \"$proceed\" special directive in
 `advice-body`.
 
-\\"query\\" advices do not change the program code.
+\"query\" advices do not change the program code.
 These advices are used only for formatted output of information about joint points to a file by means of special
-directives \\"$fprintf\\".
+directives \"$fprintf\".
 
-The \\"new\\" advice creates a file that is specified in \\"pointcut\\".
+The \"new\" advice creates a file that is specified in \"pointcut\".
 This feature allows, for example, to declare common variables and functions for several C source files.
 
 In `advice-body` it is allowed to write arbitrary correct C code with `GCC <https://gcc.gnu.org/>`__ compiler extensions
 as well as a set of special directives (:ref:`special_directives`).
-You can use only special directives \\"$fprintf\\" in bodies of \\"query\\" advices (parameters of this special
+You can use only special directives \"$fprintf\" in bodies of \"query\" advices (parameters of this special
 directive may be other valid special directives).
 
 If parameter names are used in `parameter-type-list`, then you can use them to refer corresponding parameters in
@@ -799,18 +799,18 @@ If parameter names are used in `parameter-type-list`, then you can use them to r
 ..
     If several advices match the same join point, they are applied in the following order:
 
-    #. Among advices of the same type (\\"before\\", \\"around\\", \\"after\\", \\"new\\" and \\"query\\"), the one that
+    #. Among advices of the same type (\"before\", \"around\", \"after\", \"new\" and \"query\"), the one that
        occurs earlier in the aspect file is applied first.
-    #. First of all, \\"before\\" advices are applied to the join point.
-    #. Then \\"around\\" advices are applied as follows:
+    #. First of all, \"before\" advices are applied to the join point.
+    #. Then \"around\" advices are applied as follows:
 
-       #. If there is no special directive \\"$proceed\\" in `advice-body` of the currently applied advice, then its
+       #. If there is no special directive \"$proceed\" in `advice-body` of the currently applied advice, then its
           application is terminated.
-       #. Otherwise, the part of this advice is applied before special directive\\"$proceed\\".
-          Then instead of this special directive, the following \\"around\\" advice if any is applied or the join point
+       #. Otherwise, the part of this advice is applied before special directive\"$proceed\".
+          Then instead of this special directive, the following \"around\" advice if any is applied or the join point
           itself is executed directly.
 
-    #. After all \\"after\\" advices are applied.
+    #. After all \"after\" advices are applied.
 
 If several advices match the same join point, then only the one that occurs earlier in the aspect file is applied.
 For more complex cases, for example, when a program is woven with several aspects at once, the behavior of the aspect
