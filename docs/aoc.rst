@@ -12,50 +12,105 @@ Introduction
 
 This section presents an aspect-oriented extension of the C programming language (hereinafter
 :abbr:`AOC (Aspect-Oriented C)`).
-This extension allows you to extract cross-cutting concerns of programs into separate modules, so called
+This extension allows you to extract cross-cutting concerns of programs into separate modules, so-called
 :ref:`aspects <aspects>`, consisting of a set of :ref:`advices <advices>` primarily.
 
 You can implement cross-cutting concerns within :ref:`advice bodies <advice_bodies>` using any correct C code suitable
 for function bodies.
 Also, you can use `GCC <https://gcc.gnu.org/>`__ compiler extensions and a set of
 :ref:`special directives <special_directives>`.
-Advices include :ref:`pointucts <pointcuts>` to specify *join points* of the program for which it is necessary to
-execute this code.
+:ref:`Advices <advices>` include :ref:`pointucts <pointcuts>` to specify *join points* of the program for which it is
+necessary to execute this code.
 For instance, AOC deals with definitions and substitutions of macros as well as definitions and declarations of
-functions, variables and types as join points.
-In order to simplify the development of aspects, macros and declarations of functions, variables and types used to
-describe join points generally coincide in syntax, constraints and semantics with the corresponding constructions of the
-C programming language with GCC compiler extensions (see sections :ref:`macros` and :ref:`decls` for details).
+functions, variables, and composite types as join points.
+In order to simplify the development of aspects, macros and declarations of functions, variables, and types used to
+describe join points generally coincide in syntax, constraints, and semantics with the corresponding constructions of
+the C programming language with GCC compiler extensions (see sections :ref:`macros` and :ref:`decls` for details).
+You can see an example of an aspect in :numref:`aspect-sample`.
+
+.. code-block:: c
+    :caption: Example of an aspect with two advices
+    :name: aspect-sample
+
+    before: call(void lock(void))
+    {
+        if (locks_counter)
+            abort();
+        locks_counter++;
+    }
+
+    before: call(void unlock(void))
+    {
+        if (!locks_counter)
+            abort();
+        locks_counter--;
+    }
 
 Before parsing aspects, *aspect preprocessing* is carried out.
 Aspect preprocessing behaves exactly in the same way as preprocessing performed by the `GCC <https://gcc.gnu.org/>`__
 compiler except for symbol **@** is treated instead of **#**.
-Preprocessed aspects can contain only :ref:`advices <advices>`, :ref:`named pointucts <pointcuts>` and
-:ref:`line directives <location_control_directives>`.
+:numref:`aspect-preprocessor-directives` exemplifies using preprocessor directives in the aspect.
+The corresponding preprocessed aspect is shown in :numref:`preprocessed-aspect`.
+
+.. code-block:: c
+    :caption: Example of using preprocessor directives in an aspect
+    :name: aspect-preprocessor-directives
+    :force:
+
+    @define LOG_FILE "work/info.txt"
+    @define GET get_property
+
+    @if defined DEBUG
+    @define LOG(action, prop) $fprintf<LOG_FILE, "%s property %s\n", action, prop>
+    @else
+    @define LOG(action, prop)
+    @endif
+
+    query: call(int GET(const char *))
+    {
+        LOG("get", $arg_sign1);
+    }
+
+.. code-block:: c
+    :caption: Preprocessed aspect
+    :name: preprocessed-aspect
+
+    # 10 "aspect-preprocessor-directives.aspect"
+    query: call(int get_property(const char *))
+    {
+      $fprintf<"work/info.txt", "%s property %s\n", "get", $arg_sign1>;
+    }
+
 Similarly to the C programming language, you can use :ref:`comments <comments>` in aspects.
 Unlike C, not all comments are eliminated at aspect preprocessing.
 This is the case for comments used in :ref:`advice bodies <advice_bodies>`.
-For instance, in this way you can implement so-called *model comments* explaining particular actions and checks
-performed by requirement specifications.
+For instance, in this way you can implement so-called
+`model comments <https://klever.readthedocs.io/en/latest/dev_req_specs.html#developing-model>`__ explaining particular
+actions and checks performed by requirement specifications.
 
 In addition to the possibility to describe cross-cutting concerns in the form of aspects, AOC assumes means for
-automatic linkage of aspects with the target program.
+automatic linkage of aspects with source files of the target program.
 This process is referred to as *aspect weaving*.
-In effect, for some representation of the program, it searches for join points corresponding to advice pointcuts
-specified in the aspect.
+In effect, for some representation of program source files, it searches for join points corresponding to advice
+pointcuts specified in the aspect.
 In case matches are found, join points are framed with the code specified in :ref:`advice bodies <advice_bodies>` (you
 can see section :ref:`advices` for more insights).
+Eventually you can get either woven in program source files or their compiled versions.
 
-Hereinafter nonterminals are bold and they may be links to appropriate definitions, e.g. `pointcut`, while terminals are
-enclosed into quotes, e.g. \"pointcut\" (quotes themselves are enclosed into single quotes like \'\"\').
+Following subsections present a formal grammar of AOC.
+We use the following notation.
+Nonterminals are bold and they may be links to appropriate definitions, e.g. `pointcut`, while terminals are
+enclosed in double quotes, e.g. \"call\"\ [#]_.
 :== following a nonterminal represents a definition of this nonterminal.
 Various variants of a nonterminal definition are either placed on separate lines or separated by \|.
-In nonterminal definitions optional nonterminals are enclosed into square brackets, e.g. [`pointer`].
+In nonterminal definitions optional nonterminals are enclosed in square brackets, e.g. [`pointer`].
 
 .. note:: Keep in mind that the actual implementation may be slightly inconsistent with the given description.
           Some things may be missed while it can bring extra functionality.
           You can find known issues in the `official issue tracker <https://forge.ispras.ru/projects/cif/issues>`__.
           Please, do not hesitate to report other ones.
+
+.. [#] Double quotes themselves are framed by single quotes like \'\"\'.
 
 .. _tokens:
 
@@ -79,12 +134,12 @@ Syntax
 Constraints
 ^^^^^^^^^^^
 
-Compared to `token` defined in 6.4 of [ISO-9899-2011]_, `aoc-token` has following amendments:
+Compared to `token` defined in 6.4 of [ISO-9899-2011]_, `aoc-token` has the following amendments:
 
 * Modified set of keywords `c-or-aoc-keyword` is used instead of `keyword` (:ref:`keywords`).
 * `aoc-identifier` replaces `identifier` (:ref:`identifiers`).
 * AOC supports only integer constants `aoc-integer-constant` rather than `constant` (:ref:`integer_constants`).
-* `string-literal` is replaced with `aoc-string-literal` (:ref:`string_literals`).
+* `string-literal` is replaced by `aoc-string-literal` (:ref:`string_literals`).
 * `aoc-punctuator` is used instead of `punctuator` (:ref:`punctuators`).
 
 In addition, `aoc-token` supports:
@@ -131,7 +186,7 @@ In comparison with `keyword` presented in 6.4.1 of [ISO-9899-2011]_ in AOC `c-or
 statements and expressions.
 You still can use them in :ref:`advice bodies <advice_bodies>`, but they are not parsed at aspect weaving.
 
-`aoc-keyword` is the definition of the AOC keywords.
+`aoc-keyword` is the definition of AOC keywords.
 It supports:
 
 * \"after\", \"around\", \"before\", \"info\", \"new\" and \"query\" (:ref:`advices`);
@@ -146,10 +201,9 @@ Basically the semantics of keywords `c-or-aoc-keyword` corresponds to the semant
 [ISO-9899-2011]_.
 An important difference is that a word can be `aoc-keyword` only outside of :ref:`comments <comments>`,
 :ref:`advice bodies <advice_bodies>`, :ref:`macros <macros>` and
-:ref:`declarations of functions, variables and composite types <decls>`.
-Besides, only words used in :ref:`macros <macros>` and
-:ref:`declarations of functions, variables and composite types <decls>` can represent keywords of the C programming
-language.
+:ref:`declarations of functions, variables, and types <decls>`.
+Besides, only words used in :ref:`declarations of functions, variables, and types <decls>` can represent keywords of the
+C programming language.
 
 .. _identifiers:
 
@@ -185,10 +239,14 @@ Semantics
 In general the semantics of `aoc-identifier` corresponds to the semantics of `identifier` described in 6.4.2 of
 [ISO-9899-2011]_.
 Each \"$\" wildcard in `aoc-identifier` corresponds to a sequence of characters (both `digit` and `nondigit`) of
-arbitrary length, including zero.
+arbitrary length\ [#]_.
+For instance, `aoc-identifier` **$_property$** will match such identifiers as **get_property**, **set_property** and
+**get_property_value**, but it will not match, say, **receive_message**.
 If several \"$\" wildcards are contiguous in the same identifier, they are treated as one \"$\".
 An identifier is not converted to a keyword if it uses at least one \"$\" wildcard.
 Following sections describe specific semantics of \"$\" wildcards for certain entities.
+
+.. [#] Everywhere in this document an arbitrary length includes zero.
 
 .. _integer_constants:
 
@@ -260,23 +318,23 @@ Constraints
 
 In comparison with `punctuator`, which is presented in 6.4.6 of [ISO-9899-2011]_, in AOC `c-or-aoc-punctuator` can be
 either punctuator of the C programming language `c-punctuator`, or AOC punctuator `aoc-punctuator`.
-The definition of `c-punctuator` supports only \"(\", \")\", \"[\", \"]\", \"\*\", \"\...\", \",\", i.e.
-those punctuators that can be used when writing :ref:`macros <macros>` and
-ref:`declarations of functions, variables and composite types <decls>`.
+The definition of `c-punctuator` supports only \"(\", \")\", \"[\", \"]\", \"\*\", \"\...\" and \",\" from the
+`punctuator` definition, i.e. those punctuators that can be used when writing :ref:`macros <macros>` and
+:ref:`declarations of functions, variables, and types <decls>`.
 Besides, `c-punctuator` supports following extra punctuators:
 
-* \"$\" -- a universal type specifier or a universal array size (:ref:`decls`);
-* \"..\" -- a list of arbitrary parameters of a macro function or a function of arbitrary length, including zero (see
-  :ref:`macros` and :ref:`decls` for more details).
+* \"$\" -- a universal type specifier or a universal array size (:ref:`decls`).
+* \"..\" -- a list of arbitrary parameters of a macro function or a function of arbitrary length (see :ref:`macros` and
+  :ref:`decls` for more details).
 
 The `aoc-punctuator` definition includes:
 
 * \":\" -- it introduces a definition of a :ref:`named pointcut <pointcuts>` or :ref:`advice <advices>`.
-* \"(\", \")\", \"!\", \"&&\", \"||\" -- punctuators for the sake of development of
+* \"(\", \")\", \"!\", \"&&\", \"||\" -- these punctuators are for the sake of development of
   :ref:`composite pointcuts <pointcuts>`.
-* \"(\", \")\" -- braces separate :ref:`macros <macros>` and
-  :ref:`declarations of functions, variables and composite types <decls>` from descriptions of
-  :ref:`pointcuts <pointcuts>` and :ref:`advices <advices>`.
+* \"(\", \")\" -- braces also separate :ref:`macros <macros>` and
+  :ref:`declarations of functions, variables, and types <decls>` from descriptions of :ref:`pointcuts <pointcuts>` and
+  :ref:`advices <advices>`.
 
 Semantics
 ^^^^^^^^^
@@ -285,7 +343,7 @@ The semantics of `c-or-aoc-punctuator` generally corresponds to the semantics of
 [ISO-9899-2011]_.
 A vital difference is that a punctuator can be `aoc-punctuator` only outside of :ref:`comments <comments>`,
 :ref:`advice bodies <advice_bodies>`, :ref:`macros <macros>` and
-:ref:`declarations of functions, variables and composite types <decls>`.
+:ref:`declarations of functions, variables, and types <decls>`.
 Besides, only punctuators used in macros and declarations of functions, variables and composite types are considered as
 punctuators of the C programming language (:ref:`macros` and :ref:`decls`).
 The semantics of additional punctuators of `c-punctuator` is discussed in detail in sections :ref:`macros` and
@@ -317,9 +375,8 @@ Basically the semantics of `file-name` corresponds to the semantics of `header-n
 [ISO-9899-2011]_.
 Some specific character sequences in file names are interpreted as follows:
 
-* One or more **$$** (a pair of characters is used to avoid collisions with
-  :ref:`special directives <special_directives>`).
-  Each **$$** corresponds to sequence of q-characters `q-char-sequence` of arbitrary length including zero.
+* One or more **$$**\ [#]_.
+  Each **$$** corresponds to sequence of q-characters `q-char-sequence` of arbitrary length.
   If several **$$** are contiguous in the same file name, they are treated as one **$$**.
 * Special directive **$this** that can be used only to indicate the file name and only in the form of \"**$this**\"
   (:ref:`special_directives`).
@@ -327,22 +384,36 @@ Some specific character sequences in file names are interpreted as follows:
 
 .. note:: Generally speaking, one can use **$** characters in file names but this is not considered in AOC.
 
+.. [#] A pair of **$** characters is used to avoid collisions with :ref:`special directives <special_directives>`.
+
 .. _advice_bodies:
 
 Advice bodies
 -------------
 
+Syntax
+^^^^^^
+
+.. productionlist::
+   advice-body: "{" compound-statement-with-comments-and-special-directives "}"
+
+Constraints
+^^^^^^^^^^^
+
 `advice-body` represents a C code enclosed in curly braces.
 It is similar to `compound-statement` of `function-definition` from 6.9.1 of [ISO-9899-2011]_.
 In advice bodies one can use any correct C code with `GCC <https://gcc.gnu.org/>`__ compiler extensions that can be used
 in function bodies.
-In addition, advice bodies may contain :ref:`special directives <special_directives>` which reflect information about
-joint points or have some special purpose.
+In addition, advice bodies may contain :ref:`comments <comments>` and :ref:`special directives <special_directives>`
+which reflect information about joint points or have some special purpose.
 For example, special directive **$arg_numb** denotes the number of function parameters, **$fprintf** is intended for
 formatted output of data to a file, **$env** denotes a value of an environment variable.
 
+Semantics
+^^^^^^^^^
+
 Advice bodies are not parsed except for :ref:`special directives <special_directives>` and :ref:`comments <comments>`.
-Special directives are substituted with the corresponding C code either during parsing of aspects (so called special
+Special directives are substituted with corresponding values either during parsing of aspects (so-called special
 directives with predefined values) or at aspect weaving.
 Comments are ignored to correctly balance curly braces and determine ends of advice bodies.
 After parsing comments remain in advice bodies as is.
@@ -369,19 +440,18 @@ Constraints
 ^^^^^^^^^^^
 
 `special-directive` can be used only in `advice-body` and `file-name`.
-In order to avoid collisions with the C code used in the advice bodies along with special directives, it is prohibited
+In order to avoid collisions with the C code used in advice bodies along with special directives, it is prohibited
 to use whitespace characters in special directives except for separating special directive parameters from each other.
 All special directives start with the **$** symbol which cannot be used in the C code.
 
-`identifier` defines a type of a special directive.
+`identifier` defines a type of special directive.
 The following types of special directives are supported: **$arg**, **$arg_numb**, **$arg_sign**, **$arg_size**,
 **$arg_type**, **$arg_val**, **$context_file**, **$context_func_file**, **$context_func_name**, **$env**, **$fprintf**,
 **$name**, **$proceed**, **$res**, **$ret_type**, **$signature** and **$this**.
 It is forbidden to use digits in `identifier` of `special-directive`.
-This is done to avoid collisions of identifiers with the `aoc-integer-constant` that may be a part of special
-directives.
+This is done to avoid collisions of identifiers with `aoc-integer-constant` that may be a part of special directives.
 
-`aoc-integer-constant` of `special-directive` should be used only along with **$arg**, **$arg_sign**, **$arg_size**,
+`aoc-integer-constant` of `special-directive` should be used only together with **$arg**, **$arg_sign**, **$arg_size**,
 **$arg_type** or **$arg_val**.
 These integer constants can only refer ordinal numbers of arguments of functions or macros from appropriate join points.
 Numbering begins with 1.
@@ -393,19 +463,20 @@ This string literal should exactly match a name of one of environment variables.
 You can use any number of parameters for **$fprintf** but at least two parameters are mandatory.
 The first parameter should be either a string literal or a special directive with a predefined value which is also a
 string literal.
-This string literal should represent a file name (either relative or absolute path) that can be opened for writing.
+This string literal should represent a file name (either relative or absolute path) that can be opened for writing\ [#]_.
 The second parameter should be `aoc-string-literal`.
 This string literal represents simplified **format** defined in 7.21.6.1 of [ISO-9899-2011]_.
 Only **%d** and **%s** specifiers are acceptable.
 They should match `aoc-integer-constant` and `aoc-string-literal` respectively among other parameters of special
 directives.
 Also, any of these parameters can be a special directive whose value is `aoc-integer-constant` or `aoc-string-literal`.
+:numref:`preprocessed-aspect` contains an example of **$fprintf**.
 
 Semantics
 ^^^^^^^^^
 
-All special directives except **$fprintf** are replaced with some values: integers, identifiers without **$** wildcards
-or string literals.
+All special directives except **$fprintf** are replaced with some values: `integers <aoc-integer-constant>`, 
+`identifiers <aoc-identifier>` without **$** wildcards or `string literals <aoc-string-literal>`.
 
 Special directive **$fprintf** performs formatted data output to a specified file in the same way as standard C function
 *fprintf* described in 7.21.6.1 of [ISO-9899-2011]_.
@@ -413,21 +484,21 @@ Special directive **$fprintf** performs formatted data output to a specified fil
 Special directives **$env** and **$this** are the only special directives with predefined values.
 These values are determined at the stage of aspect parsing.
 Instead of **$env** a value of a corresponding environment variable is substituted.
-**$this** is identified with name of a woven in C source file.
+**$this** is identified with a name of a woven in C source file.
 
 The remaining special directives are substituted at aspect weaving as follows:
 
-* **$argi** -- a name of i\ :sup:`th` formal parameter of a function or macro.
+* **$arg**\ *i* -- a name of i\ :sup:`th` formal parameter of a function or macro.
 * **$arg_numb** -- the number of parameters of a function or macro.
-* **$arg_signi** -- a signature of i\ :sup:`th` actual parameter of a function.
+* **$arg_sign**\ *i* -- a signature of i\ :sup:`th` actual parameter of a function.
   An *argument signature* is an identifier based on a syntax tree of a corresponding argument.
   Argument signatures should be built in a way to distinguish arguments corresponding to different memory objects
-  unambiguously though it is not possible always.
-* **$arg_sizei** -- an array size if i\ :sup:`th` actual parameter of a function is a pointer to a one-dimensional
-  array or **-1** otherwise
-* **$arg_typei** -- a type of i\ :sup:`th` formal parameter of a function.
+  unambiguously though it is not always possible.
+* **$arg_size**\ *i* -- an array size if i\ :sup:`th` actual parameter of a function is a pointer to a one-dimensional
+  array or **-1** otherwise.
+* **$arg_type**\ *i* -- a type of i\ :sup:`th` formal parameter of a function.
   A corresponding type is provided by using *typedef*, so function pointers are also supported.
-* **$arg_vali** -- a function name if i\ :sup:`th` actual parameter of a function is an address of some known function
+* **$arg_val**\ *i* -- a function name if i\ :sup:`th` actual parameter of a function is an address of some known function
   or **0** otherwise.
 * **$context_file** -- a path to a file containing a join point.
 * **$context_func_file** -- a path to a file that defines a function containing a join point.
@@ -435,7 +506,9 @@ The remaining special directives are substituted at aspect weaving as follows:
 * **$name** -- a name of a macro, function, variable or composite type corresponding to a join point.
 * **$proceed** -- a join point itself, for example, an original function call.
 * **$res** -- a function return value (it is provided by a special variable).
-* **$ret_type** -- a type of a function's return value (it is provided via a *typedef*).
+* **$ret_type** -- a type of function's return value or variable or a composite type (it is provided via *typedef*).
+
+.. [#] This file is created if it does not exist.
 
 .. _location_control_directives:
 
@@ -453,8 +526,8 @@ Constraints
 
 The `new-line` nonterminal is defined in 5.2.1 of [ISO-9899-2011]_.
 
-Location control directives (aka *line directives*) can be used outside of :ref:`advice bodies <advice_bodies>` and
-they should occupy exactly one line.
+Location control directives (aka *line directives*) can be used outside of :ref:`advice bodies <advice_bodies>`.
+They should occupy exactly one line.
 
 Semantics
 ^^^^^^^^^
@@ -463,6 +536,9 @@ The semantics of `location-control-directive` generally corresponds to the seman
 directives described in 6.10.4 of [ISO-9899-2011]_.
 In the `location-control-directive` definition `aoc-integer-constant` points out line numbers in files whose names are
 specified by `aoc-string-literal`.
+
+`line directives <location-control-directive>` can arise at aspect preprocessing considered in :ref:`intro`.
+Users should unlikely use them.
 
 .. _comments:
 
@@ -477,7 +553,7 @@ The content of this comment is scanned only to detect the ***/** characters that
 
 On aspect preprocessing all comments always remain in the text of the resulting file with the aspect.
 This is done in order to keep, say, model comments.
-For a similar reason comments are kept within advice bodies at aspect parsing.
+For a similar reason comments are kept within advice bodies at aspect parsing and aspect weaving.
 
 .. _macros:
 
@@ -502,22 +578,24 @@ Constraints
 In comparison with preprocessor directives defined in 6.10 of [ISO-9899-2011]_, in AOC `macro` supports a
 `GCC <https://gcc.gnu.org/>`__ compiler extension that allows associating a name to \"\...\" in the form of optional
 `identifier` before it.
-\"\...\" designates a list of arbitrary macro parameters of arbitrary length, including zero.
+\"\...\" designates a list of arbitrary macro parameters of arbitrary length.
 Also, `identifier-or-any-param-list` supports the \"..\" wildcard.
-It means a list of arbitrary macro parameters of arbitrary length, including zero.
+It means a list of arbitrary macro parameters of arbitrary length.
 
 Semantics
 ^^^^^^^^^
 
-In general, ghe semantics of `macro` corresponds to the semantics of preprocessor directives described in 6.10 of
+In general, the semantics of `macro` corresponds to the semantics of preprocessor directives described in 6.10 of
 [ISO-9899-2011]_.
-Wildcard \"..\" matches a list of arbitrary macro parameters of arbitrary length, including zero at a joint point.
+Wildcard \"..\" matches a list of arbitrary macro parameters of arbitrary length at a joint point.
+For instance, **LOCK(x, ..)** will match both **LOCK(x)**, **LOCK(x, y)** and **LOCK(x, y, z)**, but it will not match
+**LOCK()** and **LOCK**.
 If there are several consecutive \"..\" separated by commas, they are treated as one \"..\".
 
 .. _decls:
 
-Declarations of functions, variables, and composite types
----------------------------------------------------------
+Declarations of functions, variables, and types
+-----------------------------------------------
 
 Syntax
 ^^^^^^
@@ -583,8 +661,8 @@ Syntax
 Constraints
 ^^^^^^^^^^^
 
-In comparison with `declaration` that represents declarations of functions, variables and types and that is defined in
-6.7 of [ISO-9899-2011]_, AOC `declaration` have following differences:
+In comparison with `declaration` that represents declarations of functions, variables, and types and that is defined in
+6.7 of [ISO-9899-2011]_, AOC `declaration` have the following differences:
 
 * It does not support `init-declarator-list`.
   Only `declarator` itself can be used instead.
@@ -595,13 +673,13 @@ In comparison with `declaration` that represents declarations of functions, vari
   * Various forms of array assignment.
   * The outdated form of providing function parameters.
 
-* `parameter-type-list` does not support \"\...\" that designates of a list of arbitrary function parameters of
-  arbitrary length including zero (it is supported at the level of `declaration-specifiers` which is discussed below).
+* `parameter-type-list` does not support \"\...\" that designates a list of arbitrary function parameters of
+  arbitrary length (it is supported at the level of `declaration-specifiers` which is discussed below).
 * The `direct-abstract-declarator` definition does not support various forms of array assignment.
 * `declaration-specifiers` additionally supports:
 
-  * Wildcard \"..\" capturing a list of arbitrary function parameters of arbitrary length including zero.
-  * \"\...\" that designates of a list of arbitrary function parameters of arbitrary length including zero.
+  * Wildcard \"..\" capturing a list of arbitrary function parameters of arbitrary length.
+  * \"\...\" that designates a list of arbitrary function parameters of arbitrary length.
     This works only for declarations from `parameter-list`.
 
 * The `type-specifier` definition supports universal type specifier \"$\" in addition.
@@ -623,7 +701,7 @@ If `declarator` is present then the declaration is either a function declaration
 a variable.
 
 Wildcard \"..\" in the definition of `declaration-specifiers` corresponds to a list of arbitrary function parameters
-of arbitrary length, including zero, at a joint point.
+of arbitrary length at a joint point.
 Several consecutive, separated by commas \"..\" are treated as one \"..\".
 
 As a matter of fact \"\...\" in `declaration-specifiers` exactly coincides with the same terminal in
@@ -636,14 +714,17 @@ Basically the semantics of `declaration` corresponds to the semantics of `declar
 Universal type specifier \"$\" in the definition of `type-specifier` means the following:
 
 * If the universal type specifier is located before any other type specifier, then it denotes a list of arbitrary
-  declaration specifiers of arbitrary length, including zero (the \"$\" symbol does not match arbitrary
-  `typedef-name`).
+  declaration specifiers of arbitrary length (the \"$\" symbol does not match arbitrary `typedef-name`).
+  For instance, **$** matches **char**, **int**, **unsigned int**, **static inline int** and so on.
 * If the universal type specifier is the only type specifier among declaration specifiers (according to the restriction
   specified earlier, it can be functions or variables only), then it denotes a type of variable or return value of a
   function, which is arbitrary up to the specified declaration specifiers.
+  For instance, **$ int** matches **int**, **unsigned int** and **static inline int**, but it does not match, say,
+  **char**.
 
 Universal array size \"$\" in definitions of `direct-declarator` and `direct-abstract-declarator` corresponds to an
 arbitrary array size at a joint point.
+For example, **int array[$]** will match both **int array[3]** and **int array[5]**.
 
 .. _pointcuts:
 
@@ -682,7 +763,7 @@ Constraints
 ^^^^^^^^^^^
 
 It is forbidden to use \"$\" wildcards in `identifier` in the definition of `named-pointcut`.
-Preprocessed aspect files can not define several `named-pointcut`s with the same `identifier`.
+Preprocessed aspect files can not define several `named pointcuts <named-pointcut>` with the same `identifier`.
 
 `identifier` can be only an identifier of a previously defined named pointcut in the definition of `pointcut`.
 It also can not use \"$\" wildcards.
@@ -709,15 +790,15 @@ The precedence of operators \"!\", \"&&\" and \"||\" decreases left to right.
 
 `primitive-pointcut` describes the following sets of joint points:
 
-* \"define\" and \"expand\" -- respectively a definition or a substitution of `macro`.
-* \"declare_func\", \"execution\" and \"call\" -- correspondingly a declaration, definition or call of a functions
+* \"define\" and \"expand\" -- respectively a definition or substitution of `macro`.
+* \"declare_func\", \"execution\" and \"call\" -- correspondingly a declaration, definition, or call of a function
   having appropriate `declaration`.
 * \"get\" and \"set\" -- respectively a usage or assignment of a value to a variable with corresponding
   `declaration`.
 * \"get_global\", \"set_global\", \"get_local\" and \"set_local\" -- the same as the previous primitive
   pointcut, but global and local (including function parameters) variables are distinguished.
-* \"infunc\" -- join points in a context of a functions with specified `declaration`.
-* \"introduce\" -- a definition of a structure, union or enumeration with specified `declaration`.
+* \"infunc\" -- join points in a context of a function with specified `declaration`.
+* \"introduce\" -- a definition of a structure, union, or enumeration with specified `declaration`.
 * \"file\" -- a file with `file-name`.
 * \"infile\" -- join points in a context of a file with `file-name`.
 
@@ -746,9 +827,11 @@ Syntax
 Constraints
 ^^^^^^^^^^^
 
-Each advice should consist of `advice-declaration` and `advice-body` (:ref:`advice_bodies`).
+Each advice should consist of `advice-declaration` and `advice-body`.
 Any `pointcut` is allowed for `advice-declaration` with \"before\", \"around\", \"after\" and \"query\".
 Only `primitive-pointcut` corresponding to `file-name` is allowed for \"new\" `advice-declaration`.
+
+.. TODO: $signature looks strange in the first list. Unlikely it works for "new".
 
 In `advice-body` of \"before\", \"around\", \"after\", \"new\" and \"query\" one can use special directives
 \"$env\", \"$fprintf\" (if other special directives represent its parameters, then similar restrictions are imposed
@@ -774,7 +857,7 @@ Semantics
 ^^^^^^^^^
 
 `pointcut` included in `advice-declaration` determines a set of join points for which this advice should be applied,
-that is to execute the code from `advice-body` or to frame join points with it.
+that assumes either executing the code from `advice-body` or framing join points with it.
 
 \"before\", \"after\" and \"around\" advices are applied before, after or instead matched join points
 respectively.
@@ -796,7 +879,8 @@ directive may be other valid special directives).
 If parameter names are used in `parameter-type-list`, then you can use them to refer corresponding parameters in
 `advice-body`.
 
-..
+.. TODO: This does not WAI. Maybe this is not so bad.
+
     If several advices match the same join point, they are applied in the following order:
 
     #. Among advices of the same type (\"before\", \"around\", \"after\", \"new\" and \"query\"), the one that
@@ -813,7 +897,7 @@ If parameter names are used in `parameter-type-list`, then you can use them to r
     #. After all \"after\" advices are applied.
 
 If several advices match the same join point, then only the one that occurs earlier in the aspect file is applied.
-For more complex cases, for example, when a program is woven with several aspects at once, the behavior of the aspect
+For more complex cases, for example, when a program is woven in with several aspects at once, the behavior of the aspect
 weaver is uncertain.
 
 .. _aspects:
