@@ -6,12 +6,11 @@ CIF
 language.
 You can learn more about CIF at the `project site <https://forge.ispras.ru/projects/cif>`__.
 
-
 Contents
 ========
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Contents:
 
    aoc
