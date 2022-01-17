@@ -1,0 +1,19 @@
+@define GET get_property
+@define SET set_property
+
+@if defined PRODUCTION
+@define LOG(action, prop)
+@else
+@define LOG_FILE "work/info.txt"
+@define LOG(action, prop) $fprintf<LOG_FILE, "%s property %s\n", action, prop>
+@endif
+
+query: call(int GET(const char *)) 
+{
+  LOG("get", $arg_sign1);
+}
+
+query: call(void SET(const char *, int)) 
+{
+  LOG("set", $arg_sign1);
+}

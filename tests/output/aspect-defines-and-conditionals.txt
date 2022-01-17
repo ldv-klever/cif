@@ -1,0 +1,4 @@
+get property prop1
+set property prop1
+get property prop2
+set property prop2
