@@ -18,8 +18,7 @@ venv
 .DS_Store
 
 # IDE
-.vscode
-.idea
+.idea/workspace.xml
 .cache
 
 # Release archives
