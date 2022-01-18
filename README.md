@@ -1,5 +1,29 @@
 # C Instrumentation Framework
 
+## Documentation
+
+You can find the CIF documentation online at http://cif.readthedocs.io or build it yourself.
+
+To build the CIF documentation you need:
+* Install [Python 3.4 or higher](https://www.python.org/).
+* Install [Sphinx](http://sphinx-doc.org) and its
+  [Read the Docs theme](https://sphinx-rtd-theme.readthedocs.io/en/latest/), e.g.:
+
+      pip3 install sphinx sphinx_rtd_theme
+
+  or in a more reliable way:
+
+      pip3 install -r docs/requirements.txt
+
+* Execute the following command from the source tree root directory (it should be executed each time when the
+  documentation might be changed):
+
+      make -C docs html
+
+Then you can open generated documentation index "docs/_build/html/index.html" in a web browser.
+
+Various variants of CIF building and installation are considered below.
+
 ## Build dependencies
 
 To build CIF you will need the following packages:
@@ -12,7 +36,8 @@ To build CIF you will need the following packages:
 
 ## Build and Install
 
-First you need to download archives with the source code of prerequisites needed by GCC (gmp, mpfr, mpc and isl):
+First you need to download archives with the source code of prerequisites needed by GCC (*gmp*, *mpfr*, *mpc* and
+*isl*):
 
     $ cd aspectator
     $ ./contrib/download_prerequisites
@@ -48,14 +73,13 @@ You can uninstall CIF by running the following command:
 
     $ sudo make uninstall
 
-If CIF was installed into an alternative directory with DESTDIR option then you need to use it again:
+If CIF was installed into an alternative directory with the *DESTDIR* option then you need to use it again:
 
     $ DESTDIR=/home/user/cif make uninstall
 
 ## Building Debug Version of Aspectator
 
-To build a debug version of Aspectator one needs create a separate directory for
-it, say:
+To build a debug version of Aspectator one needs create a separate directory for it, say:
 
     $ mkdir build-debug
     $ cd build-debug
@@ -68,14 +92,13 @@ and make the debug version of Aspectator:
 
     $ make STAGE1_CXXFLAGS="-g -O0" all-stage1
 
-You can use option _-jN_ for _make_ to essentially speed up building, but it
-can cause failures (just invoke the command several times to overcome this):
+You can use option _-jN_ for _make_ to essentially speed up building, but it can cause failures (just invoke the command
+several times to overcome this):
 
     $ make -j16 STAGE1_CXXFLAGS="-g -O0" all-stage1
 
-After making some changes to files starting with _ldv-_ prefix it is strongly
-recommended to rebuild the debug version of Aspectator with +-Werror+ flag to
-treat all warnings as errors:
+After making some changes to files starting with _ldv-_ prefix it is strongly recommended to rebuild the debug version
+of Aspectator with +-Werror+ flag to treat all warnings as errors:
 
     $ make STAGE1_CXXFLAGS="-g -O0 -Werror" all-stage1
 
@@ -99,16 +122,14 @@ To debug C back-end you need to set the following environment variables:
 
 ## Profiling Aspectator
 
-Sometimes developers need to track whether some memory issues (e.g. memory
-leaks, use after free, etc.) were introduced and to measure algorithms
-complexity.
+Sometimes developers need to track whether some memory issues (e.g. memory leaks, use after free, etc.) were introduced
+and to measure algorithms complexity.
 
 ### Tracking memory issues of Aspectator
 
 First of all you need to build a debug version of Aspectator.
 
-Then you need to run Aspectator under valgrind (do not specify "--suppressions"
-if you do not have them):
+Then you need to run Aspectator under valgrind (do not specify "--suppressions" if you do not have them):
 
     LDV_ASPECT_FILE=$PATH_TO_ASPECT_FILE \
     LDV_STAGE=$STAGE \
