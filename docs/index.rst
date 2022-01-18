@@ -13,6 +13,7 @@ Contents
    :maxdepth: 1
    :caption: Contents:
 
+   deploy
    aoc
 
 ..
