@@ -94,7 +94,7 @@ several times to overcome this)::
     $ make -j16 STAGE1_CXXFLAGS="-g -O0" all-stage1
 
 After making some changes to files starting with *ldv-* prefix it is strongly recommended to rebuild the debug version
-of Aspectator with *-Werror* flag to treat all warnings as errors:
+of Aspectator with *-Werror* flag to treat all warnings as errors::
 
     $ make STAGE1_CXXFLAGS="-g -O0 -Werror" all-stage1
 
