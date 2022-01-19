@@ -16,6 +16,10 @@
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
 
+import re
+import sphinx.domains.std
+sphinx.domains.std.token_re = re.compile(r'`([-\w]+)`', re.U)
+
 
 # -- Project information -----------------------------------------------------
 
