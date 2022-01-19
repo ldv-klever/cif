@@ -14,6 +14,6 @@ To build the CIF documentation you need:
 * Execute the following command from the source tree root directory (it should be executed each time when the
   documentation might be changed):
 
-      make -C docs html
+      make docs
 
 Then you can open generated documentation index "docs/_build/html/index.html" in a web browser.

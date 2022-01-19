@@ -17,7 +17,7 @@ else
 	CONFIGURE_ARGS_MACOS =
 endif
 
-.PHONY: all uninstall-previous-instances install-keep-previous-instances install test clean
+.PHONY: all uninstall-previous-instances install-keep-previous-instances install test docs clean
 
 all:
 	$(MAKE) cif
@@ -60,6 +60,9 @@ uninstall:
 
 test:
 	cd tests && pytest
+
+docs:
+	$(MAKE) -C docs html
 
 clean:
 	rm -rf build build-debug
