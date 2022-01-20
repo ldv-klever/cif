@@ -634,6 +634,10 @@ static void perform_stages(void) {
                     stage_envs = malloc(stage_envs_len + 1);
                     sprintf(stage_envs, "LDV_C_BACKEND_OUT=\"%s\"", out);
                 }
+                else {
+                    stage_opts_specific = "";
+                }
+
                 stage_post_opts_len = strlen("-x c ") + strlen(stage_opts_specific)
                     + strlen(" ") + strlen(opts.compilation_opts);
                 stage_post_opts = malloc(stage_post_opts_len + 1);
