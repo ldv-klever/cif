@@ -38,7 +38,8 @@ all:
 
 cif:
 	mkdir -p build
-	gcc -Wall -Werror -D CIF_VERSION=\"$(CIF_VERSION)\" cif.c -o build/cif
+	# You need to add option "-g" below to get a debug version of CIF.
+	gcc -D CIF_VERSION=\"$(CIF_VERSION)\" -Wall -Werror -O2 cif.c -o build/cif
 
 build/install: uninstall install-keep-previous-instances
 
@@ -46,6 +47,7 @@ build/install: uninstall install-keep-previous-instances
 install-keep-previous-instances:
 	$(MAKE) DESTDIR="$(DESTDIR)/cif" -C build install-strip
 	cp build/cif "$(DESTDIR)/cif/bin/cif"
+	strip "$(DESTDIR)/cif/bin/cif"
 	mkdir -p "$(DESTDIR)/bin"
 	ln -sf "../cif/bin/cif" "$(DESTDIR)/bin/cif"
 	ln -sf "../cif/bin/gcc" "$(DESTDIR)/bin/aspectator"
