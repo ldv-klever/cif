@@ -844,12 +844,13 @@ special directives when `pointcut` matches an appropriate joint point:
   \"$context_file\", \"$name\" and \"$proceed\".
 * For function calls -- \"$arg\", \"$arg_numb\", \"$arg_sign\", \"$arg_size\", \"$arg_type\", \"$arg_val\",
   \"$context_file\", \"$context_func_file\", \"$context_func_name\", \"$name\", \"$proceed\", \"$res\"
-  (only for \"around\" and \"after\") and \"$ret_type\".
+  (only for \"after\") and \"$ret_type\".
 * For function declarations -- \"$arg_numb\", \"$arg_type\", \"$context_file\", \"$name\" and \"$ret_type\".
 * For function definitions -- \"$arg\", \"$arg_numb\", \"$arg_type\", \"$context_file\", \"$name\",
-  \"$proceed\", \"$res\" (only for \"around\" and \"after\") and \"$ret_type\".
+  \"$proceed\", \"$res\" (only for \"after\") and \"$ret_type\".
 * For usages and assignments of values to local or global variables -- \"$context_file\", \"$context_func_file\",
-  \"$context_func_name\", \"$name\", \"$proceed\" and \"$ret_type\" (a matched variable type).
+  \"$context_func_name\", \"$name\", \"$proceed\", \"$res\" (only for \"after\") and \"$ret_type\"
+  (a matched variable type).
 * For declarations of composite types -- \"$context_file\", \"$name\" and \"$ret_type\" (a matched composite
   type).
 
