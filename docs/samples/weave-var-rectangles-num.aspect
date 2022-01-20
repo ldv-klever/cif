@@ -1,0 +1,5 @@
+/* Do not consider last rectangle. */
+after: set(unsigned int rectangles_num)
+{
+    $res--;
+}

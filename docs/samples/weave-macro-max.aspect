@@ -1,0 +1,5 @@
+/* Notify when current maximum value is changed. It is assumed that "a" holds that value. */
+around: define(MAX(a, b))
+{
+({unsigned int __max; if (a > b) {__max = a;} else {printf("Update maximum value from %u to %u\n", a, b); __max = b;} __max;})
+}

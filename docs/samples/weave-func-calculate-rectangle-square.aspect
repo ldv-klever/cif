@@ -1,0 +1,16 @@
+/* Introduce extra checking and debugging for calls of function calculate_rectangle_square(). */
+around: call(unsigned int calculate_rectangle_square(struct rectangle *r))
+{
+    unsigned int tmp, res;
+
+    // Check for possible overflow.
+    tmp  = r->height * r->width;
+    if (r->height != 0 && tmp / r->height != r->width)
+        printf("After multiplication of %u and %u there will be overflow\n", r->height, r->width);
+
+    // Invoke woven in function itself. 
+    res = $proceed;
+
+    // Debug its result.
+    printf("Calculated rectangle square is %u (%u * %u)\n", res, r->height, r->width);
+}

@@ -1,2 +1,7 @@
 _build
 
+# Ignore generated stuff.
+samples/calculate-max-rectangle-square
+samples/calculate-max-rectangle-square.aux
+samples/*.bak
+samples/func-calls.txt

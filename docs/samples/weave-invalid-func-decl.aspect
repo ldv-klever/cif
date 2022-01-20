@@ -1,0 +1,4 @@
+/* Declaration of function calculate_rectangle_square() is not valid intentionally. */
+around: call(struct rectangle *calculate_rectangle_square(unsigned int, unsigned int))
+{
+}

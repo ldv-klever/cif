@@ -1,0 +1,5 @@
+/* Query all function calls and print some information on them. */
+query: call($ $(..))
+{
+    $fprintf<"func-calls.txt", "Function %s() is called at line %d\n", $func_name, $call_line>
+}
