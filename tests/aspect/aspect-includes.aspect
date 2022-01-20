@@ -1,0 +1,7 @@
+query: call(int get_property(const char *)) 
+{
+  $fprintf<"work/info.txt", "get property %s\n", $arg_sign1>
+}
+
+@define PRODUCTION
+@include "aspect-defines-and-conditionals.aspect"
