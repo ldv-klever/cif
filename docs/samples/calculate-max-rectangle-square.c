@@ -1,7 +1,9 @@
 /* This is a very simple program that finds out a rectangle with a maximum square from a provided list of rectangle
    heights and widths. It is intended only for demonstration of CIF capabilities. Please, do not use it anywhere since
-   it contains several issues. */
-
+   it contains several issues.
+   The program expects the following input:
+       height1 width1 height2 width2 ... heightN widthN
+   where heighti and widthi should be integers representing respectively height and width of ith rectangle. */
 #include <stdio.h>
 #include <stdlib.h>
 
