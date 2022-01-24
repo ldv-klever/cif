@@ -176,14 +176,15 @@ command-line option *\--back-end*)::
 
 and investigate outputted file :file:`calculate-max-rectangle-square` that will be a C source file.
 
-Further work
-------------
+Further study
+-------------
 
 CIF has much more capabilities in addition to the ones that we presented in this tutorial.
 You can read :ref:`aoc` that describes the aspect-oriented extension of the C programming language to study all possible
 ways of using CIF.
-Besides, you can find a lot of examples of aspects in projects `Klever <https://forge.ispras.ru/projects/klever>`__ and
-`Clade <https://github.com/17451k/clade>`__.
+Besides, you can find a lot of examples of aspects in projects `Klever <https://forge.ispras.ru/projects/klever>`__ (in
+particular, `here <https://klever.readthedocs.io/en/latest/dev_common_api_models.html>`__ and
+`here <https://klever.readthedocs.io/en/latest/dev_req_specs.html>`__) and `Clade <https://github.com/17451k/clade>`__.
 
 Known issues
 ------------
