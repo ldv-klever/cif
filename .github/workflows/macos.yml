@@ -17,7 +17,7 @@ jobs:
         ./contrib/download_prerequisites
 
     - name: Build CIF
-      run: make -j$(nproc)
+      run: make
 
     - name: Set up Python 3.7
       uses: actions/setup-python@v1
