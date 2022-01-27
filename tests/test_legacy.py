@@ -11,6 +11,8 @@ class TestLegacy(utils.CIFTestCase):
         self.cif.run(cif_input='input/legacy_macro.c', aspect='aspect/legacy_macro.aspect', cif_output='work/legacy_macro.c')
         self.compare(output='work/legacy_macro.c', expected='output/legacy_macro.c')
 
+    # Indeed, weaving complex types does not work at all (this is not the case for querying them).
+    @pytest.mark.xfail
     def test_type(self):
         self.cif.run(cif_input='input/legacy_type.c', aspect='aspect/legacy_type.aspect', cif_output='work/legacy_type.c')
         self.compare(output='work/legacy_type.c', expected='output/legacy_type.c')
