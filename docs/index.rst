@@ -15,6 +15,7 @@ Contents
    deploy
    tutorial
    aoc
+   development
 
 ..
    Indices and tables
