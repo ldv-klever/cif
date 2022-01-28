@@ -1,6 +1,8 @@
 Development
 ===========
 
+.. _debug_deploy:
+
 Building debug version of Aspectator
 ------------------------------------
 
@@ -55,13 +57,14 @@ Profiling Aspectator
 
 Sometimes developers need to track whether some memory issues (e.g. memory leaks, use after free, etc.) were introduced
 and to measure algorithms complexity.
+First of all you need to build a debug version of Aspectator (:ref:`debug_deploy`) and install extra tools such as
+*valgrind*, *valkyrie* and *kcachegrind*.
 
 Tracking memory issues of Aspectator
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-First of all you need to build a debug version of Aspectator.
-
-Then you need to run Aspectator under *valgrind* (do not specify *--suppressions* if you do not have them)::
+To track memory issues you need to run Aspectator under *valgrind* (do not specify *--suppressions* if you do not have
+them)::
 
     LDV_ASPECT_FILE=$PATH_TO_ASPECT_FILE \
     LDV_STAGE=$STAGE \
@@ -84,9 +87,7 @@ After that you can either inspect *output.xml* manually or use *valkyrie*::
 Tracking CPU time issues of Aspectator
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-First of all you need to build a debug version of Aspectator.
-
-Then you need to run Aspectator under valgrind::
+To measure CPU time consumption you need to run Aspectator under *valgrind*::
 
     LDV_ASPECT_FILE=$PATH_TO_ASPECT_FILE \
     LDV_STAGE=$STAGE \
