@@ -17,9 +17,11 @@ jobs:
         ./contrib/download_prerequisites
 
     - name: Build CIF
-      run: make -j $(nproc) CC=gcc-11 CXX=g++-11
+      run: make -j $(nproc)
       env:
         ASPECTATOR_CONFIGURE_OPTS: --disable-bootstrap
+        CC: gcc-11
+        CXX: g++-11
 
     - name: Set up Python 3.7
       uses: actions/setup-python@v1
