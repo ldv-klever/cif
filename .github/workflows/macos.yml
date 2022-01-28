@@ -28,3 +28,12 @@ jobs:
       run: |
         python -m pip install --upgrade pytest
         make test
+
+    - name: Archive CIF
+      run: tar -cJf $(inst/bin/cif --version).tar.xz -C inst .
+
+    - name: Upload CIF
+      uses: actions/upload-artifact@v2
+      with:
+        name: macos-cif
+        path: "*.tar.xz"
