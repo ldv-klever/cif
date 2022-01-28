@@ -54,10 +54,20 @@ before: introduce (struct b35)
 {
   int z;
 }
+after: introduce (struct b36)
+{
+  int z;
+}
+
 before: introduce (union b41)
 {
   int z;
 }
+after: introduce (union b42)
+{
+  int z;
+}
+
 before: introduce (enum b51)
 {
   C,
@@ -65,7 +75,7 @@ before: introduce (enum b51)
 }
 after: introduce (enum b52)
 {
-  , 
+  ,
   G,
   H
 }

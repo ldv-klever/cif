@@ -60,8 +60,18 @@ struct b35
   int x;
   struct b35 *y;
 };
+struct b36
+{
+  int x;
+  struct b36 *y;
+};
 
 union b41
+{
+  int x:1;
+  int y:2;
+};
+union b42
 {
   int x:1;
   int y:2;

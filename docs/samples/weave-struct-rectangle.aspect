@@ -4,7 +4,7 @@ before: introduce(struct rectangle)
     unsigned int perimeter;
 }
 
-around: call(unsigned int calculate_rectangle_square(struct rectangle *r))
+before: call(unsigned int calculate_rectangle_square(struct rectangle *r))
 {
     /* Calculate, store and print rectangle perimeter in addition to square. */
     r->perimeter = r->height + r->width;

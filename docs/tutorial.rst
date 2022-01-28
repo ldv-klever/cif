@@ -111,6 +111,32 @@ To test this aspect you can run the following commands::
    $ ./calculate-max-rectangle-square 2 5 7 3 4 4 8 9
    Maximum rectangle square is 21
 
+Weaving compound types
+----------------------
+
+CIF suggests means to modify compound types such as structures, unions and enumerations.
+For instance, you can find an example of an appropriate aspect in :numref:`weave-struct-rectangle-aspect`
+(:file:`weave-struct-rectangle.aspect` in :file:`docs/samples`).
+
+.. literalinclude:: samples/weave-struct-rectangle.aspect
+    :caption: Aspect file intended for weaving structure **rectangle**
+    :name: weave-struct-rectangle-aspect
+    :language: c
+
+This aspect adds extra field *perimeter* to the definition of structure *rectangle*.
+Besides, through weaving of function *calculate_rectangle_square()* it calculates, stores and prints out perimeters for
+all rectangles.
+
+To test this aspect you can run the following commands::
+
+   $ ../../inst/bin/cif --in calculate-max-rectangle-square.c --aspect weave-struct-rectangle.aspect --out calculate-max-rectangle-square --back-end bin
+   $ ./calculate-max-rectangle-square 2 5 7 3 4 4 8 9
+   Calculated rectangle perimeter is 7 (2 * 5)
+   Calculated rectangle perimeter is 10 (7 * 3)
+   Calculated rectangle perimeter is 8 (4 * 4)
+   Calculated rectangle perimeter is 17 (8 * 9)
+   Maximum rectangle square is 72
+
 Querying source code
 --------------------
 
