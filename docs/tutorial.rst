@@ -184,7 +184,8 @@ You can read :ref:`aoc` that describes the aspect-oriented extension of the C pr
 ways of using CIF.
 Besides, you can find a lot of examples of aspects in projects `Klever <https://forge.ispras.ru/projects/klever>`__ (in
 particular, `here <https://klever.readthedocs.io/en/latest/dev_common_api_models.html>`__ and
-`here <https://klever.readthedocs.io/en/latest/dev_req_specs.html>`__) and `Clade <https://github.com/17451k/clade>`__ (`here <https://github.com/17451k/clade/blob/master/clade/extensions/info/info.aspect>`__).
+`here <https://klever.readthedocs.io/en/latest/dev_req_specs.html>`__) and `Clade <https://github.com/17451k/clade>`__
+(`here <https://github.com/17451k/clade/blob/master/clade/extensions/info/info.aspect>`__).
 
 Known issues
 ------------
@@ -201,4 +202,5 @@ The most vital ones are as follows:
   extensions.
   Other compiler extensions are supported to the extent that it is done by GCC itself (you can find some related
   command-line options `here <https://gcc.gnu.org/onlinedocs/gcc/C-Dialect-Options.html>`__).
-* CIF is not particularly optimized. It is noticeable if it is called to handle hundreds or thousands of files.
+* CIF is not particularly optimized.
+  It is noticeable if it is called to handle hundreds or thousands of files.
