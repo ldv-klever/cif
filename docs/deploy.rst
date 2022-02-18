@@ -1,6 +1,12 @@
 Deployment
 ==========
 
+You can download archives with CIF binaries prepared in advance either from the
+`official project site <https://forge.ispras.ru/projects/cif/files>`__ or from artifacts attached to
+`GitHub Actions <https://github.com/ldv-klever/cif/actions>`__.
+Also, you can build CIF yourself from scratch according to instructions below.
+Section :ref:`debug_deploy` describes various variants of development builds.
+
 Build dependencies
 ------------------
 
