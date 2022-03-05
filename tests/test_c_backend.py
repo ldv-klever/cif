@@ -231,3 +231,7 @@ class TestCBackend(utils.CIFTestCase):
     def test_array_of_chars_init(self):
         self.cif.run(cif_input='input/c-backend/array-of-chars-init.c', stage='C-backend', cif_output='work/array-of-chars-init.c')
         self.compare(output='work/array-of-chars-init.c', expected='output/c-backend/array-of-chars-init.c')
+
+    def test_anonymous_union_init(self):
+        self.cif.run(cif_input='input/c-backend/anonymous-union-init.c', stage='C-backend', cif_output='work/anonymous-union-init.c')
+        self.compare(output='work/anonymous-union-init.c', expected='output/c-backend/anonymous-union-init.c')
