@@ -243,3 +243,7 @@ class TestCBackend(utils.CIFTestCase):
     def test_min_max_expr(self):
         self.cif.run(cif_input='input/c-backend/min-max-expr.c', stage='C-backend', cif_output='work/min-max-expr.c')
         self.compare(output='work/min-max-expr.c', expected='output/c-backend/min-max-expr.c')
+
+    def test_expr_recursion_limit(self):
+        self.cif.run(cif_input='input/c-backend/expr-recursion-limit.c', stage='C-backend', cif_output='work/expr-recursion-limit.c')
+        self.compare(output='work/expr-recursion-limit.c', expected='output/c-backend/expr-recursion-limit.c')
