@@ -235,3 +235,11 @@ class TestCBackend(utils.CIFTestCase):
     def test_anonymous_union_init(self):
         self.cif.run(cif_input='input/c-backend/anonymous-union-init.c', stage='C-backend', cif_output='work/anonymous-union-init.c')
         self.compare(output='work/anonymous-union-init.c', expected='output/c-backend/anonymous-union-init.c')
+
+    def test_abs_expr(self):
+        self.cif.run(cif_input='input/c-backend/abs-expr.c', stage='C-backend', cif_output='work/abs-expr.c')
+        self.compare(output='work/abs-expr.c', expected='output/c-backend/abs-expr.c')
+
+    def test_min_max_expr(self):
+        self.cif.run(cif_input='input/c-backend/min-max-expr.c', stage='C-backend', cif_output='work/min-max-expr.c')
+        self.compare(output='work/min-max-expr.c', expected='output/c-backend/min-max-expr.c')
