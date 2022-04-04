@@ -125,6 +125,10 @@ class TestCBackend(utils.CIFTestCase):
         self.cif.run(cif_input='input/c-backend/wide-char-str.c', stage='C-backend', cif_output='work/short-wide-char-str.c', aspectator_opts=['-DWCHAR_T=unsigned short int', '-fshort-wchar'])
         self.compare(output='work/short-wide-char-str.c', expected='output/c-backend/short-wide-char-str.c')
 
+    def test_escape_sequence_str(self):
+        self.cif.run(cif_input='input/c-backend/escape-sequence-str.c', stage='C-backend', cif_output='work/escape-sequence-str.c')
+        self.compare(output='work/escape-sequence-str.c', expected='output/c-backend/escape-sequence-str.c')
+
     @pytest.mark.skip(reason="Vector types are not supported")
     def test_vector_type(self):
         self.cif.run(cif_input='input/c-backend/vector-type.c', stage='C-backend', cif_output='work/vector-type.c')
