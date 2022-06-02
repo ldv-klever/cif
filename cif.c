@@ -29,6 +29,8 @@ static void print_debug(int level, const char *format, ...);
 static void print_help(void);
 static void clean(void);
 static char *find_cross_compile_prefix(char *cif_exec_filename);
+static char *concat(const char *first, ...);
+static const char *itoa(unsigned int n);
 
 struct aux {
     char *aspect_preprocessed;
@@ -229,9 +231,9 @@ static void parse_opts(int argc, char **argv) {
             strcat(opts_string, argv[i]);
             if (i != argc - 1 && strcmp(argv[i+1], "--"))
                 strcat(opts_string, " ");
-        } else {
-            i = argc;
         }
+        else
+            i = argc;
     }
 
     print_debug(DEBUG, "Options '%s' were passed to script through command-line.\n", opts_string);
@@ -430,8 +432,7 @@ static void parse_opts(int argc, char **argv) {
 }
 
 static void perform_stages(void) {
-    int stages_len, aux_base_len, aspect_preprocessed_len, stage_pre_opts_len, stage_post_opts_len, stage_envs_len,
-        stage_envs_full_len, cmd_len, ret;
+    int stages_len, ret;
     int i, stage_id = 0;
     char *in, *aspect, *options, *out, *aux_search_dir, *aux_base, *aspect_preprocessed, *cmd;
     char *stages[] = {"aspect preprocessing", "file preparation", "macro instrumentation",
@@ -453,35 +454,14 @@ static void perform_stages(void) {
         stage_pre_opts = "";
         stage_post_opts = NULL;
 
-        in = malloc(strlen(opts.in) + 1);
-        if (in == NULL) {
-            fprintf(stderr, "Malloc failed.\n");
-            exit(-1);
-        }
-        strcpy(in, opts.in);
-        out = malloc(strlen(opts.out) + 1);
-        if (out == NULL) {
-            fprintf(stderr, "Malloc failed.\n");
-            exit(-1);
-        }
-        strcpy(out, opts.out);
-        if (opts.aspect) {
-            aspect = malloc(strlen(opts.aspect) + 1);
-            if (aspect == NULL) {
-                fprintf(stderr, "Malloc failed.\n");
-                exit(-1);
-            }
-            strcpy(aspect, opts.aspect);
-        }
+        in = concat(opts.in, NULL);
+        out = concat(opts.out, NULL);
 
-        if (rest_opts) {
-            options = malloc(strlen(rest_opts) + 1);
-            if (options == NULL) {
-                fprintf(stderr, "Malloc failed.\n");
-                exit(-1);
-            }
-            strcpy(options, rest_opts);
-        }
+        if (opts.aspect)
+            aspect = concat(opts.aspect, NULL);
+
+        if (rest_opts)
+            options = concat(rest_opts, NULL);
 
         /* Place preprocessed aspect file and all intermediate files near output
          * file. When several CIF operates in parallel they can overwrite
@@ -508,13 +488,7 @@ static void perform_stages(void) {
             exit(-1);
         }
 
-        aux_base_len = strlen(out_dirname) + strlen(out_basename) + strlen("/");
-        aux_base = malloc(aux_base_len + 1);
-        if (aux_base == NULL) {
-            fprintf(stderr, "Malloc failed.\n");
-            exit(-1);
-        }
-        sprintf(aux_base, "%s/%s", out_dirname, out_basename);
+        aux_base = concat(out_dirname, "/", out_basename, NULL);
 
         free(out_copy1);
         free(out_copy2);
@@ -533,24 +507,12 @@ static void perform_stages(void) {
                 exit(-1);
             }
 
-            aspect_preprocessed_len = strlen(aux_base) + strlen(".") + strlen(aspect_basename) + strlen(".i");
-            aspect_preprocessed = malloc(aspect_preprocessed_len + 1);
-            if (aspect_preprocessed == NULL) {
-                fprintf(stderr, "Malloc failed.\n");
-                exit(-1);
-            }
-            sprintf(aspect_preprocessed, "%s.%s.i", aux_base, aspect_basename);
+            aspect_preprocessed = concat(aux_base, ".", aspect_basename, ".i", NULL);
 
             free(aspect_copy);
             free(aspect_basename);
-        } else {
-            aspect_preprocessed = malloc(2);
-            if (aspect_preprocessed == NULL) {
-                fprintf(stderr, "Malloc failed.\n");
-                exit(-1);
-            }
-            strcpy(aspect_preprocessed, "");
-        }
+        } else
+            aspect_preprocessed = concat("", NULL);
 
         print_debug(DEBUG, "********* %s *********\n", stages[i]);
 
@@ -585,24 +547,11 @@ static void perform_stages(void) {
              * Keeps comments by means of option -C (#865).
              * Specify that aspect files "are" in C.
              */
-
-            stage_post_opts_len = strlen(opts.aspect_preprocessing_opts) + strlen("-E -undef -nostdinc -C -x c ");
-            stage_post_opts = malloc(stage_post_opts_len + 1);
-            if (stage_post_opts == NULL) {
-                fprintf(stderr, "Malloc failed.\n");
-                exit(-1);
-            }
-            sprintf(stage_post_opts, "-E -undef -nostdinc -C -x c %s", opts.aspect_preprocessing_opts);
+            stage_post_opts = concat("-E -undef -nostdinc -C -x c ", opts.aspect_preprocessing_opts, NULL);
 
             free(out);
             out = aspect_preprocessed;
-
-            aux_files.aspect_preprocessed = malloc(strlen(out) + 1);
-            if (aux_files.aspect_preprocessed == NULL) {
-                fprintf(stderr, "Malloc failed.\n");
-                exit(-1);
-            }
-            strcpy(aux_files.aspect_preprocessed, out);
+            aux_files.aspect_preprocessed = concat(out, NULL);
         } else {
             /* Use preprocessed aspect at other stages. */
             free(aspect);
@@ -613,29 +562,12 @@ static void perform_stages(void) {
                 /* Even though standard preprocessing won't be done but nevertheless
                  * specify that output should be a preprocessed file.
                  */
-                stage_post_opts_len = strlen(opts.file_preparation_opts) + strlen("-E -x c ");
-                stage_post_opts = malloc(stage_post_opts_len + 1);
-                if (stage_post_opts == NULL) {
-                    fprintf(stderr, "Malloc failed.\n");
-                    exit(-1);
-                }
-                sprintf(stage_post_opts, "-E -x c %s", opts.file_preparation_opts);
+                stage_post_opts = concat("-E -x c ", opts.file_preparation_opts, NULL);
 
                 /* Use '.prepared' suffix for such kind of files. */
                 free(out);
-                out = malloc(strlen(aux_base) + strlen(".prepared") + 1);
-                if (out == NULL) {
-                    fprintf(stderr, "Malloc failed.\n");
-                    exit(-1);
-                }
-                sprintf(out, "%s.prepared", aux_base);
-
-                aux_files.file_prepared = malloc(strlen(out) + 1);
-                if (aux_files.file_prepared == NULL) {
-                    fprintf(stderr, "Malloc failed.\n");
-                    exit(-1);
-                }
-                strcpy(aux_files.file_prepared, out);
+                out = concat(aux_base, ".prepared", NULL);
+                aux_files.file_prepared = concat(out, NULL);
             }
             /* At macro instrumentation stage standard preprocessing will be done. */
             else if (!strcmp(stages[i], "macro instrumentation")) {
@@ -644,6 +576,7 @@ static void perform_stages(void) {
                     fprintf(stderr, "Could not duplicate string.\n");
                     exit(-1);
                 }
+
                 char *in_dirname = strdup(dirname(in_copy));
                 if (in_dirname == NULL) {
                     fprintf(stderr, "Could not duplicate string.\n");
@@ -662,45 +595,15 @@ static void perform_stages(void) {
 
                 /* Input file is prepared file. */
                 free(in);
-                in = malloc(strlen(aux_base) + strlen(".prepared") + 1);
-                if (in == NULL) {
-                    fprintf(stderr, "Malloc failed.\n");
-                    exit(-1);
-                }
-                sprintf(in, "%s.prepared", aux_base);
-
-                stage_pre_opts_len = strlen("-I \"\"") + strlen(aux_search_dir) ;
-                stage_pre_opts = malloc(stage_pre_opts_len + 1);
-                if (stage_pre_opts == NULL) {
-                    fprintf(stderr, "Malloc failed.\n");
-                    exit(-1);
-                }
-                sprintf(stage_pre_opts, "-I \"%s\"", aux_search_dir);
+                in = concat(aux_base, ".prepared", NULL);
+                stage_pre_opts = concat("-I \"", aux_search_dir, "\"", NULL);
                 free(aux_search_dir);
-
-                stage_post_opts_len = strlen(opts.macro_instrumentation_opts) + strlen("-E -x c ");
-                stage_post_opts = malloc(stage_post_opts_len + 1);
-                if (stage_post_opts == NULL) {
-                    fprintf(stderr, "Malloc failed.\n");
-                    exit(-1);
-                }
-                sprintf(stage_post_opts, "-E -x c %s", opts.macro_instrumentation_opts);
+                stage_post_opts = concat("-E -x c ", opts.macro_instrumentation_opts, NULL);
 
                 /* Use '.macroinstrumented' suffix for macro instrumented files. */
                 free(out);
-                out = malloc(strlen(aux_base) + strlen(".macroinstrumented") + 1);
-                if (out == NULL) {
-                    fprintf(stderr, "Malloc failed.\n");
-                    exit(-1);
-                }
-                sprintf(out, "%s.macroinstrumented", aux_base);
-
-                aux_files.macro_instrumented = malloc(strlen(out) + 1);
-                if (aux_files.macro_instrumented == NULL) {
-                    fprintf(stderr, "Malloc failed.\n");
-                    exit(-1);
-                }
-                strcpy(aux_files.macro_instrumented, out);
+                out = concat(aux_base, ".macroinstrumented", NULL);
+                aux_files.macro_instrumented = concat(out, NULL);
             }
             /* At instrumentation stage auxiliary functions implementing recommendation
              * bodies and type declaration extensions required are performed.
@@ -708,47 +611,18 @@ static void perform_stages(void) {
             else if (!strcmp(stages[i], "instrumentation")) {
                 /* Input file is macro instrumented file. */
                 free(in);
-                in = malloc(strlen(aux_base) + strlen(".macroinstrumented") + 1);
-                if (in == NULL) {
-                    fprintf(stderr, "Malloc failed.\n");
-                    exit(-1);
-                }
-                sprintf(in, "%s.macroinstrumented", aux_base);
+                in = concat(aux_base, ".macroinstrumented", NULL);
 
                 /* Stop after preprocessed file is parsed. */
-                stage_post_opts_len =
-                    strlen(opts.instrumentation_opts) + strlen("-fsyntax-only -x cpp-output ");
-                stage_post_opts = malloc(stage_post_opts_len + 1);
-                if (stage_post_opts == NULL) {
-                    fprintf(stderr, "Malloc failed.\n");
-                    exit(-1);
-                }
-                sprintf(stage_post_opts, "-fsyntax-only -x cpp-output %s", opts.instrumentation_opts);
+                stage_post_opts = concat("-fsyntax-only -x cpp-output ", opts.instrumentation_opts, NULL);
 
                 /* Use '.instrumented' suffix for instrumented files. */
                 free(out);
-                out = malloc(strlen(aux_base) + strlen(".instrumented") + 1);
-                if (out == NULL) {
-                    fprintf(stderr, "Malloc failed.\n");
-                    exit(-1);
-                }
-                sprintf(out, "%s.instrumented", aux_base);
-
-                aux_files.instrumented = malloc(strlen(out) + 1);
-                if (aux_files.instrumented == NULL) {
-                    fprintf(stderr, "Malloc failed.\n");
-                    exit(-1);
-                }
-                strcpy(aux_files.instrumented, out);
+                out = concat(aux_base, ".instrumented", NULL);
+                aux_files.instrumented = concat(out, NULL);
 
                 /* Print output using such the way instead of the standard one. */
-                stage_envs_len = strlen("LDV_OUT=\"") + strlen(out) + strlen("\"");
-                stage_envs = malloc(stage_envs_len + 1);
-                if (stage_envs == NULL) {
-                    fprintf(stderr, "Malloc failed.\n");
-                    exit(-1);
-                }
-                sprintf(stage_envs, "LDV_OUT=\"%s\"", out);
+                stage_envs = concat("LDV_OUT=\"", out, "\"", NULL);
             }
             /* At compilation stage auxiliary functions are related with original code
              * and some back-end is involved.
@@ -756,45 +630,23 @@ static void perform_stages(void) {
             else if (!strcmp(stages[i], "compilation")) {
                 /* Input file is instrumented file. */
                 free(in);
-                in = malloc(strlen(aux_base) + strlen(".instrumented") + 1);
-                if (in == NULL) {
-                    fprintf(stderr, "Malloc failed.\n");
-                    exit(-1);
-                }
-                sprintf(in, "%s.instrumented", aux_base);
+                in = concat(aux_base, ".instrumented", NULL);
 
                 /* Use specific options for corresponding back-ends. */
-                if (!strcmp(opts.back_end, "asm")) {
+                if (!strcmp(opts.back_end, "asm"))
                     stage_opts_specific = "-S";
-                }
-                else if (!strcmp(opts.back_end, "obj")) {
+                else if (!strcmp(opts.back_end, "obj"))
                     stage_opts_specific = "-c";
-                }
                 else if (!strcmp(opts.back_end, "src")) {
                     /* Stop asfter preprocessed file is parsed. */
                     stage_opts_specific = "-fsyntax-only";
                     /* Print output using such the way instead of the standard one. */
-                    stage_envs_len = strlen("LDV_C_BACKEND_OUT=\"") + strlen(out) + strlen("\"");
-                    stage_envs = malloc(stage_envs_len + 1);
-                    if (stage_envs == NULL) {
-                        fprintf(stderr, "Malloc failed.\n");
-                        exit(-1);
-                    }
-                    sprintf(stage_envs, "LDV_C_BACKEND_OUT=\"%s\"", out);
+                    stage_envs = concat("LDV_C_BACKEND_OUT=\"", out, "\"", NULL);
                 }
-                else {
+                else
                     stage_opts_specific = "";
-                }
 
-                stage_post_opts_len = strlen("-x c ") + strlen(stage_opts_specific)
-                    + strlen(" ") + strlen(opts.compilation_opts);
-                stage_post_opts = malloc(stage_post_opts_len + 1);
-                if (stage_post_opts == NULL) {
-                    fprintf(stderr, "Malloc failed.\n");
-                    exit(-1);
-                }
-                sprintf(stage_post_opts,
-                    "-x c %s %s", stage_opts_specific, opts.compilation_opts);
+                stage_post_opts = concat("-x c ", stage_opts_specific, " ", opts.compilation_opts, NULL);
 
                 /* Remove -include options since they cause repeating include of
                  * headers that may cause build failures, e.g. due to type
@@ -817,7 +669,7 @@ static void perform_stages(void) {
                     int j;
 
                     /* Original string length will be enough since we are going
-                     * to eclude some substrings from it. */
+                     * to exclude some substrings from it. */
                     new_options = malloc(strlen(options) + 1);
                     if (new_options == NULL) {
                         fprintf(stderr, "Malloc failed.\n");
@@ -889,80 +741,47 @@ static void perform_stages(void) {
                 /* Stop asfter preprocessed file is parsed. */
                 stage_post_opts = " -fsyntax-only";
                 /* Print output using such the way instead of the standard one. */
-                stage_envs_len = strlen("LDV_C_BACKEND_OUT=\"") + strlen(out) + strlen("\"");
-                stage_envs = malloc(stage_envs_len + 1);
-                if (stage_envs == NULL) {
-                    fprintf(stderr, "Malloc failed.\n");
-                    exit(-1);
-                }
-                sprintf(stage_envs, "LDV_C_BACKEND_OUT=\"%s\"", out);
+                stage_envs = concat("LDV_C_BACKEND_OUT=\"", out, "\"", NULL);
             }
 
         }
 
-        if (!stage_envs) {
-            stage_envs = malloc(1);
-            if (stage_envs == NULL) {
-                fprintf(stderr, "Malloc failed.\n");
-                exit(-1);
-            }
-            stage_envs[0] = '\0';
-        }
+        if (!stage_envs)
+            stage_envs = concat("", NULL);
 
         if (!options)
             options = "";
 
-        if (strcmp(stages[i], "C-backend")) {
+        if (strcmp(stages[i], "C-backend"))
             /* Specify what stage should be performed. */
             /* Aspect file should be always specified to enable specific features of aspectator. */
-            stage_envs_full_len = strlen("LDV_STAGE=") + sizeof(stage_id) + strlen(" ")
-                + strlen("LDV_ASPECT_FILE=\"") + strlen(aspect) + strlen("\" ") + strlen(stage_envs);
-            stage_envs_full = malloc(stage_envs_full_len + 1);
-            if (stage_envs_full == NULL) {
-                fprintf(stderr, "Malloc failed.\n");
-                exit(-1);
-            }
-            sprintf(stage_envs_full, "LDV_STAGE=%d LDV_ASPECT_FILE=\"%s\" %s",
-                stage_id, aspect, stage_envs);
-        } else {
+            stage_envs_full = concat("LDV_STAGE=", itoa(stage_id), " ", "LDV_ASPECT_FILE=\"", aspect, "\" ", stage_envs,
+                                     NULL);
+        else
             stage_envs_full = stage_envs;
-        }
 
-        cmd_len =
+        cmd = concat(
             /* Stage specific environment variables. */
-            strlen(stage_envs_full)
+            stage_envs_full,
             /* CIF core executable. */
-            + strlen(aspectator)
+            " ", aspectator,
             /* Some options like "-I" should be placed ahead to have more priority. */
-            + strlen(stage_pre_opts)
+            " ", stage_pre_opts,
             /* Standard compilation (preprocesing) options. */
-            + strlen(options)
-            /* We wouldn't like to change original function calls
-                with the gcc ones. So use -fno-builtin option for that purpose. */
-            + strlen("-fno-builtin")
-            /* Place all specific options at the end of other options to make them
-                more of a priority. */
-            + strlen(opts.general_opts)
-            + strlen(stage_post_opts)
+            " ", options,
+            /* We wouldn't like to change original function calls with the gcc ones. So use -fno-builtin option for that
+               purpose. */
+            " -fno-builtin",
+            /* Place all specific options at the end of other options to make them more of a priority. */
+            " ", opts.general_opts,
+            " ", stage_post_opts,
             /* File to be instrumented. */
-            + strlen(in)
+            " \"", in, "\"",
             /* Output file. */
-            + strlen("-o")
-            + strlen(out)
-            /* Spaces. */
-            + 11
-            /* Double quotes. */
-            + 4;
-        cmd = malloc(cmd_len + 1);
-        if (cmd == NULL) {
-            fprintf(stderr, "Malloc failed.\n");
-            exit(-1);
-        }
-        sprintf(cmd, "%s %s %s %s -fno-builtin %s %s \"%s\" -o \"%s\"", stage_envs_full, aspectator,
-            stage_pre_opts, options, opts.general_opts, stage_post_opts, in, out);
-
+            " -o \"", out, "\"",
+            NULL
+        );
         print_debug(DEBUG, "Execute '%s'.\n", cmd);
-
         ret = system(cmd);
         free(cmd);
 
@@ -976,16 +795,8 @@ static void perform_stages(void) {
         /* Make some magic for aspect preprocessing stage. */
         if (!strcmp(stages[i], "aspect preprocessing")) {
             /* Replace '@' with '#' to return back standard preprocessing directives. */
-            cmd_len = strlen("sed -i.bak 's/@/#/g' \"") + strlen(out) + strlen("\"");
-            cmd = malloc(cmd_len + 1);
-            if (cmd == NULL) {
-                fprintf(stderr, "Malloc failed.\n");
-                exit(-1);
-            }
-            sprintf(cmd, "sed -i.bak 's/@/#/g' \"%s\"", out);
-
+            cmd = concat("sed -i.bak 's/@/#/g' \"", out, "\"", NULL);
             print_debug(DEBUG, "Execute '%s'.\n", cmd);
-
             ret = system(cmd);
             free(cmd);
 
@@ -1172,4 +983,75 @@ static char *find_cross_compile_prefix(char *cif_exec_filename)
     *pch = 0;
 
     return cross_compile_prefix;
+}
+
+static char *concat(const char *first, ...)
+{
+    va_list args;
+    const char *arg;
+    unsigned long length = 0;
+    char *res, *cur;
+
+    va_start (args, first);
+    /* Calculate length of resulted string. */
+    for (arg = first; arg; arg = va_arg(args, const char *))
+        length += strlen (arg);
+
+    /* Allocate enough memory to store resulted string. */
+    res = malloc(length + 1);
+    if (res == NULL) {
+        fprintf(stderr, "Malloc failed.\n");
+        exit(-1);
+    }
+
+    /* Concatenate strings. */
+    cur = res;
+    for (arg = first; arg; arg = va_arg(args, const char *)) {
+      unsigned long cur_length = strlen(arg);
+      memcpy(cur, arg, cur_length);
+      cur += cur_length;
+    }
+    *cur = '\0';
+    va_end (args);
+
+    /* Indeed, this function is used in different places, not only to concatenate directories and names of files, but
+     * anyway its result should be pretty limited. */
+    if (strlen(res) >= PATH_MAX) {
+        fprintf(stderr, "Too long concatenated string.\n");
+        exit(-1);
+    }
+
+    return res;
+}
+
+static const char *itoa(unsigned int n)
+{
+    unsigned int int_digits = 1, order = 10;
+    char *str = NULL;
+
+    /* Obtain the number of digits that are contained in unsigned integer
+        number. */
+    for (;;) {
+        if (order > UINT_MAX / 10) {
+            int_digits++;
+            break;
+        }
+
+        if (n / order >= 1) {
+            int_digits++;
+            order *= 10;
+        }
+        else
+            break;
+    }
+
+    str = malloc(int_digits + 1);
+    if (str == NULL) {
+        fprintf(stderr, "Malloc failed.\n");
+        exit(-1);
+    }
+
+    sprintf (str, "%u", n);
+
+    return str;
 }
