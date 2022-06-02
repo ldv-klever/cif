@@ -992,10 +992,11 @@ static char *concat(const char *first, ...)
     unsigned long length = 0;
     char *res, *cur;
 
-    va_start (args, first);
+    va_start(args, first);
     /* Calculate length of resulted string. */
     for (arg = first; arg; arg = va_arg(args, const char *))
-        length += strlen (arg);
+        length += strlen(arg);
+    va_end(args);
 
     /* Allocate enough memory to store resulted string. */
     res = malloc(length + 1);
@@ -1005,17 +1006,18 @@ static char *concat(const char *first, ...)
     }
 
     /* Concatenate strings. */
+    va_start(args, first);
     cur = res;
     for (arg = first; arg; arg = va_arg(args, const char *)) {
-      unsigned long cur_length = strlen(arg);
-      memcpy(cur, arg, cur_length);
-      cur += cur_length;
+        unsigned long cur_length = strlen(arg);
+        memcpy(cur, arg, cur_length);
+        cur += cur_length;
     }
     *cur = '\0';
-    va_end (args);
+    va_end(args);
 
-    /* Indeed, this function is used in different places, not only to concatenate directories and names of files, but
-     * anyway its result should be pretty limited. */
+    /* Indeed, this function is used in different places, not only to concatenate directory and file names, but anyway
+       its result should be pretty limited. */
     if (strlen(res) >= PATH_MAX) {
         fprintf(stderr, "Too long concatenated string.\n");
         exit(-1);
@@ -1029,8 +1031,7 @@ static const char *itoa(unsigned int n)
     unsigned int int_digits = 1, order = 10;
     char *str = NULL;
 
-    /* Obtain the number of digits that are contained in unsigned integer
-        number. */
+    /* Obtain the number of digits that are contained in unsigned integer number. */
     for (;;) {
         if (order > UINT_MAX / 10) {
             int_digits++;
