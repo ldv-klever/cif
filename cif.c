@@ -998,6 +998,13 @@ static char *concat(const char *first, ...)
         length += strlen(arg);
     va_end(args);
 
+    /* Indeed, this function is used in different places, not only to concatenate directory and file names, but anyway
+       its result should be pretty limited. */
+    if (length >= PATH_MAX) {
+        fprintf(stderr, "Too long concatenated string.\n");
+        exit(-1);
+    }
+
     /* Allocate enough memory to store resulted string. */
     res = malloc(length + 1);
     if (res == NULL) {
@@ -1015,13 +1022,6 @@ static char *concat(const char *first, ...)
     }
     *cur = '\0';
     va_end(args);
-
-    /* Indeed, this function is used in different places, not only to concatenate directory and file names, but anyway
-       its result should be pretty limited. */
-    if (strlen(res) >= PATH_MAX) {
-        fprintf(stderr, "Too long concatenated string.\n");
-        exit(-1);
-    }
 
     return res;
 }
