@@ -7,4 +7,3 @@ class TestComplex(utils.CIFTestCase):
     # Compilation stage with "src" back-end require support for these expressions in c-backend.
     def test_realpart_expr(self):
         self.cif.run(cif_input='input/complex.c', aspect='aspect/empty.aspect', stage='instrumentation')
-        self.check_cif_status()

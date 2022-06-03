@@ -9,7 +9,10 @@ WORK_DIR = 'work'
 
 class CIFTestCase(unittest.TestCase):
     class CIF():
-        def run(self, cif_input, aspect=None, cif_output=WORK_DIR + '/a.out', stage='compilation', back_end='src', aspectator_opts=None, env=None):
+        def __init__(self, test_case):
+            self.test_case = test_case
+
+        def run(self, cif_input, aspect=None, cif_output=WORK_DIR + '/a.out', stage='compilation', back_end='src', aspectator_opts=None, env=None, expected_fail=False):
             self.cif = os.environ.get('CIF', '../inst/bin/cif')
             self.aspectator = self.cif[:-3] + 'aspectator'
 
@@ -42,8 +45,30 @@ class CIFTestCase(unittest.TestCase):
             self.back_end = back_end
             self.aspectator_opts = aspectator_opts or []
 
+            self.check_status(expected_fail)
+            if not expected_fail:
+                self.check_output()
+
+        def check_status(self, expected_fail):
+            print('\nCMD: {!r}'.format(' '.join(self.cmd)))
+            print('LOG:', self.log, '\n')
+
+            self.test_case.assertEqual(self.status, 1 if expected_fail else 0)
+
+        def check_output(self):
+            if self.stage not in ('compilation', 'C-backend') or self.back_end != 'src':
+                return
+
+            extra_opts = []
+            for aspectator_opt in self.aspectator_opts:
+                if aspectator_opt == '-fshort-wchar':
+                    extra_opts.append(aspectator_opt)
+
+            r = subprocess.run([self.aspectator, '-fsyntax-only', *extra_opts, self.cif_output])
+            self.test_case.assertEqual(r.returncode, 0)
+
     def __init__(self, *arguments):
-        self.cif = CIFTestCase.CIF()
+        self.cif = CIFTestCase.CIF(self)
 
         super().__init__(*arguments)
 
@@ -66,9 +91,6 @@ class CIFTestCase(unittest.TestCase):
             shutil.rmtree(WORK_DIR)
 
     def compare(self, output, expected):
-        self.check_cif_status()
-        self.check_cif_output()
-
         if 'OVERRIDE' in os.environ:
             shutil.copy(output, expected)
             return
@@ -99,28 +121,7 @@ class CIFTestCase(unittest.TestCase):
 
         self.compare('work/log', expected)
 
-    def check_cif_status(self):
-        if self.cif:
-            print('\nCMD: {!r}'.format(' '.join(self.cif.cmd)))
-            print('LOG:', self.cif.log, '\n')
-
-            self.assertEqual(self.cif.status, 0)
-
-    def check_cif_output(self):
-        if self.cif.stage not in ('compilation', 'C-backend') or self.cif.back_end != 'src':
-            return
-
-        extra_opts = []
-        for aspectator_opt in self.cif.aspectator_opts:
-            if aspectator_opt == '-fshort-wchar':
-                extra_opts.append(aspectator_opt)
-
-        r = subprocess.run([self.cif.aspectator, '-fsyntax-only', *extra_opts, self.cif.cif_output])
-        self.assertEqual(r.returncode, 0)
-
     def skip_os_specific_defines(self, output):
-        self.check_cif_status()
-
         with open(output, encoding='utf8') as fp:
             lines = fp.readlines()
         with open(output, 'w', encoding='utf8') as fp:
@@ -129,8 +130,6 @@ class CIFTestCase(unittest.TestCase):
                     fp.write(line)
 
     def replace_gotos(self, output):
-        self.check_cif_status()
-
         with open(output, encoding='utf8') as fp:
             lines = fp.readlines()
 
