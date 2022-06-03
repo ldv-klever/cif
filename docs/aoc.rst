@@ -447,7 +447,7 @@ All special directives start with the **$** symbol which cannot be used in the C
 `identifier` defines a type of special directive.
 The following types of special directives are supported: **$arg**, **$arg_numb**, **$arg_sign**, **$arg_size**,
 **$arg_type**, **$arg_val**, **$context_file**, **$context_func_file**, **$context_func_name**, **$env**, **$fprintf**,
-**$name**, **$proceed**, **$res**, **$ret_type**, **$signature** and **$this**.
+**$name**, **$proceed**, **$res**, **$ret_type**, **$storage_class**, **$signature** and **$this**.
 It is forbidden to use digits in `identifier` of `special-directive`.
 This is done to avoid collisions of identifiers with `aoc-integer-constant` that may be a part of special directives.
 
@@ -475,7 +475,7 @@ Also, any of these parameters can be a special directive whose value is `aoc-int
 Semantics
 ^^^^^^^^^
 
-All special directives except **$fprintf** are replaced with some values: `integers <aoc-integer-constant>`, 
+All special directives except **$fprintf** are replaced with some values: `integers <aoc-integer-constant>`,
 `identifiers <aoc-identifier>` without **$** wildcards or `string literals <aoc-string-literal>`.
 
 Special directive **$fprintf** performs formatted data output to a specified file in the same way as standard C function
@@ -507,6 +507,7 @@ The remaining special directives are substituted at aspect weaving as follows:
 * **$proceed** -- a join point itself, for example, an original function call.
 * **$res** -- a function return value (it is provided by a special variable).
 * **$ret_type** -- a type of function's return value or variable or a composite type (it is provided via *typedef*).
+* **$storage_class** -- a storage class of a function or global variable.
 
 .. [#] This file is created if it does not exist.
 
@@ -844,13 +845,14 @@ special directives when `pointcut` matches an appropriate joint point:
   \"$context_file\", \"$name\" and \"$proceed\".
 * For function calls -- \"$arg\", \"$arg_numb\", \"$arg_sign\", \"$arg_size\", \"$arg_type\", \"$arg_val\",
   \"$context_file\", \"$context_func_file\", \"$context_func_name\", \"$name\", \"$proceed\", \"$res\"
-  (only for \"after\") and \"$ret_type\".
-* For function declarations -- \"$arg_numb\", \"$arg_type\", \"$context_file\", \"$name\" and \"$ret_type\".
+  (only for \"after\"), \"$ret_type\" and \"$storage_class\".
+* For function declarations -- \"$arg_numb\", \"$arg_type\", \"$context_file\", \"$name\", \"$ret_type\" and
+  \"$storage_class\".
 * For function definitions -- \"$arg\", \"$arg_numb\", \"$arg_type\", \"$context_file\", \"$name\",
-  \"$proceed\", \"$res\" (only for \"after\") and \"$ret_type\".
+  \"$proceed\", \"$res\" (only for \"after\"), \"$ret_type\" and \"$storage_class\".
 * For usages and assignments of values to local or global variables -- \"$context_file\", \"$context_func_file\",
-  \"$context_func_name\", \"$name\", \"$proceed\", \"$res\" (only for \"after\") and \"$ret_type\"
-  (a matched variable type).
+  \"$context_func_name\", \"$name\", \"$proceed\", \"$res\" (only for \"after\"), \"$ret_type\" (a matched variable
+  type) and \"$storage_class\" (only for global variables).
 * For declarations of composite types -- \"$context_file\", \"$name\" and \"$ret_type\" (a matched composite
   type).
 

@@ -1,3 +1,3 @@
 query: execution($ $(..)) {
-  $fprintf<"work/info.txt","%s %s %d %s\n",$path,$func_name,$decl_line,$signature>
+  $fprintf<"work/info.txt","%s %s %d %s %s\n",$path,$func_name,$decl_line,$signature,$storage_class>
 }

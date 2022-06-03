@@ -1,2 +1,2 @@
-input/simple.c st struct ST st;||42:0
-input/simple.c x int x;||5:0
+input/simple.c st struct ST st; none||42:0
+input/simple.c x static int x; static||5:0

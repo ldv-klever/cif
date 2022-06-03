@@ -1,2 +1,2 @@
-input/simple.c func 20 int func(int arg);
-input/simple.c main 24 int main(void);
+input/simple.c func 20 static int func(int arg); static
+input/simple.c main 24 int main(void); none

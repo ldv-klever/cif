@@ -9,13 +9,13 @@ struct ST
 
 struct ST st = { 42 };
 
-int x = 5;
+static int x = 5;
 
 typedef struct ST ST_ST;
 
 int (*func_ptr_global)(int);
 
-int func(int arg);
+static int func(int arg);
 
 int func(int arg) {
     return arg;
