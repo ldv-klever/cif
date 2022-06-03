@@ -1,0 +1,8 @@
+declaration: struct A a;
+[{"value": "42", "field": "int a;"}, {"value": [{"value": "24", "field": "int u;"}], "field": "union { int u; };"}]
+declaration: struct A b;
+"{}"
+declaration: struct A c[2U];
+[{"value": [{"value": "21", "field": "int a;"}, {"value": [{"value": "12", "field": "int u;"}], "field": "union { int u; };"}], "index": 0}, {"value": "{}", "index": 1}]
+declaration: struct B d;
+[{"value": "{}", "field": "struct A b;"}]
