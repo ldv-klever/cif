@@ -24,3 +24,7 @@ declaration: struct B d;
 value:
   field declaration: struct A b;
   value: {}
+declaration: struct { int v; int t; } e;
+value:
+  field declaration: int v;
+  value: 212

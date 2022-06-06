@@ -19,3 +19,9 @@ struct B
 };
 
 struct B d = { {} };
+
+struct
+{
+    int v;
+    int t;
+} e = {.v = 212};

@@ -6,3 +6,5 @@ declaration: struct A c[2U];
 [{"value": [{"value": "21", "field": "int a;"}, {"value": [{"value": "12", "field": "int u;"}], "field": "union { int u; };"}], "index": 0}, {"value": "{}", "index": 1}]
 declaration: struct B d;
 [{"value": "{}", "field": "struct A b;"}]
+declaration: struct { int v; int t; } e;
+[{"value": "212", "field": "int v;"}]
