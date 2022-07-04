@@ -1000,10 +1000,13 @@ static char *concat(const char *first, ...)
 
     /* Indeed, this function is used in different places, not only to concatenate directory and file names, but anyway
        its result should be pretty limited. */
+    /* This check seems to be to dangerous. Anyway, later something should fail if the concatenated string will be
+       inappropriate.
     if (length >= PATH_MAX) {
         fprintf(stderr, "Too long concatenated string.\n");
         exit(-1);
     }
+    */
 
     /* Allocate enough memory to store resulted string. */
     res = malloc(length + 1);
