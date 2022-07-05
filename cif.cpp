@@ -340,6 +340,9 @@ public:
             Log(ERROR) << "You should specify C file to be instrumented by means of command-line"
                     << " option --in (-c)." << endl;
 
+        if (!exists(in))
+            Log(ERROR) << "Specified input file '" << in << "' doesn't exist." << endl;
+
         Log(DEBUG) << "File '" << in << "' will be instrumented or passed through C-backend." << endl;
 
         if (!aspect.empty() && stage != "C-backend") {
