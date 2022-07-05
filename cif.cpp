@@ -139,7 +139,7 @@ const char** convert(vector<string>& v) {
 }
 
 string dirname(const string& str) {
-    return str.substr(0,str.find_last_of("/\\"));
+    return str.substr(0, str.find_last_of("/\\"));
 }
 
 string filename(const string& str) {
