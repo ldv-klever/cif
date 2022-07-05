@@ -39,7 +39,7 @@ all:
 cif:
 	mkdir -p build
 	# You need to add option "-g" below to get a debug version of CIF.
-	gcc -D CIF_VERSION=\"$(CIF_VERSION)\" -Wall -Werror -O2 cif.c -o build/cif
+	g++ -D CIF_VERSION=\"$(CIF_VERSION)\" -Wall -Werror -O2 --std=c++17 cif.cpp -o build/cif
 
 build/install: uninstall install-keep-previous-instances
 
