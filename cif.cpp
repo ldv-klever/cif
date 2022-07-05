@@ -1,12 +1,10 @@
 #include <iostream>
 #include <cstddef>
 #include <string>
-#include <string_view>
 #include <map>
 #include <sstream>
 #include <utility>
 #include <vector>
-#include <filesystem>
 #include <algorithm>
 #include <climits>
 #include <cstring>
@@ -21,8 +19,6 @@
 #ifdef __APPLE__
 #include <mach-o/dyld.h>    /* _NSGetExecutablePath */
 #endif
-
-namespace fs = std::filesystem;
 
 using namespace std;
 
@@ -76,7 +72,7 @@ void operator+=(std::vector<T> &v1, const std::vector<T> &v2) {
 
 // Join a collection of strings into one string
 template <typename Collection>
-string join(const Collection& c, string_view d = " ", bool escape = false) {
+string join(const Collection& c, string d = " ", bool escape = false) {
     stringstream ss;
     bool first = true;
 
@@ -140,6 +136,14 @@ const char** convert(vector<string>& v) {
     a[v.size()] = NULL;
 
     return a;
+}
+
+string dirname(const string& str) {
+    return str.substr(0,str.find_last_of("/\\"));
+}
+
+string filename(const string& str) {
+    return str.substr(str.find_last_of("/\\") + 1);
 }
 
 // Debug level for logger class
@@ -393,7 +397,7 @@ public:
     }
 
 private:
-    string find_cross_compile_prefix(string_view cif_filename) {
+    string find_cross_compile_prefix(string& cif_filename) {
         auto pos = cif_filename.find("cif");
 
         if (pos == string::npos)
@@ -429,8 +433,8 @@ private:
     #endif
 
         string cif_path_str(real_cif_path);
-        string cif_dirname = fs::path(cif_path_str).parent_path();
-        string cif_filename = fs::path(cif_path_str).filename();
+        string cif_dirname = dirname(cif_path_str);
+        string cif_filename = filename(cif_path_str);
         string cross_compile_prefix = find_cross_compile_prefix(cif_filename);
 
         aspectator = cif_dirname + "/" + cross_compile_prefix + "gcc";
@@ -467,15 +471,15 @@ public:
         * file. When several CIF operates in parallel they can overwrite
         * preprocessed aspect files otherwise.
         */
-        string out_dirname = fs::path(conf.out).parent_path();
-        string out_filename = fs::path(conf.out).filename();
+        string out_dirname = dirname(conf.out);
+        string out_filename = filename(conf.out);
 
         if (out_dirname.empty())
             out_dirname = ".";
 
         aux_base = out_dirname + "/" + out_filename;
         if (!conf.aspect.empty()) {
-            string aspect_filename = fs::path(conf.aspect).filename();
+            string aspect_filename =filename(conf.aspect);
             aspect_preprocessed = aux_base + "." + aspect_filename + ".i";
         }
     }
@@ -585,7 +589,7 @@ private:
         options = conf.rest_opts;
 
         // TODO: remove this auxiliary search directory when will get rid of *.prepared files.
-        string aux_search_dir = fs::path(conf.in).parent_path();
+        string aux_search_dir = dirname(conf.in);
 
         stage_pre_opts = {"-I", aux_search_dir};
         stage_post_opts = {"-E", "-x", "c"};
