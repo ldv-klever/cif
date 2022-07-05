@@ -139,6 +139,12 @@ const char** convert(vector<string>& v) {
 }
 
 string dirname(const string& str) {
+    size_t found = str.find_last_of("/\\");
+
+    if (found == string::npos) {
+        return ".";
+    }
+
     return str.substr(0, str.find_last_of("/\\"));
 }
 
@@ -474,12 +480,9 @@ public:
         string out_dirname = dirname(conf.out);
         string out_filename = filename(conf.out);
 
-        if (out_dirname.empty())
-            out_dirname = ".";
-
         aux_base = out_dirname + "/" + out_filename;
         if (!conf.aspect.empty()) {
-            string aspect_filename =filename(conf.aspect);
+            string aspect_filename = filename(conf.aspect);
             aspect_preprocessed = aux_base + "." + aspect_filename + ".i";
         }
     }
