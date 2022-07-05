@@ -114,7 +114,9 @@ vector<string> split(string str, char delimiter=' ') {
             begin = i + 1;
         }
     }
-    result.push_back(str.substr(begin));
+
+    if (!str.substr(begin).empty())
+        result.push_back(str.substr(begin));
 
     return result;
 }
