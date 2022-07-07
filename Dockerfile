@@ -10,7 +10,7 @@ RUN apt-get update && \
 RUN pip3 install pytest
 
 # Copy CIF source code
-COPY cif.c Makefile $CIF_SRC
+COPY cif.cpp Makefile $CIF_SRC
 COPY aspectator $CIF_SRC/aspectator
 COPY .git $CIF_SRC/.git
 COPY tests $CIF_SRC/tests

@@ -30,7 +30,7 @@ RUN ./configure --enable-local
 RUN make
 
 # Copy CIF source code
-COPY --chown=builduser:builduser cif.c Makefile $CIF_SRC
+COPY --chown=builduser:builduser cif.cpp Makefile $CIF_SRC
 COPY --chown=builduser:builduser aspectator $CIF_SRC/aspectator
 COPY --chown=builduser:builduser .git $CIF_SRC/.git
 COPY --chown=builduser:builduser tests $CIF_SRC/tests
