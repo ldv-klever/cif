@@ -49,12 +49,13 @@ You can see an example of an aspect in :numref:`aspect-sample`.
 Before parsing aspects, *aspect preprocessing* is carried out.
 Aspect preprocessing behaves exactly in the same way as preprocessing performed by the `GCC <https://gcc.gnu.org/>`__
 compiler except for symbol **@** is treated instead of **#**.
-:numref:`aspect-preprocessor-directives` exemplifies using preprocessor directives in the aspect.
+:numref:`aspect-macros-and-conditionals` exemplifies using such preprocessor directives as macros and conditionals in
+the aspect.
 The corresponding preprocessed aspect is shown in :numref:`preprocessed-aspect`.
 
 .. code-block:: c
-    :caption: Example of using preprocessor directives in an aspect
-    :name: aspect-preprocessor-directives
+    :caption: Example of using preprocessor macros and conditionals in an aspect
+    :name: aspect-macros-and-conditionals
     :force:
 
     @define LOG_FILE "work/info.txt"
@@ -75,10 +76,34 @@ The corresponding preprocessed aspect is shown in :numref:`preprocessed-aspect`.
     :caption: Preprocessed aspect
     :name: preprocessed-aspect
 
-    # 10 "aspect-preprocessor-directives.aspect"
+    # 10 "aspect-macros-and-conditionals.aspect"
     query: call(int get_property(const char *))
     {
       $fprintf<"work/info.txt", "%s property %s\n", "get", $arg_sign1>;
+    }
+
+In addition to using preprocessor macros and conditionals in aspects, you can also include aspects like C source files
+include headers.
+:numref:`aspect-include` demonstrates an example of using **@include** in the aspect.
+The included aspect is shown above in :numref:`aspect-macros-and-conditionals`.
+The corresponding preprocessed aspect is shown in :numref:`preprocessed-aspect-2`.
+
+.. code-block:: c
+    :caption: Example of including an aspect
+    :name: aspect-include
+    :force:
+
+    @define PRODUCTION
+    @include "aspect-macros-and-conditionals.aspect"
+
+.. code-block:: c
+    :caption: Preprocessed aspect
+    :name: preprocessed-aspect-2
+
+    # 10 "aspect-macros-and-conditionals.aspect"
+    query: call(int get_property(const char *))
+    {
+      ;
     }
 
 Similarly to the C programming language, you can use :ref:`comments <comments>` in aspects.
