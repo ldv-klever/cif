@@ -28,7 +28,7 @@ copyright = '2022, Evgeny Novikov, Ilya Shchepetkov'
 author = 'Evgeny Novikov, Ilya Shchepetkov'
 
 # The short X.Y version
-version = ''
+version = '1.2'
 # The full version, including alpha/beta/rc tags
 release = ''
 
