@@ -4,5 +4,6 @@
     },
     "search.followSymlinks": false,
     "search.searchEditor.reusePriorSearchConfiguration": true,
-    "C_Cpp.autoAddFileAssociations": false
+    "C_Cpp.autoAddFileAssociations": false,
+    "cmake.configureOnOpen": false
 }
