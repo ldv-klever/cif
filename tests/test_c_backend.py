@@ -251,3 +251,7 @@ class TestCBackend(utils.CIFTestCase):
     def test_expr_recursion_limit(self):
         self.cif.run(cif_input='input/c-backend/expr-recursion-limit.c', stage='C-backend', cif_output='work/expr-recursion-limit.c')
         self.compare(output='work/expr-recursion-limit.c', expected='output/c-backend/expr-recursion-limit.c')
+
+    def test_var_decl_storage_classes(self):
+        self.cif.run(cif_input='input/c-backend/var-decl-storage-classes.c', stage='C-backend', cif_output='work/var-decl-storage-classes.c')
+        self.compare(output='work/var-decl-storage-classes.c', expected='output/c-backend/var-decl-storage-classes.c')
