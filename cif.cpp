@@ -8,6 +8,8 @@
 #include <algorithm>
 #include <climits>
 #include <cstring>
+#include <array>
+#include <memory>
 
 #include <getopt.h>
 #include <sys/stat.h>
@@ -30,7 +32,7 @@ extern char** environ;
 
 void print_help();
 
-vector<string> stages = {
+const array<string, 6> stages = {
     "aspect preprocessing",
     "file preparation",
     "macro instrumentation",
@@ -39,7 +41,7 @@ vector<string> stages = {
     "C-backend"
 };
 
-vector<string> back_ends = {"bin", "asm", "obj", "src"};
+const array<string, 4> back_ends = {"bin", "asm", "obj", "src"};
 
 enum DEBUG_LEVELS {
     ERROR,
@@ -49,7 +51,7 @@ enum DEBUG_LEVELS {
     ALL
 };
 
-map<string, int> DEBUG_LEVELS = {
+const map<string, int> DEBUG_LEVELS = {
         {"ERROR",   ERROR},
         {"QUIET",   QUIET},
         {"NORMAL",  NORMAL},
@@ -72,7 +74,7 @@ void operator+=(std::vector<T> &v1, const std::vector<T> &v2) {
 
 // Join a collection of strings into one string
 template <typename Collection>
-string join(const Collection& c, string d = " ", bool escape = false) {
+string join(const Collection& c, const string& d = " ", bool escape = false) {
     stringstream ss;
     bool first = true;
 
@@ -97,7 +99,7 @@ string join(const Collection& c, string d = " ", bool escape = false) {
 vector<string> split(string str, char delimiter=' ') {
     vector<string> result;
 
-    int begin = 0;
+    size_t begin = 0;
     char quote = 0;
     for (size_t i = 0; i < str.length(); i++) {
         if (str[i] == '\'' || str[i] == '\"') {
@@ -123,19 +125,19 @@ vector<string> split(string str, char delimiter=' ') {
 
 // Check that a file exists
 bool exists(const string& name) {
-    struct stat buffer;
+    struct stat buffer {};
     return (stat (name.c_str(), &buffer) == 0);
 }
 
 // Convert vector of strings to array of c-strings
 // Beware of memory leaks!
-const char** convert(vector<string>& v) {
-    const char** a = new const char*[v.size() + 1];
+auto convert(vector<string>& v) {
+    unique_ptr<const char*[]> a(new const char*[v.size() + 1]);
 
     for (size_t i = 0; i < v.size(); i++)
         a[i] = v[i].c_str();
 
-    a[v.size()] = NULL;
+    a[v.size()] = nullptr;
 
     return a;
 }
@@ -159,10 +161,8 @@ int debug_level = ERROR;
 
 class Log {
 public:
-    explicit Log(enum DEBUG_LEVELS message_level, int exit_code=-1) {
-        this->message_level = message_level;
-        this->exit_code = exit_code;
-    }
+    explicit Log(enum DEBUG_LEVELS message_level, int exit_code=-1)
+        : message_level(message_level), exit_code(exit_code) {}
 
     template<typename T>
     ostringstream& operator<<(T input) {
@@ -226,7 +226,7 @@ public:
                 {"compilation-opts",            required_argument, nullptr, '2'},
                 {"instrumentation-opts",        required_argument, nullptr, '3'},
                 {"aspectator",                  required_argument, nullptr, '4'},
-                {0, 0, 0, 0}
+                {nullptr, 0, nullptr, 0}
         };
 
         int opt_index = 0;
@@ -267,7 +267,7 @@ public:
                         Log(ERROR) << "Invalid debug level: '" << debug << "'. "
                                 << "It can be 'QUIET', 'NORMAL' or 'DEBUG'" << endl;
 
-                    debug_level = DEBUG_LEVELS[debug];
+                    debug_level = DEBUG_LEVELS.at(debug);
                     break;
 
                 case 'f':
@@ -475,9 +475,7 @@ public:
 
 class Stages {
 public:
-    Stages(Configuration& conf) {
-        this->conf = conf;
-
+    Stages(Configuration& conf) : conf(conf) {
         /* Place preprocessed aspect file and all intermediate files near output
         * file. When several CIF operates in parallel they can overwrite
         * preprocessed aspect files otherwise.
@@ -517,7 +515,7 @@ public:
             }
 
             if (stage != "compilation" && stage != "C-backend")
-                aux_files.push_back(out);
+                aux_files.emplace_back(out);
 
             if (stage != "C-backend") {
                 /* Specify what stage should be performed. */
@@ -711,19 +709,21 @@ private:
         Log(DEBUG) << "Execute '" << join(envp) << " " << join(argv) << "'." << endl;
 
         // Copy environment variables, they may be needed in the child process
-        for (char** env = environ; *env != 0; env++) {
-            envp.push_back(*env);
+        for (char** env = environ; *env != nullptr; env++) {
+            envp.emplace_back(*env);
         }
 
         pid_t pid;
-        char *const *cargv = (char *const *)convert(argv);
-        char *const *cenvp = (char *const *)convert(envp);
 
         // posix_spawn() is faster than system()
-        int status = posix_spawnp(&pid, argv[0].c_str(), NULL, NULL, cargv, cenvp);
-
-        delete[] cargv;
-        delete[] cenvp;
+        int status = posix_spawnp(
+            &pid,
+            argv[0].c_str(),
+            nullptr,
+            nullptr,
+            const_cast<char* const*>(convert(argv).get()),
+            const_cast<char* const*>(convert(envp).get())
+        );
 
         if (status == 0) {
             do {
